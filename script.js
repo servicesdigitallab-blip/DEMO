@@ -269,20 +269,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const whyCards = document.querySelectorAll('.why-card');
     if (whyCards.length > 0) {
-        gsap.set(whyCards, { y: 100, opacity: 0, rotateY: 20 });
+        gsap.set(whyCards, { y: 150, opacity: 0, scale: 0.8, rotateX: 25 });
         gsap.to(whyCards, {
             y: 0,
             opacity: 1,
-            rotateY: 0,
-            stagger: 0.2,
+            scale: 1,
+            rotateX: 0,
+            stagger: 0.4, // This creates the 0.1s interval feel when scrubbing
             scrollTrigger: {
                 trigger: '.why-choose-section',
-                start: 'top 80%',
-                end: 'top 20%',
+                start: 'top 85%',
+                end: 'bottom 90%',
                 scrub: 1.2
             }
         });
     }
+
+    // --- STATS BANNER: Numbers counting with scroll progress ---
+    const statsItems = document.querySelectorAll('.stat-item');
+    statsItems.forEach(item => {
+        const numEl = item.querySelector('.stat-num');
+        const text = numEl.innerText;
+        const target = parseInt(text.replace(/\D/g, ''));
+        const suffix = text.replace(/[0-9]/g, '');
+
+        if (!isNaN(target)) {
+            const obj = { val: 0 };
+            gsap.set(item, { y: 60, opacity: 0 });
+            
+            // Item entrance
+            gsap.to(item, {
+                y: 0,
+                opacity: 1,
+                scrollTrigger: {
+                    trigger: item,
+                    start: 'top 98%',
+                    end: 'top 80%',
+                    scrub: 1
+                }
+            });
+
+            // Number counting scrubbed
+            gsap.to(obj, {
+                val: target,
+                scrollTrigger: {
+                    trigger: item,
+                    start: 'top 95%',
+                    end: 'top 75%',
+                    scrub: 1
+                },
+                onUpdate: () => {
+                    numEl.innerText = Math.floor(obj.val) + suffix;
+                }
+            });
+        }
+    });
 
     // --- FINAL SECTION: CTA & FOOTER (Staggered Rise) ---
     const ctaItems = document.querySelectorAll('.cta-wrap > *, .cta-features > *, .cta-action-card > *, .footer-col, .footer-bottom');
@@ -360,30 +401,6 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCarousel(Math.floor(cards.length / 2));
     }
 
-    // Stats Counter
-    const stats = document.querySelectorAll('.stat-num');
-    stats.forEach(stat => {
-        const text = stat.innerText;
-        const target = parseInt(text.replace(/\D/g, ''));
-        if(!isNaN(target)) {
-            ScrollTrigger.create({
-                trigger: stat,
-                start: "top 90%",
-                once: true,
-                onEnter: () => {
-                    gsap.fromTo(stat, { innerText: 0 }, {
-                        innerText: target,
-                        duration: 2.5,
-                        snap: { innerText: 1 },
-                        ease: "power2.out",
-                        onUpdate: function() {
-                            stat.innerHTML = Math.round(this.targets()[0].innerText) + text.replace(/[0-9]/g, '');
-                        }
-                    });
-                }
-            });
-        }
-    });
 
     // --- GLOW EFFECT TRACKING ---
     const glowCard = document.querySelector('.booking-form-card');
