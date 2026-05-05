@@ -16,49 +16,49 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- PREMIUM NAVBAR -->
+    <nav class="navbar-wrapper">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <a href="#">DEMO</a>
+            </div>
+            
+            <div class="navbar-menu">
+                <a href="#home" class="active">HOME</a>
+                <a href="#about">ABOUT</a>
+                <a href="#services">SERVICES</a>
+                <a href="#projects">PROJECTS</a>
+                <a href="#process">PROCESS</a>
+                <a href="#booking">CONTACT</a>
+            </div>
+            
+            <div class="navbar-actions">
+                <button class="btn-book-outline" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">BOOK A CONSULTATION</button>
+                <button class="mobile-toggle">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="mobile-menu-overlay">
+        <button class="close-mobile-menu">&times;</button>
+        <div class="mobile-menu-links">
+            <a href="#home" class="active">HOME</a>
+            <a href="#about">ABOUT</a>
+            <a href="#services">SERVICES</a>
+            <a href="#projects">PROJECTS</a>
+            <a href="#process">PROCESS</a>
+            <a href="#booking">CONTACT</a>
+        </div>
+        <button class="btn-book-solid mobile-book" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'}); document.querySelector('.mobile-menu-overlay').classList.remove('active');">BOOK A CONSULTATION</button>
+    </div>
+
     <div id="smooth-wrapper">
         <div id="smooth-content">
-
-            <!-- PREMIUM NAVBAR -->
-            <nav class="navbar-wrapper">
-                <div class="navbar-container">
-                    <div class="navbar-logo">
-                        <a href="#">DEMO</a>
-                    </div>
-                    
-                    <div class="navbar-menu">
-                        <a href="#home" class="active">HOME</a>
-                        <a href="#about">ABOUT</a>
-                        <a href="#services">SERVICES</a>
-                        <a href="#projects">PROJECTS</a>
-                        <a href="#process">PROCESS</a>
-                        <a href="#booking">CONTACT</a>
-                    </div>
-                    
-                    <div class="navbar-actions">
-                        <button class="btn-book-outline" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">BOOK A CONSULTATION</button>
-                        <button class="mobile-toggle">
-                            <span class="line"></span>
-                            <span class="line"></span>
-                            <span class="line"></span>
-                        </button>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- MOBILE MENU OVERLAY -->
-            <div class="mobile-menu-overlay">
-                <button class="close-mobile-menu">&times;</button>
-                <div class="mobile-menu-links">
-                    <a href="#home" class="active">HOME</a>
-                    <a href="#about">ABOUT</a>
-                    <a href="#services">SERVICES</a>
-                    <a href="#projects">PROJECTS</a>
-                    <a href="#process">PROCESS</a>
-                    <a href="#booking">CONTACT</a>
-                </div>
-                <button class="btn-book-solid mobile-book" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'}); document.querySelector('.mobile-menu-overlay').classList.remove('active');">BOOK A CONSULTATION</button>
-            </div>
 
             <!-- SECTION 1: HERO -->
             <section id="home" class="hero-section immersive-hero">

@@ -116,7 +116,7 @@ button {
     left: 0;
     width: 100%;
     z-index: 2000;
-    padding: 20px 0;
+    padding: 0; /* Fixed the top gap button-like look */
     transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
@@ -271,10 +271,12 @@ button {
     align-items: center;
     gap: 40px;
     transition: right 0.5s cubic-bezier(0.77,0.2,0.05,1);
+    visibility: hidden;
 }
 
 .mobile-menu-overlay.active {
     right: 0;
+    visibility: visible;
 }
 
 .close-mobile-menu {
