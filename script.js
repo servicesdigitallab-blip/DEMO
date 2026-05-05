@@ -147,57 +147,46 @@ document.addEventListener("DOMContentLoaded", () => {
     // DIVERSE PREMIUM SCROLL ANIMATIONS (SCRUBBED)
     // ============================================================
 
-    // --- SECTION 2: PROJECTS (HORIZONTAL SCROLL) ---
-    const projectsSection = document.querySelector('.projects-section');
-    const track = document.querySelector('.carousel-track');
-    const cards = document.querySelectorAll('.project-card');
-
-    if (projectsSection && track) {
-        // Entrance animation for the section title
-        const sec2Header = projectsSection.querySelector('.section-header');
-        if (sec2Header) {
-            const title = sec2Header.querySelector('.title');
-            gsap.set(title, { opacity: 0, letterSpacing: "-0.05em", filter: "blur(10px)" });
-            gsap.to(title, {
-                opacity: 1,
-                letterSpacing: "0.02em",
-                filter: "blur(0px)",
-                scrollTrigger: {
-                    trigger: sec2Header,
-                    start: 'top 90%',
-                    end: 'top 50%',
-                    scrub: 1.5
-                }
-            });
-        }
-
-        // Horizontal scroll animation
-        gsap.to(track, {
-            x: () => -(track.scrollWidth - window.innerWidth + window.innerWidth * 0.1),
-            ease: "none",
+    // --- SECTION 2: PROJECTS (Horizontal Scroll + Fade Heading) ---
+    const sec2Header = document.querySelector('.projects-section .section-header');
+    if (sec2Header) {
+        const title = sec2Header.querySelector('.title');
+        gsap.set(title, { opacity: 0, letterSpacing: "-0.05em", filter: "blur(10px)" });
+        gsap.to(title, {
+            opacity: 1,
+            letterSpacing: "0.02em",
+            filter: "blur(0px)",
             scrollTrigger: {
-                trigger: projectsSection,
-                start: "top top",
-                end: () => "+=" + (track.scrollWidth),
-                scrub: 1,
-                pin: true,
-                anticipatePin: 1,
-                invalidateOnRefresh: true
+                trigger: sec2Header,
+                start: 'top 90%',
+                end: 'top 50%',
+                scrub: 1.5
             }
         });
+    }
 
-        // Stagger entrance for cards while pinning
-        gsap.set(cards, { y: 150, opacity: 0, rotateX: -15 });
-        gsap.to(cards, {
-            y: 0,
-            opacity: 1,
-            rotateX: 0,
-            stagger: 0.1,
+    // Horizontal Scroll for Projects
+    const projectsTrack = document.querySelector('.carousel-track');
+    const projectsSection = document.querySelector('.projects-section');
+    if (projectsTrack && projectsSection) {
+        // Calculate the distance to scroll (track width - container width)
+        const getScrollAmount = () => {
+            let trackWidth = projectsTrack.scrollWidth;
+            let containerWidth = window.innerWidth;
+            return -(trackWidth - containerWidth + 100); // 100px buffer
+        };
+
+        gsap.to(projectsTrack, {
+            x: getScrollAmount,
+            ease: "none",
             scrollTrigger: {
-                trigger: projectsSection,
-                start: "top 80%",
-                end: "top 20%",
-                scrub: 1
+                trigger: ".projects-section",
+                start: "top top",
+                end: () => `+=${projectsTrack.scrollWidth}`,
+                pin: true,
+                scrub: 1,
+                invalidateOnRefresh: true,
+                anticipatePin: 1
             }
         });
     }
@@ -267,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- SECTION 5: ABOUT/WHY (Blur Reveal Heading + 3D Card Entrance) ---
+    // --- SECTION 5: ABOUT/WHY (Heading + 0.1s Staggered Cards) ---
     const sec5Header = document.querySelector('.why-choose-section .section-header');
     if (sec5Header) {
         const title = sec5Header.querySelector('.title');
@@ -287,57 +276,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const whyCards = document.querySelectorAll('.why-card');
     if (whyCards.length > 0) {
-        gsap.set(whyCards, { y: 150, opacity: 0, scale: 0.8, rotateX: 25 });
+        gsap.set(whyCards, { y: 100, opacity: 0, rotateY: 20 });
         gsap.to(whyCards, {
             y: 0,
             opacity: 1,
-            scale: 1,
-            rotateX: 0,
-            stagger: 0.4, // This creates the 0.1s interval feel when scrubbing
+            rotateY: 0,
+            stagger: 0.1, // 0.1s stagger as requested
             scrollTrigger: {
                 trigger: '.why-choose-section',
-                start: 'top 85%',
-                end: 'bottom 90%',
+                start: 'top 80%',
+                end: 'top 20%',
                 scrub: 1.2
             }
         });
     }
 
-    // --- STATS BANNER: Numbers counting with scroll progress ---
-    const statsItems = document.querySelectorAll('.stat-item');
-    statsItems.forEach(item => {
-        const numEl = item.querySelector('.stat-num');
-        const text = numEl.innerText;
+    // --- STATS COUNTER ANIMATION (Repeatable) ---
+    const stats = document.querySelectorAll('.stat-num');
+    stats.forEach(stat => {
+        const text = stat.innerText;
         const target = parseInt(text.replace(/\D/g, ''));
-        const suffix = text.replace(/[0-9]/g, '');
-
-        if (!isNaN(target)) {
-            const obj = { val: 0 };
-            gsap.set(item, { y: 60, opacity: 0 });
-            
-            // Item entrance
-            gsap.to(item, {
-                y: 0,
+        if(!isNaN(target)) {
+            gsap.fromTo(stat, { innerText: 0, opacity: 0, y: 20 }, {
+                innerText: target,
                 opacity: 1,
+                y: 0,
                 scrollTrigger: {
-                    trigger: item,
-                    start: 'top 98%',
-                    end: 'top 80%',
-                    scrub: 1
-                }
-            });
-
-            // Number counting scrubbed
-            gsap.to(obj, {
-                val: target,
-                scrollTrigger: {
-                    trigger: item,
-                    start: 'top 95%',
-                    end: 'top 75%',
-                    scrub: 1
-                },
-                onUpdate: () => {
-                    numEl.innerText = Math.floor(obj.val) + suffix;
+                    trigger: stat,
+                    start: "top 95%",
+                    end: "top 70%",
+                    scrub: 1,
+                    onUpdate: function(self) {
+                        const val = Math.round(gsap.getProperty(stat, "innerText") || 0);
+                        stat.innerHTML = val + text.replace(/[0-9]/g, '');
+                    }
                 }
             });
         }
@@ -359,6 +331,90 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+
+
+    // --- CAROUSEL SYSTEM ---
+    const track = document.querySelector('.carousel-track');
+    const cards = document.querySelectorAll('.project-card');
+    
+    if (track) {
+        cards.forEach((card, index) => {
+            card.addEventListener('mouseenter', () => {
+                updateCarousel(index);
+            });
+        });
+
+        function updateCarousel(activeIndex) {
+            const container = document.querySelector('.carousel-container');
+            const track = document.querySelector('.carousel-track');
+            const activeCard = cards[activeIndex];
+
+            cards.forEach((card, i) => {
+                if (i === activeIndex) {
+                    card.classList.add('active');
+                    card.classList.remove('side');
+                    gsap.to(card, {
+                        scale: 1.1,
+                        y: -10,
+                        opacity: 1,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                } else {
+                    card.classList.remove('active');
+                    card.classList.add('side');
+                    gsap.to(card, {
+                        scale: 0.9,
+                        y: 0,
+                        opacity: 0.5,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                }
+            });
+
+            const containerRect = container.getBoundingClientRect();
+            const cardRect = activeCard.getBoundingClientRect();
+            const currentX = gsap.getProperty(track, "x") || 0;
+            const containerCenter = containerRect.left + containerRect.width / 2;
+            const cardCenter = cardRect.left + cardRect.width / 2;
+            const offset = containerCenter - cardCenter;
+            
+            gsap.to(track, {
+                x: currentX + offset,
+                duration: 0.8,
+                ease: "power4.out"
+            });
+        }
+        
+        updateCarousel(Math.floor(cards.length / 2));
+    }
+
+    // Stats Counter
+    const stats_old = document.querySelectorAll('.stat-num');
+    stats_old.forEach(stat => {
+        const text = stat.innerText;
+        const target = parseInt(text.replace(/\D/g, ''));
+        if(!isNaN(target)) {
+            ScrollTrigger.create({
+                trigger: stat,
+                start: "top 90%",
+                once: true,
+                onEnter: () => {
+                    gsap.fromTo(stat, { innerText: 0 }, {
+                        innerText: target,
+                        duration: 2.5,
+                        snap: { innerText: 1 },
+                        ease: "power2.out",
+                        onUpdate: function() {
+                            stat.innerHTML = Math.round(this.targets()[0].innerText) + text.replace(/[0-9]/g, '');
+                        }
+                    });
+                }
+            });
+        }
+    });
 
     // --- GLOW EFFECT TRACKING ---
     const glowCard = document.querySelector('.booking-form-card');
