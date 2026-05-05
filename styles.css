@@ -1448,107 +1448,41 @@ button {
     margin-bottom: 60px;
 }
 
-.footer-col h2 {
-    font-size: 1.5rem;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-}
-
-.footer-col h3 {
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.footer-col p {
-    font-size: 13px;
-    color: var(--text-light);
-    margin-bottom: 20px;
-}
-
-.social-icons {
-    display: flex;
-    gap: 15px;
-}
-
-.social-icons i {
-    font-size: 18px;
-    color: var(--text-dark);
-}
-
-.footer-col ul {
-    list-style: none;
-}
-
-.footer-col ul li {
-    margin-bottom: 10px;
-}
-
-.footer-col ul a {
-    text-decoration: none;
-    color: var(--text-light);
-    font-size: 13px;
-}
-
-.contact-item {
-    font-size: 13px;
-    color: var(--text-light);
-    margin-bottom: 15px;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-}
-
-.newsletter-form {
-    display: flex;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-    padding-bottom: 10px;
-}
-
-.newsletter-form input {
-    border: none;
-    background: transparent;
-    outline: none;
-    flex: 1;
-    font-family: var(--font-sans);
-}
-
-.newsletter-form button {
-    background: var(--accent);
-    color: var(--white);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 20px;
-    border-top: 1px solid rgba(0,0,0,0.05);
-    font-size: 12px;
-    color: var(--text-light);
-}
-
-.footer-bottom-links a {
-    text-decoration: none;
-    color: var(--text-light);
-    margin-left: 20px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-    .hero-title { font-size: 4rem; }
-    .hero-content { width: 50%; }
-    .hero-image-wrapper { width: 50%; }
-    .booking-section { flex-direction: column; }
-    .booking-image-col, .booking-content-col { width: 100%; }
-    .why-cards-grid { grid-template-columns: repeat(2, 1fr); }
-    .cta-wrap { flex-direction: column; }
-    .cta-image-col, .cta-content-col { width: 100%; padding-left: 0; }
-    .footer-grid { grid-template-columns: repeat(2, 1fr); }
-}
+.footer-col brand-col {
+    <h2>D E M O</h2>
+    <p>Designing timeless interiors that inspire and elevate everyday living.</p>
+    <div class=\"social-icons\">
+        <i class=\"fab fa-instagram\"></i>
+        <i class=\"fab fa-pinterest-p\"></i>
+        <i class=\"fab fa-facebook-f\"></i>
+        <i class=\"fab fa-linkedin-in\"></i>
+    </div>
+</div>
+<div class=\"footer-col links-col\">
+    <h3>Quick Links</h3>
+    <ul>
+        <li><a href=\"#home\">Home</a></li>
+        <li><a href=\"#about\">About Us</a></li>
+        <li><a href=\"#services\">Services</a></li>
+        <li><a href=\"#projects\">Projects</a></li>
+        <li><a href=\"#process\">Process</a></li>
+        <li><a href=\"#booking\">Contact</a></li>
+    </ul>
+</div>
+<div class=\"footer-col services-col\">
+    <h3>Services</h3>
+    <ul>
+        <li><a href=\"#\">Residential Interior</a></li>
+        <li><a href=\"#\">Commercial Interior</a></li>
+        <li><a href=\"#\">Space Planning</a></li>
+        <li><a href=\"#\">Custom Furniture</a></li>
+        <li><a href=\"#\">Renovation</a></li>
+    </ul>
+</div>
+<div class=\"footer-col contact-col\">
+    <h3>Contact Us</h3>
+    <div class=\"contact-item\"><i class=\"fas fa-phone-alt\"></i> +92 300 1234567</div>
+    <div class=\"contact-item\"><i class=\"far fa-envelope\"></i> hello@demo.com</div>
+    <div class=\"contact-item\"><i class=\"fas fa-map-marker-alt\"></i> 123 Design Street,<br>Lahore, Pakistan</div>
+</div>
+<div class=\"footer-col newsletter-col\">\n    <h3>Newsletter</h3>\n    <p>Get interior design tips & updates straight to your inbox.</p>\n    <div class=\"newsletter-form\">\n        <input type=\"email\" placeholder=\"Enter your email\">\n        <button><i class=\"fas fa-arrow-right\"></i></button>\n    </div>\n</div>\n</div>\n<div class=\"footer-bottom\">\n<p>&copy; 2024 DEMO. All Rights Reserved.</p>\n<div class=\"footer-bottom-links\">\n    <a href=\"#\">Privacy Policy</a>\n    <a href=\"#\">Terms & Conditions</a>\n</div>\n</div>\n</footer>\n</section>\n\n</div>\n</div>\n<script src=\"script.js\"></script>\n</body>\n</html>\n
