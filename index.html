@@ -13,6 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <!-- Preload Hero Image for faster LCP -->
+    <link rel="preload" as="image" href="section1 .png">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -63,7 +65,7 @@
             <!-- SECTION 1: HERO -->
             <section id="home" class="hero-section immersive-hero">
                 <div class="hero-bg-wrapper">
-                    <img src="section1 .png" alt="Timeless Interior" class="hero-bg-full">
+                    <img src="section1 .png" alt="Timeless Interior" class="hero-bg-full" fetchpriority="high" decoding="sync">
                 </div>
             </section>
 
@@ -77,50 +79,50 @@
                 <div class="carousel-container">
                     <div class="carousel-track">
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&q=80&w=600" alt="Warm Simplicity"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&q=80&w=600" alt="Warm Simplicity" loading="lazy" decoding="async"></div>
                             <h3>Warm Simplicity</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&q=80&w=600" alt="Organic Elegance"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&q=80&w=600" alt="Organic Elegance" loading="lazy" decoding="async"></div>
                             <h3>Organic Elegance</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=600" alt="Modern Serenity"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=600" alt="Modern Serenity" loading="lazy" decoding="async"></div>
                             <h3>Modern Serenity</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=600" alt="Refined Comfort"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=600" alt="Refined Comfort" loading="lazy" decoding="async"></div>
                             <h3>Refined Comfort</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card active">
                             <div class="img-wrapper">
-                                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800" alt="Active Project">
+                                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800" alt="Active Project" loading="lazy" decoding="async">
                                 <button class="expand-btn"><i class="fas fa-expand-arrows-alt"></i></button>
                             </div>
                             <h3>Luxurious Living</h3>
                             <p>Modern Residential</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600" alt="Natural Balance"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600" alt="Natural Balance" loading="lazy" decoding="async"></div>
                             <h3>Natural Balance</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=600" alt="Urban Loft"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=600" alt="Urban Loft" loading="lazy" decoding="async"></div>
                             <h3>Urban Loft</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?auto=format&fit=crop&q=80&w=600" alt="Cozy Nook"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?auto=format&fit=crop&q=80&w=600" alt="Cozy Nook" loading="lazy" decoding="async"></div>
                             <h3>Cozy Nook</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1617103996702-96ff29b1c467?auto=format&fit=crop&q=80&w=600" alt="Sleek Studio"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1617103996702-96ff29b1c467?auto=format&fit=crop&q=80&w=600" alt="Sleek Studio" loading="lazy" decoding="async"></div>
                             <h3>Sleek Studio</h3>
                             <p>Residential Interior</p>
                         </div>
@@ -276,13 +278,13 @@
                     <div class="reveal-wrapper">
                         <!-- LAYER 1: AFTER Image (Premium) -->
                         <div class="reveal-layer layer-clear">
-                            <img src="after.png" alt="After Transformation" class="after-img-clear">
+                            <img src="after.png" alt="After Transformation" class="after-img-clear" loading="lazy" decoding="async">
                             <span class="reveal-label after-label">AFTER</span>
                         </div>
 
                         <!-- LAYER 2: BEFORE Image (Before) -->
                         <div class="reveal-layer layer-before">
-                            <img src="before.png" alt="Before Transformation" class="before-img">
+                            <img src="before.png" alt="Before Transformation" class="before-img" loading="lazy" decoding="async">
                             <span class="reveal-label before-label">BEFORE</span>
                         </div>
                         
@@ -314,7 +316,7 @@
                 <div class="why-cards-grid">
                     <div class="why-card">
                         <div class="img-box">
-                            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=600" alt="Personalized Designs">
+                            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=600" alt="Personalized Designs" loading="lazy" decoding="async">
                             <div class="card-icon"><i class="fas fa-couch"></i></div>
                         </div>
                         <div class="card-content">
@@ -324,7 +326,7 @@
                     </div>
                     <div class="why-card">
                         <div class="img-box">
-                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600" alt="Functional & Beautiful">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=600" alt="Functional & Beautiful" loading="lazy" decoding="async">
                             <div class="card-icon"><i class="fas fa-ruler-combined"></i></div>
                         </div>
                         <div class="card-content">
@@ -334,7 +336,7 @@
                     </div>
                     <div class="why-card">
                         <div class="img-box">
-                            <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=600" alt="Premium Quality">
+                            <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=600" alt="Premium Quality" loading="lazy" decoding="async">
                             <div class="card-icon"><i class="fas fa-medal"></i></div>
                         </div>
                         <div class="card-content">
@@ -344,7 +346,7 @@
                     </div>
                     <div class="why-card">
                         <div class="img-box">
-                            <img src="https://images.unsplash.com/photo-1600210491369-e753d80a41f3?auto=format&fit=crop&q=80&w=600" alt="On-Time Delivery">
+                            <img src="https://images.unsplash.com/photo-1600210491369-e753d80a41f3?auto=format&fit=crop&q=80&w=600" alt="On-Time Delivery" loading="lazy" decoding="async">
                             <div class="card-icon"><i class="far fa-clock"></i></div>
                         </div>
                         <div class="card-content">
@@ -390,7 +392,7 @@
             <section class="final-section">
                 <div class="cta-wrap">
                     <div class="cta-image-col">
-                        <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=800" alt="Living Space">
+                        <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=800" alt="Living Space" loading="lazy" decoding="async">
                     </div>
                     <div class="cta-content-col">
                         <span class="subtitle">LET'S BRING YOUR VISION TO LIFE</span>
