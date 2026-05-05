@@ -95,24 +95,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Mouse Parallax for Hero
-    document.addEventListener("mousemove", (e) => {
-        const { clientX, clientY } = e;
-        const xPos = (clientX / window.innerWidth - 0.5);
-        const yPos = (clientY / window.innerHeight - 0.5);
+    if (window.innerWidth > 768) {
+        document.addEventListener("mousemove", (e) => {
+            const { clientX, clientY } = e;
+            const xPos = (clientX / window.innerWidth - 0.5);
+            const yPos = (clientY / window.innerHeight - 0.5);
 
-        gsap.to(".hero-img", {
-            x: xPos * 30,
-            y: yPos * 30,
-            rotateY: xPos * 2,
-            rotateX: -yPos * 2,
-            duration: 1.2,
-            ease: "power2.out"
+            gsap.to(".hero-img", {
+                x: xPos * 30,
+                y: yPos * 30,
+                rotateY: xPos * 2,
+                rotateX: -yPos * 2,
+                duration: 1.2,
+                ease: "power2.out"
+            });
         });
-    });
+    }
 
     // Section 4: 3D Image Angle Change on Hover
-    const whyCardsInit = document.querySelectorAll('.why-card');
-    whyCardsInit.forEach(card => {
+    const whyCards = document.querySelectorAll('.why-card');
+    whyCards.forEach(card => {
         const img = card.querySelector('img');
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
@@ -144,193 +146,115 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ============================================================
-    // DIVERSE PREMIUM SCROLL ANIMATIONS (SCRUBBED)
+    // PREMIUM SCROLL ANIMATIONS (21st.dev inspired)
     // ============================================================
 
-    // --- SECTION 2: PROJECTS (Horizontal Scroll + Fade Heading) ---
+    // --- SECTION 2: PROJECT CARDS — stagger 0.1s each card, repeatable ---
+    const projectCards = document.querySelectorAll('.project-card');
+    if (projectCards.length > 0) {
+        gsap.set(projectCards, { y: 60, opacity: 0, scale: 0.94 });
+        ScrollTrigger.create({
+            trigger: '.projects-section',
+            start: 'top 75%',
+            onEnter: () => gsap.to(projectCards, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out' }),
+            onEnterBack: () => gsap.to(projectCards, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out' }),
+            onLeave: () => gsap.to(projectCards, { y: -60, opacity: 0, scale: 0.94, duration: 0.4, stagger: 0.05, ease: 'power2.in' }),
+            onLeaveBack: () => gsap.to(projectCards, { y: 60, opacity: 0, scale: 0.94, duration: 0.4, stagger: 0.05, ease: 'power2.in' })
+        });
+    }
+
+    // --- SECTION 2 HEADER: "Designing Spaces, Creating Experiences" word-by-word reveal ---
     const sec2Header = document.querySelector('.projects-section .section-header');
     if (sec2Header) {
-        const title = sec2Header.querySelector('.title');
-        gsap.set(title, { opacity: 0, letterSpacing: "-0.05em", filter: "blur(10px)" });
-        gsap.to(title, {
-            opacity: 1,
-            letterSpacing: "0.02em",
-            filter: "blur(0px)",
-            scrollTrigger: {
+        const headingEl = sec2Header.querySelector('.title, h2');
+        if (headingEl) {
+            const words = headingEl.innerText.split(' ');
+            headingEl.innerHTML = words.map(w => `<span class="word-wrap"><span class="word">${w}</span></span>`).join(' ');
+            const wordEls = sec2Header.querySelectorAll('.word');
+            gsap.set(wordEls, { y: '110%', opacity: 0 });
+            
+            ScrollTrigger.create({
                 trigger: sec2Header,
-                start: 'top 90%',
-                end: 'top 50%',
-                scrub: 1.5
-            }
-        });
-    }
-
-    // Horizontal Scroll for Projects
-    const projectsTrack = document.querySelector('.carousel-track');
-    const projectsSection = document.querySelector('.projects-section');
-    if (projectsTrack && projectsSection) {
-        // Calculate the distance to scroll (track width - container width)
-        const getScrollAmount = () => {
-            let trackWidth = projectsTrack.scrollWidth;
-            let containerWidth = window.innerWidth;
-            return -(trackWidth - containerWidth + 100); // 100px buffer
-        };
-
-        gsap.to(projectsTrack, {
-            x: getScrollAmount,
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".projects-section",
-                start: "top top",
-                end: () => `+=${projectsTrack.scrollWidth}`,
-                pin: true,
-                scrub: 1,
-                invalidateOnRefresh: true,
-                anticipatePin: 1
-            }
-        });
-    }
-
-    // --- SECTION 3: BOOKING (Clip-Path Mask Reveal Heading + Detailed Form Animation) ---
-    const sec3Header = document.querySelector('.booking-section .booking-content-col');
-    if (sec3Header) {
-        const title = sec3Header.querySelector('.title');
-        gsap.set(title, { clipPath: "inset(100% 0% 0% 0%)", y: 50 });
-        gsap.to(title, {
-            clipPath: "inset(0% 0% 0% 0%)",
-            y: 0,
-            scrollTrigger: {
-                trigger: sec3Header,
-                start: 'top 90%',
-                end: 'top 60%',
-                scrub: 1
-            }
-        });
-
-        // Every single form element
-        const bookingItems = document.querySelectorAll('.booking-section .booking-pre-title, .booking-section .booking-desc, .booking-form-card, .input-group, .input-label, .date-picker-wrap, .pill, .pill-time, .btn-solid, .feature-item');
-        gsap.set(bookingItems, { y: 40, opacity: 0, scale: 0.95 });
-        gsap.to(bookingItems, {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            stagger: 0.03,
-            scrollTrigger: {
-                trigger: '.booking-section',
                 start: 'top 85%',
-                end: 'bottom 80%',
-                scrub: 1.5
-            }
+                onEnter: () => gsap.to(wordEls, { y: '0%', opacity: 1, duration: 1, stagger: 0.1, ease: 'power4.out', overwrite: 'auto' }),
+                onEnterBack: () => gsap.to(wordEls, { y: '0%', opacity: 1, duration: 1, stagger: 0.1, ease: 'power4.out', overwrite: 'auto' }),
+                onLeave: () => gsap.to(wordEls, { y: '-110%', opacity: 0, duration: 0.6, stagger: 0.05, ease: 'power2.in', overwrite: 'auto' }),
+                onLeaveBack: () => gsap.to(wordEls, { y: '110%', opacity: 0, duration: 0.6, stagger: 0.05, ease: 'power2.in', overwrite: 'auto' })
+            });
+        }
+        const subEl = sec2Header.querySelector('.section-desc, p');
+        if (subEl) {
+            gsap.set(subEl, { y: 30, opacity: 0 });
+            ScrollTrigger.create({
+                trigger: sec2Header,
+                start: 'top 83%',
+                onEnter: () => gsap.to(subEl, { y: 0, opacity: 1, duration: 1.2, delay: 0.4, ease: 'power3.out', overwrite: 'auto' }),
+                onEnterBack: () => gsap.to(subEl, { y: 0, opacity: 1, duration: 1.2, delay: 0.4, ease: 'power3.out', overwrite: 'auto' }),
+                onLeave: () => gsap.to(subEl, { y: -30, opacity: 0, duration: 0.5, overwrite: 'auto' }),
+                onLeaveBack: () => gsap.to(subEl, { y: 30, opacity: 0, duration: 0.5, overwrite: 'auto' })
+            });
+        }
+    }
+
+    // --- SECTION 3: BOOKING FORM — each element slides in with stagger ---
+    const formEls = document.querySelectorAll('.booking-section .booking-content-col > *, .form-grid > *, .input-group, .input-label, .date-picker-wrap, .pills-grid, .features-row .feature-item');
+    if (formEls.length > 0) {
+        gsap.set(formEls, { y: 40, opacity: 0 });
+        ScrollTrigger.create({
+            trigger: '.booking-section',
+            start: 'top 75%',
+            onEnter: () => gsap.to(formEls, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }),
+            onEnterBack: () => gsap.to(formEls, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }),
+            onLeave: () => gsap.to(formEls, { y: -40, opacity: 0, duration: 0.3, stagger: 0.03, ease: 'power2.in' }),
+            onLeaveBack: () => gsap.to(formEls, { y: 40, opacity: 0, duration: 0.3, stagger: 0.03, ease: 'power2.in' })
         });
     }
 
-    // --- SECTION 4: PROCESS REVEAL (Slide + Rotate Heading) ---
-    const sec4Header = document.querySelector('.reveal-section .section-header');
-    if (sec4Header) {
-        const title = sec4Header.querySelector('.title');
-        gsap.set(title, { x: -100, opacity: 0, rotate: -5 });
-        gsap.to(title, {
-            x: 0,
-            opacity: 1,
-            rotate: 0,
-            scrollTrigger: {
-                trigger: sec4Header,
-                start: 'top 92%',
-                end: 'top 65%',
-                scrub: 1.2
-            }
+    // --- SECTION 4: WHY CARDS — one by one reveal ---
+    const whyCardEls = document.querySelectorAll('.why-card');
+    if (whyCardEls.length > 0) {
+        gsap.set(whyCardEls, { y: 60, opacity: 0, scale: 0.92 });
+        ScrollTrigger.create({
+            trigger: '.why-choose-section',
+            start: 'top 75%',
+            onEnter: () => gsap.to(whyCardEls, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out' }),
+            onEnterBack: () => gsap.to(whyCardEls, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out' }),
+            onLeave: () => gsap.to(whyCardEls, { y: -60, opacity: 0, scale: 0.92, duration: 0.35, stagger: 0.05, ease: 'power2.in' }),
+            onLeaveBack: () => gsap.to(whyCardEls, { y: 60, opacity: 0, scale: 0.92, duration: 0.35, stagger: 0.05, ease: 'power2.in' })
         });
+    }
 
-        const revealContainer = document.querySelector('.reveal-container');
-        gsap.set(revealContainer, { scale: 0.8, opacity: 0, rotateY: 10 });
-        gsap.to(revealContainer, {
-            scale: 1,
-            opacity: 1,
-            rotateY: 0,
-            scrollTrigger: {
-                trigger: '.reveal-section',
+    // --- REVEAL SECTION header & wrapper ---
+    const revealSecEls = document.querySelectorAll('.reveal-section .section-header > *, .reveal-wrapper, .reveal-footer-stats .reveal-stat');
+    if (revealSecEls.length > 0) {
+        gsap.set(revealSecEls, { y: 50, opacity: 0 });
+        ScrollTrigger.create({
+            trigger: '.reveal-section',
+            start: 'top 78%',
+            onEnter: () => gsap.to(revealSecEls, { y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power3.out' }),
+            onEnterBack: () => gsap.to(revealSecEls, { y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power3.out' }),
+            onLeave: () => gsap.to(revealSecEls, { y: -50, opacity: 0, duration: 0.3, stagger: 0.04, ease: 'power2.in' }),
+            onLeaveBack: () => gsap.to(revealSecEls, { y: 50, opacity: 0, duration: 0.3, stagger: 0.04, ease: 'power2.in' })
+        });
+    }
+
+    // --- CTA & FOOTER generic reveal ---
+    ['cta-section', 'footer'].forEach(cls => {
+        const el = document.querySelector(`.${cls}`);
+        if (!el) return;
+        const items = el.querySelectorAll('.cta-content-col > *, .footer-col, .footer-bottom > *');
+        if (items.length > 0) {
+            gsap.set(items, { y: 40, opacity: 0 });
+            ScrollTrigger.create({
+                trigger: el,
                 start: 'top 80%',
-                end: 'top 40%',
-                scrub: 1
-            }
-        });
-    }
-
-    // --- SECTION 5: ABOUT/WHY (Heading + 0.1s Staggered Cards) ---
-    const sec5Header = document.querySelector('.why-choose-section .section-header');
-    if (sec5Header) {
-        const title = sec5Header.querySelector('.title');
-        gsap.set(title, { filter: "blur(20px)", opacity: 0, scale: 1.2 });
-        gsap.to(title, {
-            filter: "blur(0px)",
-            opacity: 1,
-            scale: 1,
-            scrollTrigger: {
-                trigger: sec5Header,
-                start: 'top 90%',
-                end: 'top 60%',
-                scrub: 1.5
-            }
-        });
-    }
-
-    const whyCards = document.querySelectorAll('.why-card');
-    if (whyCards.length > 0) {
-        gsap.set(whyCards, { y: 100, opacity: 0, rotateY: 20 });
-        gsap.to(whyCards, {
-            y: 0,
-            opacity: 1,
-            rotateY: 0,
-            stagger: 0.1, // 0.1s stagger as requested
-            scrollTrigger: {
-                trigger: '.why-choose-section',
-                start: 'top 80%',
-                end: 'top 20%',
-                scrub: 1.2
-            }
-        });
-    }
-
-    // --- STATS COUNTER ANIMATION (Repeatable) ---
-    const stats = document.querySelectorAll('.stat-num');
-    stats.forEach(stat => {
-        const text = stat.innerText;
-        const target = parseInt(text.replace(/\D/g, ''));
-        if(!isNaN(target)) {
-            gsap.fromTo(stat, { innerText: 0, opacity: 0, y: 20 }, {
-                innerText: target,
-                opacity: 1,
-                y: 0,
-                scrollTrigger: {
-                    trigger: stat,
-                    start: "top 95%",
-                    end: "top 70%",
-                    scrub: 1,
-                    onUpdate: function(self) {
-                        const val = Math.round(gsap.getProperty(stat, "innerText") || 0);
-                        stat.innerHTML = val + text.replace(/[0-9]/g, '');
-                    }
-                }
+                onEnter: () => gsap.to(items, { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }),
+                onEnterBack: () => gsap.to(items, { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }),
+                onLeave: () => gsap.to(items, { y: -40, opacity: 0, duration: 0.3, stagger: 0.04 }),
+                onLeaveBack: () => gsap.to(items, { y: 40, opacity: 0, duration: 0.3, stagger: 0.04 })
             });
         }
     });
-
-    // --- FINAL SECTION: CTA & FOOTER (Staggered Rise) ---
-    const ctaItems = document.querySelectorAll('.cta-wrap > *, .cta-features > *, .cta-action-card > *, .footer-col, .footer-bottom');
-    if (ctaItems.length > 0) {
-        gsap.set(ctaItems, { y: 50, opacity: 0 });
-        gsap.to(ctaItems, {
-            y: 0,
-            opacity: 1,
-            stagger: 0.05,
-            scrollTrigger: {
-                trigger: '.final-section',
-                start: 'top 95%',
-                end: 'bottom bottom',
-                scrub: 1
-            }
-        });
-    }
 
 
 
@@ -338,7 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const track = document.querySelector('.carousel-track');
     const cards = document.querySelectorAll('.project-card');
     
-    if (track) {
+    if (track && window.innerWidth > 768) {
         cards.forEach((card, index) => {
             card.addEventListener('mouseenter', () => {
                 updateCarousel(index);
@@ -392,8 +316,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Stats Counter
-    const stats_old = document.querySelectorAll('.stat-num');
-    stats_old.forEach(stat => {
+    const stats = document.querySelectorAll('.stat-num');
+    stats.forEach(stat => {
         const text = stat.innerText;
         const target = parseInt(text.replace(/\D/g, ''));
         if(!isNaN(target)) {
