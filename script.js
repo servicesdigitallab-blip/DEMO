@@ -144,24 +144,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ============================================================
-    // PREMIUM SCROLL ANIMATIONS (21st.dev inspired)
+    // PREMIUM SCROLL ANIMATIONS (SCRUBBED)
     // ============================================================
 
-    // --- SECTION 2: PROJECT CARDS — stagger 0.1s each card, repeatable ---
+    // --- SECTION 2: PROJECT CARDS ---
     const projectCards = document.querySelectorAll('.project-card');
     if (projectCards.length > 0) {
-        gsap.set(projectCards, { y: 60, opacity: 0, scale: 0.94 });
-        ScrollTrigger.create({
-            trigger: '.projects-section',
-            start: 'top 75%',
-            onEnter: () => gsap.to(projectCards, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out' }),
-            onEnterBack: () => gsap.to(projectCards, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out' }),
-            onLeave: () => gsap.to(projectCards, { y: -60, opacity: 0, scale: 0.94, duration: 0.4, stagger: 0.05, ease: 'power2.in' }),
-            onLeaveBack: () => gsap.to(projectCards, { y: 60, opacity: 0, scale: 0.94, duration: 0.4, stagger: 0.05, ease: 'power2.in' })
+        gsap.set(projectCards, { y: 100, opacity: 0, scale: 0.9 });
+        gsap.to(projectCards, {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: '.projects-section',
+                start: 'top 95%',
+                end: 'top 30%',
+                scrub: 1
+            }
         });
     }
 
-    // --- SECTION 2 HEADER: "Designing Spaces, Creating Experiences" word-by-word reveal ---
+    // --- SECTION 2 HEADER: Word-by-word reveal ---
     const sec2Header = document.querySelector('.projects-section .section-header');
     if (sec2Header) {
         const headingEl = sec2Header.querySelector('.title, h2');
@@ -171,85 +176,109 @@ document.addEventListener("DOMContentLoaded", () => {
             const wordEls = sec2Header.querySelectorAll('.word');
             gsap.set(wordEls, { y: '110%', opacity: 0 });
             
-            ScrollTrigger.create({
-                trigger: sec2Header,
-                start: 'top 85%',
-                onEnter: () => gsap.to(wordEls, { y: '0%', opacity: 1, duration: 1, stagger: 0.1, ease: 'power4.out', overwrite: 'auto' }),
-                onEnterBack: () => gsap.to(wordEls, { y: '0%', opacity: 1, duration: 1, stagger: 0.1, ease: 'power4.out', overwrite: 'auto' }),
-                onLeave: () => gsap.to(wordEls, { y: '-110%', opacity: 0, duration: 0.6, stagger: 0.05, ease: 'power2.in', overwrite: 'auto' }),
-                onLeaveBack: () => gsap.to(wordEls, { y: '110%', opacity: 0, duration: 0.6, stagger: 0.05, ease: 'power2.in', overwrite: 'auto' })
+            gsap.to(wordEls, {
+                y: '0%',
+                opacity: 1,
+                stagger: 0.05,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: sec2Header,
+                    start: 'top 90%',
+                    end: 'top 40%',
+                    scrub: 1
+                }
             });
         }
         const subEl = sec2Header.querySelector('.section-desc, p');
         if (subEl) {
             gsap.set(subEl, { y: 30, opacity: 0 });
-            ScrollTrigger.create({
-                trigger: sec2Header,
-                start: 'top 83%',
-                onEnter: () => gsap.to(subEl, { y: 0, opacity: 1, duration: 1.2, delay: 0.4, ease: 'power3.out', overwrite: 'auto' }),
-                onEnterBack: () => gsap.to(subEl, { y: 0, opacity: 1, duration: 1.2, delay: 0.4, ease: 'power3.out', overwrite: 'auto' }),
-                onLeave: () => gsap.to(subEl, { y: -30, opacity: 0, duration: 0.5, overwrite: 'auto' }),
-                onLeaveBack: () => gsap.to(subEl, { y: 30, opacity: 0, duration: 0.5, overwrite: 'auto' })
+            gsap.to(subEl, {
+                y: 0,
+                opacity: 1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: sec2Header,
+                    start: 'top 85%',
+                    end: 'top 45%',
+                    scrub: 1
+                }
             });
         }
     }
 
-    // --- SECTION 3: BOOKING FORM — each element slides in with stagger ---
+    // --- SECTION 3: BOOKING FORM (Let's Design Your Dream Space) ---
     const formEls = document.querySelectorAll('.booking-section .booking-content-col > *, .form-grid > *, .input-group, .input-label, .date-picker-wrap, .pills-grid, .features-row .feature-item');
     if (formEls.length > 0) {
-        gsap.set(formEls, { y: 40, opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.booking-section',
-            start: 'top 75%',
-            onEnter: () => gsap.to(formEls, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }),
-            onEnterBack: () => gsap.to(formEls, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }),
-            onLeave: () => gsap.to(formEls, { y: -40, opacity: 0, duration: 0.3, stagger: 0.03, ease: 'power2.in' }),
-            onLeaveBack: () => gsap.to(formEls, { y: 40, opacity: 0, duration: 0.3, stagger: 0.03, ease: 'power2.in' })
+        gsap.set(formEls, { y: 60, opacity: 0 });
+        gsap.to(formEls, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.05,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.booking-section',
+                start: 'top 90%',
+                end: 'top 20%',
+                scrub: 1
+            }
         });
     }
 
-    // --- SECTION 4: WHY CARDS — one by one reveal ---
+    // --- SECTION 4: WHY CARDS ---
     const whyCardEls = document.querySelectorAll('.why-card');
     if (whyCardEls.length > 0) {
-        gsap.set(whyCardEls, { y: 60, opacity: 0, scale: 0.92 });
-        ScrollTrigger.create({
-            trigger: '.why-choose-section',
-            start: 'top 75%',
-            onEnter: () => gsap.to(whyCardEls, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out' }),
-            onEnterBack: () => gsap.to(whyCardEls, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out' }),
-            onLeave: () => gsap.to(whyCardEls, { y: -60, opacity: 0, scale: 0.92, duration: 0.35, stagger: 0.05, ease: 'power2.in' }),
-            onLeaveBack: () => gsap.to(whyCardEls, { y: 60, opacity: 0, scale: 0.92, duration: 0.35, stagger: 0.05, ease: 'power2.in' })
+        gsap.set(whyCardEls, { y: 100, opacity: 0, scale: 0.9 });
+        gsap.to(whyCardEls, {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: '.why-choose-section',
+                start: 'top 95%',
+                end: 'top 30%',
+                scrub: 1
+            }
         });
     }
 
     // --- REVEAL SECTION header & wrapper ---
     const revealSecEls = document.querySelectorAll('.reveal-section .section-header > *, .reveal-wrapper, .reveal-footer-stats .reveal-stat');
     if (revealSecEls.length > 0) {
-        gsap.set(revealSecEls, { y: 50, opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.reveal-section',
-            start: 'top 78%',
-            onEnter: () => gsap.to(revealSecEls, { y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power3.out' }),
-            onEnterBack: () => gsap.to(revealSecEls, { y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power3.out' }),
-            onLeave: () => gsap.to(revealSecEls, { y: -50, opacity: 0, duration: 0.3, stagger: 0.04, ease: 'power2.in' }),
-            onLeaveBack: () => gsap.to(revealSecEls, { y: 50, opacity: 0, duration: 0.3, stagger: 0.04, ease: 'power2.in' })
+        gsap.set(revealSecEls, { y: 60, opacity: 0 });
+        gsap.to(revealSecEls, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: '.reveal-section',
+                start: 'top 95%',
+                end: 'top 30%',
+                scrub: 1
+            }
         });
     }
 
-    // --- CTA & FOOTER generic reveal ---
-    ['cta-section', 'footer'].forEach(cls => {
+    // --- CTA & FOOTER ---
+    ['cta-section', 'footer-area'].forEach(cls => {
         const el = document.querySelector(`.${cls}`);
         if (!el) return;
         const items = el.querySelectorAll('.cta-content-col > *, .footer-col, .footer-bottom > *');
         if (items.length > 0) {
-            gsap.set(items, { y: 40, opacity: 0 });
-            ScrollTrigger.create({
-                trigger: el,
-                start: 'top 80%',
-                onEnter: () => gsap.to(items, { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }),
-                onEnterBack: () => gsap.to(items, { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }),
-                onLeave: () => gsap.to(items, { y: -40, opacity: 0, duration: 0.3, stagger: 0.04 }),
-                onLeaveBack: () => gsap.to(items, { y: 40, opacity: 0, duration: 0.3, stagger: 0.04 })
+            gsap.set(items, { y: 50, opacity: 0 });
+            gsap.to(items, {
+                y: 0,
+                opacity: 1,
+                stagger: 0.05,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 98%',
+                    end: 'top 70%',
+                    scrub: 1
+                }
             });
         }
     });
