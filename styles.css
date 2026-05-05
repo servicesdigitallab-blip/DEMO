@@ -1554,70 +1554,122 @@ button {
 }
 
 @media (max-width: 768px) {
+    /* GLOBAL MOBILE FIXES */
+    body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    #smooth-wrapper {
+        overflow: visible !important;
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    /* NAVBAR MOBILE FIX */
+    .navbar-container {
+        padding: 10px 20px;
+        width: 95%;
+        margin: 10px auto;
+        border-radius: 12px;
+    }
+
+    .navbar-logo a {
+        font-size: 16px;
+        letter-spacing: 3px;
+    }
+
     /* HERO MOBILE CENTERED */
     .hero-section.immersive-hero {
         justify-content: center;
         align-items: center;
+        padding-top: 80px;
     }
 
     .hero-content.left-box {
-        width: 90%;
-        padding: 40px 20px;
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(10px);
-        border-radius: 20px;
-        text-align: center;
-        height: auto;
+        width: 90% !important;
+        padding: 30px 20px !important;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 24px;
+        text-align: center !important;
+        height: auto !important;
         margin: 0 auto;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.5);
     }
 
-    .hero-title {
-        font-size: 2.8rem;
+    .hero-label {
+        font-size: 10px;
+        margin-bottom: 15px;
+        justify-content: center;
     }
 
     .hero-desc {
-        margin: 0 auto 30px;
-    }
-
-    .hero-buttons {
-        justify-content: center;
+        margin: 0 auto;
+        font-size: 14px;
+        width: 100%;
     }
 
     /* SECTION 2: HORIZONTAL SCROLL ON MOBILE */
     .carousel-container {
-        overflow-x: auto;
-        padding: 0 20px 30px;
+        overflow-x: auto !important;
+        padding: 0 20px 40px !important;
         scroll-snap-type: x mandatory;
-        scrollbar-width: none; /* Hide scrollbar Firefox */
-    }
-
-    .carousel-container::-webkit-scrollbar {
-        display: none; /* Hide scrollbar Chrome/Safari */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
     }
 
     .carousel-track {
-        display: flex;
-        gap: 20px;
+        display: flex !important;
+        gap: 15px !important;
         padding: 0 !important;
-        transform: none !important; /* Disable GSAP move on mobile */
-        width: max-content;
+        transform: none !important;
+        width: max-content !important;
     }
 
     .project-card.side, .project-card.active {
-        width: 85vw !important;
+        width: 75vw !important;
         opacity: 1 !important;
         transform: none !important;
         scroll-snap-align: center;
     }
 
-    .project-card .img-wrapper {
-        aspect-ratio: 4/5; /* Better for mobile vertical feel */
+    /* BOOKING FORM MOBILE */
+    .booking-form-card {
+        padding: 25px 20px;
+    }
+
+    .pills-grid.date-pills {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pills-grid.time-pills {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* REVEAL SECTION MOBILE */
+    .reveal-footer-stats {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    /* WHY CHOOSE CARDS MOBILE */
+    .why-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .why-card .img-box {
+        aspect-ratio: 16/9;
     }
 
     /* FOOTER MOBILE */
     .footer-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 40px;
         text-align: center;
     }
 
@@ -1626,7 +1678,16 @@ button {
     }
 
     .newsletter-form {
-        max-width: 300px;
-        margin: 0 auto;
+        max-width: 100%;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .footer-bottom-links a {
+        margin: 0 10px;
     }
 }
