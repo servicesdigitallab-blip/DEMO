@@ -111,8 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Section 4: 3D Image Angle Change on Hover
-    const whyCards = document.querySelectorAll('.why-card');
-    whyCards.forEach(card => {
+    const whyCardsInit = document.querySelectorAll('.why-card');
+    whyCardsInit.forEach(card => {
         const img = card.querySelector('img');
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
@@ -144,144 +144,162 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ============================================================
-    // PREMIUM SCROLL ANIMATIONS (SCRUBBED)
+    // DIVERSE PREMIUM SCROLL ANIMATIONS (SCRUBBED)
     // ============================================================
 
-    // --- SECTION 2: PROJECT CARDS ---
+    // --- SECTION 2: PROJECTS (Fade + Letter Spacing Expansion) ---
+    const sec2Header = document.querySelector('.projects-section .section-header');
+    if (sec2Header) {
+        const title = sec2Header.querySelector('.title');
+        
+        gsap.set(title, { opacity: 0, letterSpacing: "-0.05em", filter: "blur(10px)" });
+        gsap.to(title, {
+            opacity: 1,
+            letterSpacing: "0.02em",
+            filter: "blur(0px)",
+            scrollTrigger: {
+                trigger: sec2Header,
+                start: 'top 90%',
+                end: 'top 50%',
+                scrub: 1.5
+            }
+        });
+    }
+
     const projectCards = document.querySelectorAll('.project-card');
     if (projectCards.length > 0) {
-        gsap.set(projectCards, { y: 100, opacity: 0, scale: 0.9 });
+        gsap.set(projectCards, { y: 150, opacity: 0, rotateX: -15 });
         gsap.to(projectCards, {
             y: 0,
             opacity: 1,
-            scale: 1,
-            stagger: 0.1,
+            rotateX: 0,
+            stagger: 0.2,
             ease: "power2.out",
             scrollTrigger: {
                 trigger: '.projects-section',
-                start: 'top 95%',
-                end: 'top 30%',
-                scrub: 1
-            }
-        });
-    }
-
-    // --- SECTION 2 HEADER: Word-by-word reveal ---
-    const sec2Header = document.querySelector('.projects-section .section-header');
-    if (sec2Header) {
-        const headingEl = sec2Header.querySelector('.title, h2');
-        if (headingEl) {
-            const words = headingEl.innerText.split(' ');
-            headingEl.innerHTML = words.map(w => `<span class="word-wrap"><span class="word">${w}</span></span>`).join(' ');
-            const wordEls = sec2Header.querySelectorAll('.word');
-            gsap.set(wordEls, { y: '110%', opacity: 0 });
-            
-            gsap.to(wordEls, {
-                y: '0%',
-                opacity: 1,
-                stagger: 0.05,
-                ease: 'power2.out',
-                scrollTrigger: {
-                    trigger: sec2Header,
-                    start: 'top 90%',
-                    end: 'top 40%',
-                    scrub: 1
-                }
-            });
-        }
-        const subEl = sec2Header.querySelector('.section-desc, p');
-        if (subEl) {
-            gsap.set(subEl, { y: 30, opacity: 0 });
-            gsap.to(subEl, {
-                y: 0,
-                opacity: 1,
-                ease: 'power2.out',
-                scrollTrigger: {
-                    trigger: sec2Header,
-                    start: 'top 85%',
-                    end: 'top 45%',
-                    scrub: 1
-                }
-            });
-        }
-    }
-
-    // --- SECTION 3: BOOKING FORM (Let's Design Your Dream Space) ---
-    const formEls = document.querySelectorAll('.booking-section .booking-content-col > *, .form-grid > *, .input-group, .input-label, .date-picker-wrap, .pills-grid, .features-row .feature-item');
-    if (formEls.length > 0) {
-        gsap.set(formEls, { y: 60, opacity: 0 });
-        gsap.to(formEls, {
-            y: 0,
-            opacity: 1,
-            stagger: 0.05,
-            ease: 'power2.out',
-            scrollTrigger: {
-                trigger: '.booking-section',
-                start: 'top 90%',
+                start: 'top 85%',
                 end: 'top 20%',
-                scrub: 1
+                scrub: 1.2
             }
         });
     }
 
-    // --- SECTION 4: WHY CARDS ---
-    const whyCardEls = document.querySelectorAll('.why-card');
-    if (whyCardEls.length > 0) {
-        gsap.set(whyCardEls, { y: 100, opacity: 0, scale: 0.9 });
-        gsap.to(whyCardEls, {
+    // --- SECTION 3: BOOKING (Clip-Path Mask Reveal Heading + Detailed Form Animation) ---
+    const sec3Header = document.querySelector('.booking-section .booking-content-col');
+    if (sec3Header) {
+        const title = sec3Header.querySelector('.title');
+        gsap.set(title, { clipPath: "inset(100% 0% 0% 0%)", y: 50 });
+        gsap.to(title, {
+            clipPath: "inset(0% 0% 0% 0%)",
+            y: 0,
+            scrollTrigger: {
+                trigger: sec3Header,
+                start: 'top 90%',
+                end: 'top 60%',
+                scrub: 1
+            }
+        });
+
+        // Every single form element
+        const bookingItems = document.querySelectorAll('.booking-section .booking-pre-title, .booking-section .booking-desc, .booking-form-card, .input-group, .input-label, .date-picker-wrap, .pill, .pill-time, .btn-solid, .feature-item');
+        gsap.set(bookingItems, { y: 40, opacity: 0, scale: 0.95 });
+        gsap.to(bookingItems, {
             y: 0,
             opacity: 1,
             scale: 1,
-            stagger: 0.1,
-            ease: "power2.out",
+            stagger: 0.03,
             scrollTrigger: {
-                trigger: '.why-choose-section',
-                start: 'top 95%',
-                end: 'top 30%',
-                scrub: 1
+                trigger: '.booking-section',
+                start: 'top 85%',
+                end: 'bottom 80%',
+                scrub: 1.5
             }
         });
     }
 
-    // --- REVEAL SECTION header & wrapper ---
-    const revealSecEls = document.querySelectorAll('.reveal-section .section-header > *, .reveal-wrapper, .reveal-footer-stats .reveal-stat');
-    if (revealSecEls.length > 0) {
-        gsap.set(revealSecEls, { y: 60, opacity: 0 });
-        gsap.to(revealSecEls, {
-            y: 0,
+    // --- SECTION 4: PROCESS REVEAL (Slide + Rotate Heading) ---
+    const sec4Header = document.querySelector('.reveal-section .section-header');
+    if (sec4Header) {
+        const title = sec4Header.querySelector('.title');
+        gsap.set(title, { x: -100, opacity: 0, rotate: -5 });
+        gsap.to(title, {
+            x: 0,
             opacity: 1,
-            stagger: 0.1,
-            ease: "power2.out",
+            rotate: 0,
+            scrollTrigger: {
+                trigger: sec4Header,
+                start: 'top 92%',
+                end: 'top 65%',
+                scrub: 1.2
+            }
+        });
+
+        const revealContainer = document.querySelector('.reveal-container');
+        gsap.set(revealContainer, { scale: 0.8, opacity: 0, rotateY: 10 });
+        gsap.to(revealContainer, {
+            scale: 1,
+            opacity: 1,
+            rotateY: 0,
             scrollTrigger: {
                 trigger: '.reveal-section',
-                start: 'top 95%',
-                end: 'top 30%',
+                start: 'top 80%',
+                end: 'top 40%',
                 scrub: 1
             }
         });
     }
 
-    // --- CTA & FOOTER ---
-    ['cta-section', 'footer-area'].forEach(cls => {
-        const el = document.querySelector(`.${cls}`);
-        if (!el) return;
-        const items = el.querySelectorAll('.cta-content-col > *, .footer-col, .footer-bottom > *');
-        if (items.length > 0) {
-            gsap.set(items, { y: 50, opacity: 0 });
-            gsap.to(items, {
-                y: 0,
-                opacity: 1,
-                stagger: 0.05,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: el,
-                    start: 'top 98%',
-                    end: 'top 70%',
-                    scrub: 1
-                }
-            });
-        }
-    });
+    // --- SECTION 5: ABOUT/WHY (Blur Reveal Heading + 3D Card Entrance) ---
+    const sec5Header = document.querySelector('.why-choose-section .section-header');
+    if (sec5Header) {
+        const title = sec5Header.querySelector('.title');
+        gsap.set(title, { filter: "blur(20px)", opacity: 0, scale: 1.2 });
+        gsap.to(title, {
+            filter: "blur(0px)",
+            opacity: 1,
+            scale: 1,
+            scrollTrigger: {
+                trigger: sec5Header,
+                start: 'top 90%',
+                end: 'top 60%',
+                scrub: 1.5
+            }
+        });
+    }
+
+    const whyCards = document.querySelectorAll('.why-card');
+    if (whyCards.length > 0) {
+        gsap.set(whyCards, { y: 100, opacity: 0, rotateY: 20 });
+        gsap.to(whyCards, {
+            y: 0,
+            opacity: 1,
+            rotateY: 0,
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: '.why-choose-section',
+                start: 'top 80%',
+                end: 'top 20%',
+                scrub: 1.2
+            }
+        });
+    }
+
+    // --- FINAL SECTION: CTA & FOOTER (Staggered Rise) ---
+    const ctaItems = document.querySelectorAll('.cta-wrap > *, .cta-features > *, .cta-action-card > *, .footer-col, .footer-bottom');
+    if (ctaItems.length > 0) {
+        gsap.set(ctaItems, { y: 50, opacity: 0 });
+        gsap.to(ctaItems, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.05,
+            scrollTrigger: {
+                trigger: '.final-section',
+                start: 'top 95%',
+                end: 'bottom bottom',
+                scrub: 1
+            }
+        });
+    }
 
 
 
