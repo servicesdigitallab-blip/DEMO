@@ -147,39 +147,57 @@ document.addEventListener("DOMContentLoaded", () => {
     // DIVERSE PREMIUM SCROLL ANIMATIONS (SCRUBBED)
     // ============================================================
 
-    // --- SECTION 2: PROJECTS (Fade + Letter Spacing Expansion) ---
-    const sec2Header = document.querySelector('.projects-section .section-header');
-    if (sec2Header) {
-        const title = sec2Header.querySelector('.title');
-        
-        gsap.set(title, { opacity: 0, letterSpacing: "-0.05em", filter: "blur(10px)" });
-        gsap.to(title, {
-            opacity: 1,
-            letterSpacing: "0.02em",
-            filter: "blur(0px)",
+    // --- SECTION 2: PROJECTS (HORIZONTAL SCROLL) ---
+    const projectsSection = document.querySelector('.projects-section');
+    const track = document.querySelector('.carousel-track');
+    const cards = document.querySelectorAll('.project-card');
+
+    if (projectsSection && track) {
+        // Entrance animation for the section title
+        const sec2Header = projectsSection.querySelector('.section-header');
+        if (sec2Header) {
+            const title = sec2Header.querySelector('.title');
+            gsap.set(title, { opacity: 0, letterSpacing: "-0.05em", filter: "blur(10px)" });
+            gsap.to(title, {
+                opacity: 1,
+                letterSpacing: "0.02em",
+                filter: "blur(0px)",
+                scrollTrigger: {
+                    trigger: sec2Header,
+                    start: 'top 90%',
+                    end: 'top 50%',
+                    scrub: 1.5
+                }
+            });
+        }
+
+        // Horizontal scroll animation
+        gsap.to(track, {
+            x: () => -(track.scrollWidth - window.innerWidth + window.innerWidth * 0.1),
+            ease: "none",
             scrollTrigger: {
-                trigger: sec2Header,
-                start: 'top 90%',
-                end: 'top 50%',
-                scrub: 1.5
+                trigger: projectsSection,
+                start: "top top",
+                end: () => "+=" + (track.scrollWidth),
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1,
+                invalidateOnRefresh: true
             }
         });
-    }
 
-    const projectCards = document.querySelectorAll('.project-card');
-    if (projectCards.length > 0) {
-        gsap.set(projectCards, { y: 150, opacity: 0, rotateX: -15 });
-        gsap.to(projectCards, {
+        // Stagger entrance for cards while pinning
+        gsap.set(cards, { y: 150, opacity: 0, rotateX: -15 });
+        gsap.to(cards, {
             y: 0,
             opacity: 1,
             rotateX: 0,
-            stagger: 0.2,
-            ease: "power2.out",
+            stagger: 0.1,
             scrollTrigger: {
-                trigger: '.projects-section',
-                start: 'top 85%',
-                end: 'top 20%',
-                scrub: 1.2
+                trigger: projectsSection,
+                start: "top 80%",
+                end: "top 20%",
+                scrub: 1
             }
         });
     }
@@ -341,66 +359,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
-
-
-    // --- CAROUSEL SYSTEM ---
-    const track = document.querySelector('.carousel-track');
-    const cards = document.querySelectorAll('.project-card');
-    
-    if (track) {
-        cards.forEach((card, index) => {
-            card.addEventListener('mouseenter', () => {
-                updateCarousel(index);
-            });
-        });
-
-        function updateCarousel(activeIndex) {
-            const container = document.querySelector('.carousel-container');
-            const track = document.querySelector('.carousel-track');
-            const activeCard = cards[activeIndex];
-
-            cards.forEach((card, i) => {
-                if (i === activeIndex) {
-                    card.classList.add('active');
-                    card.classList.remove('side');
-                    gsap.to(card, {
-                        scale: 1.1,
-                        y: -10,
-                        opacity: 1,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
-                } else {
-                    card.classList.remove('active');
-                    card.classList.add('side');
-                    gsap.to(card, {
-                        scale: 0.9,
-                        y: 0,
-                        opacity: 0.5,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
-                }
-            });
-
-            const containerRect = container.getBoundingClientRect();
-            const cardRect = activeCard.getBoundingClientRect();
-            const currentX = gsap.getProperty(track, "x") || 0;
-            const containerCenter = containerRect.left + containerRect.width / 2;
-            const cardCenter = cardRect.left + cardRect.width / 2;
-            const offset = containerCenter - cardCenter;
-            
-            gsap.to(track, {
-                x: currentX + offset,
-                duration: 0.8,
-                ease: "power4.out"
-            });
-        }
-        
-        updateCarousel(Math.floor(cards.length / 2));
-    }
-
 
     // --- GLOW EFFECT TRACKING ---
     const glowCard = document.querySelector('.booking-form-card');
