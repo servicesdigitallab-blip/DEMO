@@ -3,69 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEMO | Premium Interior Design</title>
-    <meta name="description" content="Experience luxury interior design tailored to your lifestyle. Bespoke solutions for modern living.">
-    
-    <!-- PRELOAD LCP IMAGE -->
-    <link rel="preload" as="image" href="section1 .png" fetchpriority="high">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css">
-    
-    <!-- FONTS -->
+    <title>DEMO - Interior Design</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <!-- ICONS -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- LIBRARIES -->
+    <!-- GSAP & Plugins -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <!-- NAVBAR -->
+    <!-- PREMIUM NAVBAR -->
     <nav class="navbar-wrapper">
         <div class="navbar-container">
-            <a href="#" class="navbar-logo">DEMO</a>
+            <div class="navbar-logo">
+                <a href="#">DEMO</a>
+            </div>
             
             <div class="navbar-menu">
-                <a href="#home" class="active">Home</a>
-                <a href="#projects">Projects</a>
-                <a href="#booking">Booking</a>
-                <a href="#process">Process</a>
-                <a href="#about">About</a>
+                <a href="#home" class="active">HOME</a>
+                <a href="#about">ABOUT</a>
+                <a href="#services">SERVICES</a>
+                <a href="#projects">PROJECTS</a>
+                <a href="#process">PROCESS</a>
+                <a href="#booking">CONTACT</a>
             </div>
             
             <div class="navbar-actions">
-                <a href="tel:+123456789" class="nav-contact-btn">
-                    <i class="fas fa-phone"></i>
-                    <span>Contact Us</span>
-                </a>
-                <div class="mobile-toggle">
-                    <span></span>
-                    <span></span>
-                </div>
+                <button class="btn-book-outline" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">BOOK A CONSULTATION</button>
+                <button class="mobile-toggle">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- MOBILE OVERLAY -->
+    <!-- MOBILE MENU OVERLAY -->
     <div class="mobile-menu-overlay">
-        <div class="mobile-header">
-            <span class="navbar-logo">DEMO</span>
-            <div class="close-mobile-menu"><i class="fas fa-times"></i></div>
-        </div>
+        <button class="close-mobile-menu">&times;</button>
         <div class="mobile-menu-links">
-            <a href="#home">Home</a>
-            <a href="#projects">Projects</a>
-            <a href="#booking">Booking</a>
-            <a href="#process">Process</a>
-            <a href="#about">About</a>
+            <a href="#home" class="active">HOME</a>
+            <a href="#about">ABOUT</a>
+            <a href="#services">SERVICES</a>
+            <a href="#projects">PROJECTS</a>
+            <a href="#process">PROCESS</a>
+            <a href="#booking">CONTACT</a>
         </div>
+        <button class="btn-book-solid mobile-book" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'}); document.querySelector('.mobile-menu-overlay').classList.remove('active');">BOOK A CONSULTATION</button>
     </div>
 
     <div id="smooth-wrapper">
@@ -74,16 +63,7 @@
             <!-- SECTION 1: HERO -->
             <section id="home" class="hero-section immersive-hero">
                 <div class="hero-bg-wrapper">
-                    <img src="section1 .png" alt="Timeless Interior" class="hero-bg-full" fetchpriority="high" decoding="sync">
-                </div>
-                <div class="hero-content left-box">
-                    <span class="hero-label">PREMIUM INTERIOR DESIGN</span>
-                    <h1 class="hero-title">The Art of <br>Living <span class="accent-text">Beautifully</span></h1>
-                    <p class="hero-desc">Bespoke interiors that reflect your unique personality and lifestyle. We create spaces that inspire and elevate your everyday living.</p>
-                    <div class="hero-buttons">
-                        <a href="#projects" class="btn-solid">View Projects</a>
-                        <a href="#booking" class="btn-outline">Book Consultation</a>
-                    </div>
+                    <img src="section1 .png" alt="Timeless Interior" class="hero-bg-full">
                 </div>
             </section>
 
@@ -97,362 +77,201 @@
                 <div class="carousel-container">
                     <div class="carousel-track">
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&q=80&w=600" alt="Warm Simplicity" loading="lazy" decoding="async"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&q=80&w=600" alt="Warm Simplicity"></div>
                             <h3>Warm Simplicity</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&q=80&w=600" alt="Organic Elegance" loading="lazy" decoding="async"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&q=80&w=600" alt="Organic Elegance"></div>
                             <h3>Organic Elegance</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=600" alt="Modern Serenity" loading="lazy" decoding="async"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=600" alt="Modern Serenity"></div>
                             <h3>Modern Serenity</h3>
                             <p>Residential Interior</p>
                         </div>
                         <div class="project-card side">
-                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=600" alt="Refined Comfort" loading="lazy" decoding="async"></div>
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=600" alt="Refined Comfort"></div>
                             <h3>Refined Comfort</h3>
+                            <p>Residential Interior</p>
+                        </div>
+                        <div class="project-card active">
+                            <div class="img-wrapper">
+                                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800" alt="Active Project">
+                                <button class="expand-btn"><i class="fas fa-expand-arrows-alt"></i></button>
+                            </div>
+                            <h3>Luxurious Living</h3>
+                            <p>Modern Residential</p>
+                        </div>
+                        <div class="project-card side">
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=600" alt="Natural Balance"></div>
+                            <h3>Natural Balance</h3>
+                            <p>Residential Interior</p>
+                        </div>
+                        <div class="project-card side">
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=600" alt="Urban Loft"></div>
+                            <h3>Urban Loft</h3>
+                            <p>Residential Interior</p>
+                        </div>
+                        <div class="project-card side">
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?auto=format&fit=crop&q=80&w=600" alt="Cozy Nook"></div>
+                            <h3>Cozy Nook</h3>
+                            <p>Residential Interior</p>
+                        </div>
+                        <div class="project-card side">
+                            <div class="img-wrapper"><img src="https://images.unsplash.com/photo-1617103996702-96ff29b1c467?auto=format&fit=crop&q=80&w=600" alt="Sleek Studio"></div>
+                            <h3>Sleek Studio</h3>
                             <p>Residential Interior</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 3: BOOKING FORM -->
-            <section id="booking" class="booking-section">
-                <div class="booking-container">
-                    <div class="booking-grid">
-                        <div class="booking-content-col">
-                            <span class="booking-pre-title">CONSULTATION</span>
-                            <h2 class="title">Let's Design Your <br><span class="accent-text">Dream Space</span></h2>
-                            <p class="booking-desc">Choose a time that works for you, and our expert designers will guide you through the process of transforming your home into a masterpiece.</p>
-                            
-                            <div class="features-row">
-                                <div class="feature-item">
-                                    <div class="icon-circle"><i class="fas fa-magic"></i></div>
-                                    <div>
-                                        <h4>Expert Vision</h4>
-                                        <p>3D Visualization included</p>
-                                    </div>
-                                </div>
-                                <div class="feature-item">
-                                    <div class="icon-circle"><i class="fas fa-clock"></i></div>
-                                    <div>
-                                        <h4>Fast Turnaround</h4>
-                                        <p>Proposal within 48h</p>
+            <!-- SECTION 3: BOOKING -->
+            <section id="booking" class="booking-section centered-form">
+                <div class="booking-content-col">
+                    <p class="booking-pre-title">Book a consultation with our design team today.</p>
+                    <h2 class="title">Let's Design Your<br>Dream <span class="accent-text">Space</span></h2>
+                    <p class="booking-desc">Ready to transform your space? Fill out the form below and we'll get in touch to schedule your personalized design appointment.</p>
+                    
+                    <div class="booking-form-card">
+                        <div class="form-header">
+                            <h3>Book an appointment</h3>
+                            <div class="steps"><span id="step-text">Step 1 of 3</span> <span class="dot active" data-step="1"></span><span class="dot" data-step="2"></span><span class="dot" data-step="3"></span></div>
+                        </div>
+                        <form id="multi-step-form">
+                        
+                        <div class="form-steps-container">
+                            <div class="form-step active" data-step="1">
+                                <div class="form-grid">
+                                    <div class="form-left full-width">
+                                        <label class="input-label">Select Date <span class="ai-sparkle"><i class="fas fa-magic"></i> AI</span></label>
+                                        <div class="date-picker-wrap">
+                                            <input type="date" id="ai-date-input" class="ai-input">
+                                            <div class="pills-grid date-pills" id="dynamic-date-pills"></div>
+                                        </div>
+                                        
+                                        <label class="input-label mt-4">Select Time</label>
+                                        <div class="pills-grid time-pills">
+                                            <div class="pill-time">09:00 AM</div>
+                                            <div class="pill-time">10:00 AM</div>
+                                            <div class="pill-time">11:00 AM</div>
+                                            <div class="pill-time">12:00 PM</div>
+                                            <div class="pill-time">01:00 PM</div>
+                                            <div class="pill-time active">02:00 PM</div>
+                                            <div class="pill-time">03:00 PM</div>
+                                            <div class="pill-time">04:00 PM</div>
+                                        </div>
+                                        <button type="button" class="btn-solid full-width mt-4 next-step">Next Step <i class="fas fa-arrow-right"></i></button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="booking-form-col">
-                            <div class="booking-form-card">
-                                <div class="form-header">
-                                    <div class="steps">
-                                        <span class="dot active" data-step="1"></span>
-                                        <span class="dot" data-step="2"></span>
-                                        <span class="dot" data-step="3"></span>
-                                    </div>
-                                    <span id="step-text">Step 1 of 3</span>
-                                </div>
-                                
-                                <form id="multi-step-form">
-                                    <!-- Step 1: Services -->
-                                    <div class="form-step active" data-step="1">
-                                        <div class="input-group">
-                                            <label>What service do you need?</label>
-                                            <select required>
-                                                <option value="">Select Service Type</option>
-                                                <option value="full">Full Home Redesign</option>
-                                                <option value="kitchen">Luxury Kitchen</option>
-                                                <option value="living">Modern Living Room</option>
-                                                <option value="office">Executive Office</option>
-                                            </select>
-                                        </div>
-                                        <div class="input-group">
-                                            <label>Budget Range</label>
-                                            <select required>
-                                                <option value="standard">$10k - $25k</option>
-                                                <option value="premium">$25k - $50k</option>
-                                                <option value="luxury">$50k+</option>
-                                            </select>
-                                        </div>
-                                        <button type="button" class="btn-solid next-step">Continue <i class="fas fa-arrow-right"></i></button>
-                                    </div>
 
-                                    <!-- Step 2: Date & Time -->
-                                    <div class="form-step" data-step="2">
-                                        <div class="date-picker-wrap">
-                                            <label class="input-label">Select Preferred Date</label>
-                                            <input type="date" id="ai-date-input" class="ai-input">
-                                            <div class="pills-grid date-pills" id="dynamic-date-pills">
-                                                <!-- JS will populate -->
-                                            </div>
-                                        </div>
-                                        <div class="time-picker-wrap">
-                                            <label class="input-label">Select Time Slot</label>
-                                            <div class="pills-grid time-pills">
-                                                <div class="pill-time">10:00 AM</div>
-                                                <div class="pill-time active">11:30 AM</div>
-                                                <div class="pill-time">02:00 PM</div>
-                                                <div class="pill-time">04:30 PM</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-btns-row">
-                                            <button type="button" class="btn-outline prev-step">Back</button>
-                                            <button type="button" class="btn-solid next-step">Almost Done</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Step 3: Contact -->
-                                    <div class="form-step" data-step="3">
+                            <div class="form-step" data-step="2">
+                                <div class="form-grid">
+                                    <div class="form-right full-width">
                                         <div class="input-group">
-                                            <label>Your Name</label>
-                                            <input type="text" placeholder="John Doe" required>
+                                            <label>Full Name</label>
+                                            <input type="text" id="form-name" placeholder="Enter your name">
                                         </div>
                                         <div class="input-group">
                                             <label>Email Address</label>
-                                            <input type="email" placeholder="john@example.com" required>
+                                            <input type="email" id="form-email" placeholder="Enter your email">
                                         </div>
                                         <div class="input-group">
                                             <label>Phone Number</label>
-                                            <input type="tel" placeholder="+1 (555) 000-0000" required>
+                                            <input type="tel" id="form-phone" placeholder="Enter your phone number">
                                         </div>
-                                        <div class="form-btns-row">
-                                            <button type="button" class="btn-outline prev-step">Back</button>
-                                            <button type="submit" class="btn-solid">Complete Booking</button>
+                                        <div class="step-btns">
+                                            <button type="button" class="btn-outline prev-step"><i class="fas fa-arrow-left"></i> Back</button>
+                                            <button type="button" class="btn-solid next-step">Next Step <i class="fas fa-arrow-right"></i></button>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
+                            </div>
+
+                            <div class="form-step" data-step="3">
+                                <div class="form-grid">
+                                    <div class="form-right full-width">
+                                        <div class="input-group">
+                                            <label>Project Type</label>
+                                            <select id="form-type">
+                                                <option>Select project type</option>
+                                                <option>Residential</option>
+                                                <option>Commercial</option>
+                                                <option>Office Design</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-group">
+                                            <label>Describe your project (Optional)</label>
+                                            <textarea id="form-message" placeholder="Tell us a bit about your vision..." style="width: 100%; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 12px; min-height: 100px; font-family: inherit;"></textarea>
+                                        </div>
+                                        <div class="step-btns">
+                                            <button type="button" class="btn-outline prev-step"><i class="fas fa-arrow-left"></i> Back</button>
+                                            <button type="submit" class="btn-solid">Complete Booking <i class="fas fa-check"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 4: TRANSFORMATION REVEAL -->
+            <!-- TRANSFORMATION REVEAL SECTION -->
             <section id="process" class="reveal-section">
                 <div class="section-header center">
-                    <span class="subtitle">OUR PROCESS</span>
-                    <h2 class="title">Visualizing <span class="accent-text">Transformation</span></h2>
+                    <span class="subtitle">TRANSFORMATION REVEAL</span>
+                    <h2 class="title">Luxury Transformation</h2>
                 </div>
-                
                 <div class="reveal-container">
                     <div class="reveal-wrapper">
-                        <!-- Before Layer -->
-                        <div class="layer layer-before">
-                            <img src="before.png" alt="Before Interior" loading="lazy" decoding="async">
-                            <div class="label-badge before">BEFORE</div>
+                        <div class="reveal-layer layer-clear">
+                            <img src="after.png" alt="After" class="after-img-clear">
+                            <span class="reveal-label after-label">AFTER</span>
                         </div>
-                        
-                        <!-- After Layer -->
-                        <div class="layer layer-clear">
-                            <img src="after.png" alt="After Interior" loading="lazy" decoding="async">
-                            <div class="label-badge after">AFTER</div>
+                        <div class="reveal-layer layer-before">
+                            <img src="before.png" alt="Before" class="before-img">
+                            <span class="reveal-label before-label">BEFORE</span>
                         </div>
-                        
-                        <!-- Handle -->
                         <div class="reveal-handle">
-                            <div class="handle-circle">
-                                <i class="fas fa-chevron-left"></i>
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
                             <div class="handle-line"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="reveal-footer-stats">
-                    <div class="reveal-stat">
-                        <span class="stat-num">4</span>
-                        <p>Weeks Turnaround</p>
-                    </div>
-                    <div class="reveal-stat">
-                        <span class="stat-num">100%</span>
-                        <p>Execution Accuracy</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 5: WHY CHOOSE US -->
-            <section id="about" class="why-choose-section">
-                <div class="section-header center">
-                    <span class="subtitle">EXPERTISE</span>
-                    <h2 class="title">Designing Spaces, <br>Creating <span class="accent-text">Experiences</span></h2>
-                </div>
-                
-                <div class="why-cards-grid">
-                    <div class="why-card">
-                        <img src="https://images.unsplash.com/photo-1581572711310-096803730e70?auto=format&fit=crop&q=80&w=600" alt="Detail Oriented" loading="lazy" decoding="async">
-                        <div class="card-content">
-                            <h3>Detail Oriented</h3>
-                            <p>Every corner is thoughtfully planned to maximize both form and function.</p>
-                        </div>
-                    </div>
-                    <div class="why-card">
-                        <img src="https://images.unsplash.com/photo-1556912177-c54031b05971?auto=format&fit=crop&q=80&w=600" alt="Material Mastery" loading="lazy" decoding="async">
-                        <div class="card-content">
-                            <h3>Material Mastery</h3>
-                            <p>We source only the finest sustainable materials from around the globe.</p>
-                        </div>
-                    </div>
-                    <div class="why-card">
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600" alt="Sustainable Living" loading="lazy" decoding="async">
-                        <div class="card-content">
-                            <h3>Sustainable Living</h3>
-                            <p>Eco-friendly solutions that don't compromise on luxury or style.</p>
-                        </div>
-                    </div>
-                    <div class="why-card">
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=600" alt="Modern Tech" loading="lazy" decoding="async">
-                        <div class="card-content">
-                            <h3>Modern Tech</h3>
-                            <p>Smart home integration that feels invisible yet indispensable.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="stats-banner">
-                    <div class="stat-item">
-                        <span class="stat-num">50+</span>
-                        <p>Projects Completed</p>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-num">98%</span>
-                        <p>Client Satisfaction</p>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-num">10+</span>
-                        <p>Years of Experience</p>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-num">100%</span>
-                        <p>Custom Solutions</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION 6: TESTIMONIALS (MINIMAL) -->
-            <section class="testimonial-section">
-                <div class="testimonial-container">
-                    <div class="testimonial-wrap">
-                        <p id="testimonial-quote" class="quote">"DEMO transformed our penthouse into a serene sanctuary that we never want to leave. Their eye for detail is unmatched."</p>
-                        <div class="client-info">
-                            <h4 id="testimonial-role">Sarah & David, NYC</h4>
-                        </div>
-                    </div>
-                    <div class="testimonial-nav">
-                        <div class="avatar-btn active" data-quote="DEMO transformed our penthouse into a serene sanctuary that we never want to leave. Their eye for detail is unmatched." data-role="Sarah & David, NYC">
-                            <img src="https://i.pravatar.cc/100?u=1" alt="Client 1">
-                        </div>
-                        <div class="avatar-btn" data-quote="The process was seamless. They captured our brand's essence perfectly in our new executive lounge." data-role="Michael Chen, CEO">
-                            <img src="https://i.pravatar.cc/100?u=2" alt="Client 2">
-                        </div>
-                        <div class="avatar-btn" data-quote="Sustainable luxury at its best. I love how they mixed antique pieces with modern minimalism." data-role="Elena Rodriguez, Architect">
-                            <img src="https://i.pravatar.cc/100?u=3" alt="Client 3">
+                            <div class="handle-circle"><div class="handle-inner"></div></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- FINAL SECTION: CTA -->
-            <section class="final-section">
-                <div class="cta-wrap">
-                    <div class="cta-grid">
-                        <div class="cta-content-col">
-                            <h2 class="title">Ready to Begin <br>Your <span class="accent-text">Journey?</span></h2>
-                            <div class="cta-features">
-                                <div class="f-item"><i class="fas fa-check"></i> Free Initial Call</div>
-                                <div class="f-item"><i class="fas fa-check"></i> Custom Site Visit</div>
-                                <div class="f-item"><i class="fas fa-check"></i> Detailed Budgeting</div>
-                            </div>
-                        </div>
-                        <div class="cta-card-col">
-                            <div class="cta-action-card">
-                                <div class="action-left">
-                                    <div class="action-icon"><i class="fas fa-envelope"></i></div>
-                                    <h4>Drop us a line</h4>
-                                    <p>hello@interiordemo.com</p>
-                                </div>
-                                <div class="action-right">
-                                    <a href="#booking" class="btn-solid">Start Project</a>
-                                    <div class="reviews">
-                                        <div class="stars">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span>(4.9/5)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- FOOTER -->
+            <footer class="footer-area">
+                <div class="footer-grid">
+                    <div class="footer-col brand-col">
+                        <h2>D E M O</h2>
+                        <p>Designing timeless interiors that inspire and elevate everyday living.</p>
+                    </div>
+                    <div class="footer-col links-col">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#projects">Projects</a></li>
+                            <li><a href="#booking">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col contact-col">
+                        <h3>Contact Us</h3>
+                        <p>+92 300 1234567</p>
+                        <p>hello@demo.com</p>
                     </div>
                 </div>
-
-                <!-- FOOTER -->
-                <footer class="footer-area">
-                    <div class="footer-grid">
-                        <div class="footer-col main">
-                            <h2 class="navbar-logo">DEMO</h2>
-                            <p>Crafting timeless interiors that harmonize luxury with everyday comfort since 2014.</p>
-                            <div class="social-icons">
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-pinterest"></i></a>
-                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div class="footer-col">
-                            <h3>Services</h3>
-                            <ul>
-                                <li><a href="#">Residential</a></li>
-                                <li><a href="#">Commercial</a></li>
-                                <li><a href="#">Interior Architecture</a></li>
-                                <li><a href="#">Bespoke Furniture</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-col">
-                            <h3>Company</h3>
-                            <ul>
-                                <li><a href="#">Our Story</a></li>
-                                <li><a href="#">Portfolio</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Contact</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-col">
-                            <h3>Contact</h3>
-                            <div class="contact-item"><i class="fas fa-map-marker-alt"></i> 123 Design St, New York</div>
-                            <div class="contact-item"><i class="fas fa-phone"></i> +1 234 567 890</div>
-                            <div class="contact-item"><i class="fas fa-envelope"></i> hello@demo.com</div>
-                        </div>
-                        <div class="footer-col newsletter">
-                            <h3>Newsletter</h3>
-                            <p>Subscribe for design inspiration.</p>
-                            <form class="newsletter-form">
-                                <input type="email" placeholder="Your email">
-                                <button type="submit"><i class="fas fa-paper-plane"></i></button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="footer-bottom">
-                        <div class="copyright">&copy; 2024 DEMO Interior Design. All rights reserved.</div>
-                        <div class="footer-bottom-links">
-                            <a href="#">Privacy Policy</a>
-                            <a href="#">Terms of Service</a>
-                        </div>
-                    </div>
-                </footer>
-            </section>
-
+                <div class="footer-bottom">
+                    <p>&copy; 2024 DEMO. All Rights Reserved.</p>
+                </div>
+            </footer>
         </div>
     </div>
-
-    <!-- SCRIPTS -->
     <script src="script.js"></script>
 </body>
 </html>
