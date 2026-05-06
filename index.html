@@ -14,6 +14,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <!-- Preload Hero Images for performance -->
+    <link rel="preload" as="image" href="hero%20new%20.png" fetchpriority="high">
+    <link rel="preload" as="image" href="section%201%20mobile%20size%20.png" media="(max-width: 768px)" fetchpriority="high">
 </head>
 <body>
     <!-- PREMIUM NAVBAR -->
@@ -65,7 +68,7 @@
                 <div class="hero-bg-wrapper">
                     <picture>
                         <source media="(max-width: 768px)" srcset="section%201%20mobile%20size%20.png">
-                        <img src="hero%20new%20.png" alt="Timeless Interior" class="hero-bg-full">
+                        <img src="hero%20new%20.png" alt="Timeless Interior" class="hero-bg-full" fetchpriority="high" loading="eager">
                     </picture>
                 </div>
                 <div class="hero-content left-box">
