@@ -106,32 +106,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- SECTION 2: PROJECT CARDS — Simple reveal to avoid conflict with carousel ---
     const projectSec = document.querySelector('.projects-section');
     if (projectSec) {
+        // Animation for the section header specifically
+        const header = projectSec.querySelector('.section-header');
+        if (header) {
+            gsap.from(header.querySelectorAll('.subtitle, .title'), {
+                opacity: 0,
+                y: 50,
+                duration: 1.2,
+                stagger: 0.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: header,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+        }
+        
+        // Background/wrapper reveal
         gsap.from(projectSec, {
             opacity: 0,
-            y: 30,
-            duration: 1.2,
-            ease: 'power3.out',
+            duration: 1.5,
+            ease: 'power2.inOut',
             scrollTrigger: {
                 trigger: projectSec,
-                start: 'top 80%',
+                start: 'top 90%',
                 toggleActions: 'play none none reverse'
             }
         });
     }
 
-    // --- SECTION 3: BOOKING FORM — Much smoother reveal ---
+    // --- SECTION 3: BOOKING FORM — Smoother and delayed reveal ---
     const bookingSec = document.querySelector('.booking-section');
     if (bookingSec) {
         const formEls = bookingSec.querySelectorAll('.booking-content-col > *, .booking-form-card');
         gsap.from(formEls, {
-            y: 30,
+            y: 80, // More movement for 'from' feel
             opacity: 0,
-            duration: 0.8,
-            stagger: 0.08,
-            ease: 'sine.out',
+            duration: 1.4, // Slower duration
+            stagger: 0.15, // More delay between items
+            ease: 'power3.out',
             scrollTrigger: {
                 trigger: bookingSec,
-                start: 'top 80%',
+                start: 'top 75%', // Wait a bit more before triggering
                 toggleActions: 'play none none reverse'
             }
         });
