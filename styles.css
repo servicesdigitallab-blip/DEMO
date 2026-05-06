@@ -492,12 +492,16 @@ button {
 }
 
 .hero-btns-group {
-    position: absolute;
-    bottom: 12%; /* Adjusted to match bottom buttons in image */
-    left: 8%;
-    display: flex;
-    gap: 20px;
-    z-index: 20;
+    position: absolute !important;
+    bottom: 80px !important; /* Force to bottom regardless of other styles */
+    left: 8% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 20px !important;
+    z-index: 100 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
 }
 
 .btn-solid-hero {
@@ -558,18 +562,20 @@ button {
 .project-card {
     flex-shrink: 0;
     transition: all 0.5s var(--ease);
+    opacity: 1 !important; /* Force visibility */
+    visibility: visible !important;
 }
 
 .project-card.side {
     width: 280px;
-    opacity: 0.5;
+    opacity: 0.8 !important; /* Make side cards more visible */
     transform: scale(0.9);
     text-align: left;
 }
 
 .project-card.active {
     width: 800px;
-    opacity: 1;
+    opacity: 1 !important;
     transform: scale(1);
 }
 
