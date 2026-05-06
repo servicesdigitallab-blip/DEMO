@@ -494,8 +494,8 @@ button {
 
 .hero-btns-group {
     position: absolute !important;
-    top: 82% !important; /* Lowered further to perfectly match image buttons below 'Design' */
-    left: 8% !important;
+    top: 90% !important; /* Moved even lower to perfectly overlap image buttons */
+    left: 9.5% !important; /* Adjusted to match horizontal position */
     display: flex !important;
     gap: 20px !important;
     z-index: 100 !important;
