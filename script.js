@@ -569,33 +569,43 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Success Popup Helper
-    const showSuccessPopup = () => {
-        const overlay = document.createElement('div');
-        overlay.className = 'thanks-popup-overlay show';
-        overlay.innerHTML = `
-            <div class="thanks-card">
-                <i class="fas fa-check-circle"></i>
-                <h2>Thanks!</h2>
-                <p>apko hamri traf sa confrim email jald recive ho gi</p>
-                <button class="btn-close-popup">Close</button>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-        
-        overlay.querySelector('.btn-close-popup').addEventListener('click', () => {
-            overlay.classList.remove('show');
-            setTimeout(() => overlay.remove(), 300);
-            // Reset form
-            multiStepForm.reset();
-            updateStepUI(1);
-        });
+    // Success Message inside Card Helper
+    const showSuccessInCard = () => {
+        const formCard = document.querySelector('.booking-form-card');
+        if (formCard) {
+            // Fade out current content
+            gsap.to(formCard.children, {
+                opacity: 0,
+                y: -20,
+                duration: 0.4,
+                stagger: 0.1,
+                onComplete: () => {
+                    // Replace content with Success Message
+                    formCard.innerHTML = `
+                        <div class="success-message-inner">
+                            <i class="fas fa-check-circle"></i>
+                            <h2>Thank You!</h2>
+                            <p>Apka message humein mil gaya hai. Hamari team jald hi apse rabta karegi.</p>
+                            <button class="btn-solid" onclick="location.reload()">Back to Form</button>
+                        </div>
+                    `;
+                    // Fade in new content
+                    gsap.from('.success-message-inner > *', {
+                        opacity: 0,
+                        y: 20,
+                        duration: 0.5,
+                        stagger: 0.2,
+                        ease: "power2.out"
+                    });
+                }
+            });
+        }
     };
 
     if (multiStepForm) {
         multiStepForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            showSuccessPopup();
+            showSuccessInCard();
         });
     }
 

@@ -494,10 +494,10 @@ button {
 
 .hero-btns-group {
     position: absolute !important;
-    top: 90.5% !important; /* Fine-tuned to perfectly hide image buttons */
-    left: 9.8% !important; /* Centered over image buttons */
+    top: 90.3% !important; /* Extremely precise alignment */
+    left: 9.6% !important; /* Extremely precise alignment */
     display: flex !important;
-    gap: 24px !important;
+    gap: 22px !important; /* Perfectly match image button spacing */
     z-index: 100 !important;
     opacity: 1 !important;
 }
@@ -1565,6 +1565,30 @@ button {
     text-decoration: none;
     color: var(--text-light);
     margin-left: 20px;
+}
+
+.success-message-inner {
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.success-message-inner i {
+    font-size: 50px;
+    color: #4CAF50;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.success-message-inner h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-family: var(--font-serif);
+}
+
+.success-message-inner p {
+    color: var(--text-light);
+    margin-bottom: 25px;
 }
 
 /* RESPONSIVE */
