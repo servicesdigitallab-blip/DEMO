@@ -491,26 +491,11 @@ button {
     padding: 0 5% 0 8%;
 }
 
-.hero-title {
-    font-size: 8rem;
-    line-height: 0.9;
-    margin-bottom: 40px;
-    letter-spacing: -3px;
-    color: #000;
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 255, 255, 0.4);
-    position: relative;
-    z-index: 2;
-}
-
-.hero-title .accent-text {
-    font-style: italic;
-    color: var(--accent);
-}
-
 .hero-btns-group {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-top: 150px; /* Push below image buttons */
 }
 
 .btn-solid-hero {
@@ -1126,7 +1111,7 @@ button {
     display: flex;
     gap: 80px;
     margin-top: 40px;
-    justify(center, center);
+    justify-content: center;
 }
 
 .reveal-stat {
@@ -1567,9 +1552,7 @@ button {
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
-    .hero-title { font-size: 4rem; }
-    .hero-content { width: 50%; }
-    .hero-image-wrapper { width: 50%; }
+    .hero-content { width: 100%; }
     .booking-section { flex-direction: column; }
     .booking-image-col, .booking-content-col { width: 100%; }
     .why-cards-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1662,23 +1645,11 @@ button {
         display: block !important;
     }
 
-    .hero-text-wrap {
-        text-align: left !important;
-    }
-
-    .hero-title {
-        font-size: 4.5rem !important; /* Large like the screenshot */
-        line-height: 0.9 !important;
-        margin-bottom: 30px !important;
-        letter-spacing: -2px !important;
-        color: var(--text-dark) !important;
-        text-shadow: none !important; /* No shadow needed on clean bg */
-    }
-
     .hero-btns-group {
         display: flex !important;
         flex-direction: column !important;
         gap: 12px !important;
+        margin-top: 150px !important;
     }
 
     .btn-solid-hero, .btn-outline-hero {
@@ -1702,6 +1673,10 @@ button {
         scroll-snap-type: x mandatory !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
+    }
+
+    .carousel-container::-webkit-scrollbar {
+        display: none !important;
     }
 
     .carousel-track {
