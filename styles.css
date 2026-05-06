@@ -494,10 +494,10 @@ button {
 
 .hero-btns-group {
     position: absolute !important;
-    top: 70.8% !important; /* Move MORE UP to match image buttons */
-    left: 8.0% !important; /* Move MORE LEFT to match image buttons */
+    top: 69.5% !important; /* Move even more UP */
+    left: 7.8% !important; /* Move even more LEFT */
     display: flex !important;
-    gap: 20px !important;
+    gap: 18px !important; /* Slightly tighter gap */
     z-index: 100 !important;
     opacity: 1 !important;
 }
@@ -521,8 +521,8 @@ button {
 .btn-solid-hero {
     background: #000 !important;
     color: #fff !important;
-    padding: 20px 0 !important; /* Increased height */
-    min-width: 205px !important; /* Width to fully cover image buttons */
+    padding: 20px 0 !important; 
+    min-width: 210px !important; /* Increased width to cover background */
     font-size: 13px !important;
     font-weight: 600 !important;
     letter-spacing: 1px !important;
@@ -536,8 +536,8 @@ button {
 .btn-outline-hero {
     background: #F9F8F6 !important; /* Beige to blend with image background */
     color: #000 !important;
-    padding: 20px 0 !important; /* Increased height */
-    min-width: 205px !important; /* Width to fully cover image buttons */
+    padding: 20px 0 !important; 
+    min-width: 210px !important; /* Increased width to cover background */
     font-size: 13px !important;
     font-weight: 600 !important;
     letter-spacing: 1px !important;
