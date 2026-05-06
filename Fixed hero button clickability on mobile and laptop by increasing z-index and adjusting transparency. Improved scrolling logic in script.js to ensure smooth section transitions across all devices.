@@ -1,0 +1,1738 @@
+:root {
+    --bg-main: #FAFAFA;
+    --bg-alt: #F4F0EB;
+    --text-dark: #111111;
+    --text-light: #666666;
+    --accent: #B09270; /* Soft gold/beige */
+    --white: #FFFFFF;
+    
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Inter', sans-serif;
+    
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+    opacity: 0; /* Fade in via JS */
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* TYPOGRAPHY */
+h1, h2, h3, h4, h5, .logo {
+    font-family: var(--font-serif);
+    font-weight: 500;
+}
+
+.accent-text {
+    color: var(--accent);
+}
+
+.subtitle {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.title {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.center {
+    text-align: center;
+}
+
+/* BUTTONS */
+button {
+    font-family: var(--font-sans);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.3s var(--ease);
+}
+
+.btn-solid {
+    background-color: var(--text-dark);
+    color: var(--white);
+    padding: 16px 32px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid var(--text-dark);
+}
+
+.btn-solid:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--text-dark);
+    padding: 16px 32px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid var(--text-dark);
+}
+
+.btn-outline:hover {
+    background-color: var(--text-dark);
+    color: var(--white);
+}
+
+.full-width {
+    width: 100%;
+}
+
+.mt-4 {
+    margin-top: 24px;
+}
+
+/* PREMIUM NAVBAR */
+.navbar-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2000;
+    padding: 0; /* Fixed the top gap button-like look */
+    transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+    border-radius: 0;
+}
+
+/* INITIAL STATE: OVER HERO */
+.navbar-logo a {
+    font-size: 20px;
+    letter-spacing: 5px;
+    font-weight: 800;
+    color: #000;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.navbar-logo a:hover {
+    opacity: 0.7;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 35px;
+}
+
+.navbar-menu a {
+    text-decoration: none;
+    color: #000;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    position: relative;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.navbar-menu a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: #000;
+    transition: width 0.3s ease;
+}
+
+.navbar-menu a:hover::after {
+    width: 100%;
+}
+
+.navbar-menu a.active::after {
+    width: 100%;
+    background: #888;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.btn-book-outline {
+    background: transparent;
+    color: #000;
+    border: 1px solid #000;
+    padding: 12px 24px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-book-outline:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.mobile-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 6px;
+    transition: transform 0.3s ease;
+}
+
+.mobile-toggle:hover {
+    transform: rotate(5deg);
+}
+
+.mobile-toggle .line {
+    width: 25px;
+    height: 2px;
+    background: #000;
+    transition: 0.3s;
+}
+
+/* SCROLLED STATE */
+.navbar-wrapper.scrolled {
+    padding: 15px 20px;
+    animation: navAppear 0.4s forwards;
+}
+
+@keyframes navAppear {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.navbar-wrapper.scrolled .navbar-container {
+    background: #ffffff;
+    backdrop-filter: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border-radius: 16px;
+    padding: 12px 35px;
+}
+
+.navbar-wrapper.scrolled .btn-book-outline {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+/* MOBILE OVERLAY */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    transition: right 0.5s cubic-bezier(0.77,0.2,0.05,1);
+    visibility: hidden;
+}
+
+.mobile-menu-overlay.active {
+    right: 0;
+    visibility: visible;
+}
+
+.close-mobile-menu {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.mobile-menu-links a {
+    text-decoration: none;
+    color: #000;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-weight: 700;
+}
+
+.btn-book-solid {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 18px 35px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+@media (max-width: 992px) {
+    .navbar-menu {
+        display: none;
+    }
+    
+    .btn-book-outline {
+        display: none;
+    }
+    
+    .mobile-toggle {
+        display: flex;
+    }
+    
+    .navbar-container {
+        padding: 12px 25px;
+    }
+}
+
+/* MULTI-STEP FORM STYLES */
+.form-steps-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.form-step {
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.form-step.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.step-btns {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.1);
+    color: var(--text-dark);
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background: rgba(0,0,0,0.02);
+    border-color: var(--text-dark);
+}
+
+.full-width {
+    width: 100%;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+/* SUCCESS POPUP */
+.thanks-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: none; /* Controlled by JS */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.thanks-popup-overlay.show {
+    display: flex;
+}
+
+.thanks-card {
+    background: white;
+    padding: 50px 40px;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    animation: popupSlideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes popupSlideUp {
+    from { opacity: 0; transform: translateY(50px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.thanks-card i {
+    font-size: 60px;
+    color: #4CAF50;
+    margin-bottom: 25px;
+}
+
+.thanks-card h2 {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.thanks-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.btn-close-popup {
+    background: var(--text-dark);
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.btn-close-popup:hover {
+    transform: scale(1.05);
+}
+
+/* SECTION 1: HERO */
+.hero-section.immersive-hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.hero-bg-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-bg-full {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: heroZoom 20s infinite alternate ease-in-out;
+}
+
+.hero-content.left-box {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align content to bottom */
+    padding: 0 5% 100px 8%;
+}
+
+.hero-text-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.hero-btns-group {
+    position: absolute !important;
+    bottom: 80px !important; 
+    left: 8% !important;
+    display: flex !important;
+    gap: 20px !important;
+    z-index: 99999 !important; /* Extremely high to ensure clickability */
+    opacity: 0.01 !important; /* Practically invisible but browser-detectable for clicks */
+    pointer-events: auto !important;
+}
+
+.hero-btns-group button {
+    width: 180px !important; 
+    height: 60px !important; 
+    background: rgba(0,0,0,0) !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: block !important;
+}
+
+.btn-solid-hero {
+    background: #000;
+    color: #fff;
+    padding: 16px 40px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: 1px solid #000;
+    width: fit-content;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-hero {
+    background: #fff; /* White background as per screenshot */
+    color: #000;
+    padding: 16px 40px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: 1px solid #000;
+    width: fit-content;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-solid-hero:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.btn-outline-hero:hover { background: #000; color: #fff; }
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+@keyframes heroZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.04); }
+}
+
+/* SECTION 2: PROJECTS */
+.projects-section {
+    padding: 120px 0;
+    background-color: var(--bg-main);
+    overflow: hidden;
+}
+
+.carousel-container {
+    margin-top: 60px;
+    width: 100%;
+}
+
+.carousel-track {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 0 50%; /* Large padding to allow centering first/last */
+    transition: transform 0.6s var(--ease);
+    will-change: transform;
+}
+
+.project-card {
+    flex-shrink: 0;
+    transition: all 0.5s var(--ease);
+}
+
+.project-card.side {
+    width: 280px;
+    opacity: 0.5 !important;
+    transform: scale(0.9);
+    text-align: left;
+}
+
+.project-card.active {
+    width: 800px;
+    opacity: 1 !important;
+    transform: scale(1);
+}
+
+.project-card .img-wrapper {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    aspect-ratio: 16/9; /* Widescreen ratio as requested */
+}
+
+.project-card.side .img-wrapper {
+    height: auto;
+    width: 400px;
+}
+
+.project-card.active .img-wrapper {
+    height: auto;
+    width: 800px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+}
+
+.project-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease), filter 0.6s var(--ease);
+}
+
+.project-card:hover img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.expand-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--white);
+    color: var(--text-dark);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.project-card h3 {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+
+.project-card p {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+}
+
+.carousel-controls {
+    display: none; /* Hide since text is now inside cards */
+}
+
+.active-project-info h3 {
+    font-size: 2rem;
+}
+
+.active-project-info p {
+    color: var(--accent);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.slider-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-arrow {
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drag-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-light);
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding-top: 10px;
+    width: 200px;
+}
+
+/* SECTION 3: BOOKING */
+.booking-section {
+    padding: 120px 5%;
+    background-color: var(--bg-alt);
+    display: flex;
+    justify-content: center;
+}
+
+.booking-content-col {
+    width: 100%;
+    max-width: 1000px;
+    text-align: center;
+}
+
+.booking-desc {
+    color: var(--text-light);
+    margin: 0 auto 40px;
+    max-width: 600px;
+}
+
+.booking-form-card {
+    text-align: left;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    margin-bottom: 40px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden;
+    --x: 0px;
+    --y: 0px;
+}
+
+.booking-form-card::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    background: radial-gradient(
+        250px circle at var(--x) var(--y),
+        var(--accent),
+        transparent 80%
+    );
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.booking-form-card:hover::before {
+    opacity: 1;
+}
+
+.booking-form-card::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: var(--white);
+    border-radius: 19px;
+    z-index: -1;
+}
+
+/* Extra outer glow for AI feel */
+.booking-form-card {
+    transition: box-shadow 0.5s ease;
+}
+
+.booking-form-card:hover {
+    box-shadow: 0 0 30px rgba(176, 146, 112, 0.15);
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.form-header h3 {
+    font-size: 1.5rem;
+}
+
+.steps {
+    font-size: 12px;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #E0E0E0;
+    border-radius: 50%;
+}
+
+.dot.active {
+    background: var(--text-dark);
+}
+
+.form-grid {
+    display: flex;
+    gap: 40px;
+}
+
+.form-left, .form-right {
+    flex: 1;
+}
+
+.input-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.ai-sparkle {
+    font-size: 10px;
+    background: linear-gradient(135deg, #B09270, #D4AF37);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.date-picker-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ai-input {
+    padding: 10px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    outline: none;
+    background: var(--bg-main);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.ai-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(176, 146, 112, 0.2);
+}
+
+/* Word-by-word reveal */
+.word-wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+.word {
+    display: inline-block;
+}
+
+.pills-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.date-pills {
+    grid-template-columns: repeat(5, 1fr);
+    margin-bottom: 20px;
+}
+
+.time-pills {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.pill {
+    background: #f5f3f0;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 10px 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.pill span {
+    display: block;
+    font-size: 10px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pill strong {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1;
+}
+
+.pill-time {
+    background: #f5f3f0;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    color: var(--text-dark);
+}
+
+.pill:hover, .pill-time:hover {
+    border-color: var(--accent);
+    background: rgba(176,146,112,0.08);
+}
+
+.pill.active, .pill-time.active {
+    background: var(--text-dark);
+    color: var(--white);
+    border-color: var(--text-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.pill.active span {
+    color: rgba(255,255,255,0.65);
+}
+
+.pill.active strong {
+    color: white;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 5px;
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: all 0.3s var(--ease);
+}
+
+.input-group input:focus, .input-group select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(176, 146, 112, 0.2);
+}
+
+.features-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    background: rgba(176, 146, 112, 0.2);
+    color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-item h4 {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.feature-item p {
+    font-size: 11px;
+    color: var(--text-light);
+}
+
+/* TRANSFORMATION REVEAL SECTION */
+.reveal-section {
+    padding: 120px 5%;
+    background-color: var(--bg-main);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reveal-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.reveal-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: ew-resize;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.1);
+    background: #eee;
+    touch-action: none;
+}
+
+.reveal-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.reveal-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.layer-base {
+    z-index: 1;
+}
+
+.layer-clear {
+    z-index: 2;
+}
+
+.after-img-clear {
+    filter: brightness(1.05); /* Premium brightness effect only */
+}
+
+.layer-before {
+    z-index: 3;
+    clip-path: inset(0 0 0 0); /* Fully visible initially */
+}
+
+.reveal-label {
+    position: absolute;
+    top: 30px;
+    padding: 8px 20px;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 10px;
+    letter-spacing: 3px;
+    font-weight: 600;
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.after-label {
+    left: 30px;
+}
+
+.before-label {
+    right: 30px;
+}
+
+.reveal-handle {
+    position: absolute;
+    top: 0;
+    left: 0%; /* Initial position */
+    width: 4px;
+    height: 100%;
+    background: white;
+    z-index: 10;
+    pointer-events: none;
+    transform: translateX(-50%);
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.handle-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: white;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.handle-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    background: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.reveal-wrapper:hover .handle-circle {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.handle-inner {
+    width: 4px;
+    height: 4px;
+    background: var(--text-dark);
+    border-radius: 50%;
+    box-shadow: -8px 0 0 var(--text-dark), 8px 0 0 var(--text-dark);
+}
+
+.reveal-footer-stats {
+    display: flex;
+    gap: 80px;
+    margin-top: 40px;
+    justify-content: center;
+}
+
+.reveal-stat {
+    text-align: center;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-light);
+}
+
+.reveal-stat span {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 32px;
+    color: var(--text-dark);
+    letter-spacing: 0;
+    margin-bottom: 5px;
+}
+
+/* SECTION 4: WHY CHOOSE US */
+.why-choose-section {
+    padding: 120px 5%;
+    background: var(--bg-main);
+}
+
+.section-desc {
+    color: var(--text-light);
+    margin-top: 20px;
+}
+
+.why-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-top: 60px;
+}
+
+.why-card {
+    background: var(--bg-main);
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.why-card .img-box {
+    position: relative;
+    aspect-ratio: 9/16;
+    height: auto;
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+.why-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.6s var(--ease);
+}
+
+.why-card:hover img {
+    transform: rotateY(6deg) scale(1.04);
+    filter: brightness(1.1);
+}
+
+.card-icon {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    color: var(--accent);
+    font-size: 20px;
+}
+
+.card-icon:hover {
+    transform: translateX(-50%) rotate(10deg);
+}
+
+.card-content {
+    padding: 40px 20px 30px;
+}
+
+.card-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.stats-banner {
+    background: var(--bg-alt);
+    border-radius: 20px;
+    padding: 40px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.stat-item i {
+    font-size: 30px;
+    color: var(--accent);
+}
+
+.stat-num {
+    font-size: 2.5rem;
+    font-family: var(--font-serif);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+/* SECTION 5: FINAL CTA & FOOTER */
+.final-section {
+    background: var(--bg-alt);
+}
+
+.cta-wrap {
+    display: flex;
+    padding: 100px 5%;
+}
+
+.cta-image-col {
+    width: 40%;
+}
+
+.cta-image-col img {
+    border-radius: 20px;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cta-content-col {
+    width: 60%;
+    padding-left: 80px;
+}
+
+.cta-desc {
+    color: var(--text-light);
+    margin-bottom: 40px;
+    max-width: 500px;
+}
+
+.cta-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.cf-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.cf-item i {
+    font-size: 24px;
+    color: var(--accent);
+    background: rgba(176, 146, 112, 0.1);
+    padding: 15px;
+    border-radius: 50%;
+}
+
+.cf-item h5 {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.cf-item p {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.cta-action-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    transition: transform 0.4s var(--ease);
+}
+
+.cta-action-card:hover {
+    transform: translateY(-6px);
+}
+
+.action-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatars, .client-.testimonials-mini {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-right: 40px;
+    border-right: 1px solid rgba(0,0,0,0.05);
+}
+
+.quote-display {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    transition: all 0.4s ease-out;
+}
+
+.quote-display.animating {
+    opacity: 0;
+    filter: blur(4px);
+    transform: scale(0.98);
+}
+
+.role-display {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    transition: all 0.5s ease-out;
+}
+
+.role-display.animating {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.avatars-group {
+    display: flex;
+    gap: 12px;
+}
+
+.avatar-btn {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 40px;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.avatar-btn.active {
+    background: var(--text-dark);
+    padding: 4px 16px 4px 4px;
+}
+
+.avatar-btn img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.avatar-name {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.avatar-btn.active .avatar-name {
+    max-width: 150px;
+    opacity: 1;
+    margin-left: 8px;
+}
+
+.action-left h4 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.action-left p {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.action-right {
+    text-align: right;
+}
+
+.action-right .btn-solid {
+    border-radius: 30px;
+    margin-bottom: 15px;
+}
+
+.reviews {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 12px;
+}
+
+.stars {
+    color: #F5A623;
+}
+
+.stars span {
+    color: var(--text-light);
+    margin-left: 5px;
+}
+
+.footer-area {
+    padding: 60px 5% 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr 1.5fr;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.footer-col brand-col h2 {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.footer-col h3 {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.footer-col p {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons i {
+    font-size: 18px;
+    color: var(--text-dark);
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 10px;
+}
+
+.footer-col ul a {
+    text-decoration: none;
+    color: var(--text-light);
+    font-size: 13px;
+}
+
+.contact-item {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.newsletter-form {
+    display: flex;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    padding-bottom: 10px;
+}
+
+.newsletter-form input {
+    border: none;
+    background: transparent;
+    outline: none;
+    flex: 1;
+    font-family: var(--font-sans);
+}
+
+.newsletter-form button {
+    background: var(--accent);
+    color: var(--white);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.footer-bottom-links a {
+    text-decoration: none;
+    color: var(--text-light);
+    margin-left: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .hero-content { width: 100%; }
+    .booking-section { flex-direction: column; }
+    .booking-image-col, .booking-content-col { width: 100%; }
+    .why-cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .cta-wrap { flex-direction: column; }
+    .cta-image-col, .cta-content-col { width: 100%; padding-left: 0; }
+    .footer-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    /* ============================================ */
+    /* COMPLETE MOBILE RESPONSIVE — DEEP FIX        */
+    /* ============================================ */
+
+    /* --- GLOBAL RESET FOR MOBILE --- */
+    html, body {
+        overflow-x: hidden !important;
+        position: relative;
+        width: 100% !important;
+        max-width: 100vw !important;
+    }
+
+    * {
+        max-width: 100vw;
+    }
+
+    #smooth-wrapper,
+    #smooth-content {
+        overflow: visible !important;
+        width: 100% !important;
+        transform: none !important;
+    }
+
+    .title {
+        font-size: 2rem !important;
+        line-height: 1.2 !important;
+        word-break: break-word;
+    }
+
+    .section-header {
+        padding: 0 20px !important;
+    }
+
+    .section-desc {
+        font-size: 14px !important;
+        padding: 0 10px !important;
+    }
+
+    /* --- NAVBAR MOBILE --- */
+    .navbar-wrapper {
+        padding: 0 !important;
+    }
+
+    .navbar-container {
+        width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        padding: 12px 20px !important;
+    }
+
+    .navbar-logo a {
+        font-size: 16px !important;
+        letter-spacing: 3px !important;
+    }
+
+    /* --- HERO SECTION MOBILE --- */
+    .hero-section.immersive-hero {
+        height: 100vh !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        display: flex !important;
+        align-items: flex-start !important; /* Start from top */
+        justify-content: flex-start !important;
+    }
+
+    .hero-bg-full {
+        object-position: top center !important; /* Crop from bottom as requested */
+    }
+
+    .hero-content.left-box {
+        width: 100% !important;
+        height: auto !important;
+        padding: 120px 30px 40px !important; /* Push down below navbar */
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border-radius: 0 !important;
+        text-align: left !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        display: block !important;
+    }
+
+    .hero-btns-group {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        position: relative !important;
+        margin-top: 40px !important;
+        bottom: auto !important;
+        left: 0 !important;
+        opacity: 1 !important; /* VISIBLE on mobile */
+        z-index: 100000 !important; /* High z-index for mobile too */
+        pointer-events: auto !important;
+    }
+
+    .hero-btns-group button {
+        width: 220px !important;
+        height: auto !important;
+        padding: 16px 20px !important;
+        opacity: 1 !important;
+        background: #000 !important;
+        color: #fff !important;
+        border: 1px solid #000 !important;
+        border-radius: 4px !important;
+        font-size: 13px !important;
+        text-align: center !important;
+        visibility: visible !important;
+    }
+
+    .btn-outline-hero {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    /* --- SECTION 2: PROJECTS HORIZONTAL SCROLL --- */
+    .projects-section {
+        padding: 60px 0 !important;
+        overflow: visible !important;
+    }
+
+    .carousel-container {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding: 0 20px 30px !important;
+        margin-top: 30px !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+    }
+
+    .carousel-container::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .carousel-track {
+        display: flex !important;
+        gap: 15px !important;
+        padding: 0 !important;
+        transform: none !important;
+        width: max-content !important;
+        will-change: auto !important;
+    }
+
+    .project-card,\n    .project-card.side,\n    .project-card.active {\n        width: 75vw !important;\n        max-width: 75vw !important;\n        opacity: 1 !important;\n        transform: none !important;\n        scroll-snap-align: center !important;\n        flex-shrink: 0 !important;\n    }\n\n    .project-card .img-wrapper,\n    .project-card.side .img-wrapper,\n    .project-card.active .img-wrapper {\n        width: 100% !important;\n        height: auto !important;\n        aspect-ratio: 4/3 !important;\n        border-radius: 12px !important;\n        margin-bottom: 15px !important;\n    }\n\n    .project-card h3 {\n        font-size: 1rem !important;\n        margin-top: 8px !important;\n    }\n\n    .project-card p {\n        font-size: 10px !important;\n    }\n\n    /* --- SECTION 3: BOOKING FORM --- */\n    .booking-section {\n        padding: 60px 15px !important;\n    }\n\n    .booking-content-col {\n        width: 100% !important;\n        padding: 0 !important;\n    }\n\n    .booking-pre-title {\n        font-size: 13px !important;\n        padding: 0 10px !important;\n    }\n\n    .booking-desc {\n        font-size: 13px !important;\n        padding: 0 5px !important;\n    }\n\n    .booking-form-card {\n        padding: 25px 15px !important;\n        border-radius: 16px !important;\n    }\n\n    .form-header {\n        flex-direction: column !important;\n        gap: 10px !important;\n        align-items: flex-start !important;\n    }\n\n    .form-header h3 {\n        font-size: 1.2rem !important;\n    }\n\n    .form-grid {\n        flex-direction: column !important;\n        gap: 15px !important;\n    }\n\n    .pills-grid.date-pills {\n        grid-template-columns: repeat(3, 1fr) !important;\n        gap: 6px !important;\n    }\n\n    .pills-grid.time-pills {\n        grid-template-columns: repeat(2, 1fr) !important;\n        gap: 6px !important;\n    }\n\n    .pill {\n        padding: 8px 4px !important;\n    }\n\n    .pill strong {\n        font-size: 14px !important;\n    }\n\n    .pill-time {\n        padding: 8px 4px !important;\n        font-size: 10px !important;\n    }\n\n    .step-btns {\n        flex-direction: column !important;\n        gap: 10px !important;\n    }\n\n    .step-btns .btn-solid,\n    .step-btns .btn-outline {\n        width: 100% !important;\n        text-align: center !important;\n    }\n\n    .features-row {\n        flex-direction: column !important;\n        gap: 20px !important;\n        align-items: flex-start !important;\n        padding: 0 !important;\n    }\n\n    .feature-item {\n        width: 100% !important;\n    }\n\n    /* --- REVEAL (BEFORE/AFTER) SECTION --- */\n    .reveal-section {\n        padding: 60px 15px !important;\n    }\n\n    .reveal-container {\n        margin: 25px auto !important;\n    }\n\n    .reveal-wrapper {\n        aspect-ratio: 4/3 !important;\n        border-radius: 14px !important;\n    }\n\n    .reveal-label {\n        font-size: 8px !important;\n        padding: 5px 12px !important;\n        top: 15px !important;\n    }\n\n    .after-label { left: 15px !important; }\n    .before-label { right: 15px !important; }\n\n    .reveal-footer-stats {\n        flex-direction: column !important;\n        gap: 20px !important;\n        padding: 0 !important;\n        margin-top: 25px !important;\n    }\n\n    .reveal-stat span {\n        font-size: 24px !important;\n    }\n\n    .reveal-stat {\n        font-size: 10px !important;\n    }\n\n    /* --- SECTION 4: WHY CHOOSE US --- */\n    .why-choose-section {\n        padding: 60px 15px !important;\n    }\n\n    .why-cards-grid {\n        grid-template-columns: 1fr !important;\n        gap: 20px !important;\n        padding: 0 !important;\n        margin-top: 30px !important;\n    }\n\n    .why-card .img-box {\n        aspect-ratio: 16/9 !important;\n    }\n\n    .card-content {\n        padding: 30px 15px 20px !important;\n    }\n\n    .card-content h3 {\n        font-size: 1.1rem !important;\n    }\n\n    .card-content p {\n        font-size: 12px !important;\n    }\n\n    .stats-banner {\n        flex-direction: column !important;\n        gap: 30px !important;\n        padding: 30px 20px !important;\n        text-align: center !important;\n        margin-top: 30px !important;\n        border-radius: 14px !important;\n    }\n\n    .stat-item {\n        flex-direction: column !important;\n        gap: 8px !important;\n    }\n\n    .stat-num {\n        font-size: 2rem !important;\n    }\n\n    .stat-label {\n        font-size: 11px !important;\n    }\n\n    .stat-item i {\n        font-size: 22px !important;\n    }\n\n    /* --- SECTION 5: CTA --- */\n    .final-section {\n        overflow: hidden !important;\n    }\n\n    .cta-wrap {\n        flex-direction: column !important;\n        padding: 50px 15px !important;\n        gap: 30px !important;\n    }\n\n    .cta-image-col {\n        width: 100% !important;\n    }\n\n    .cta-image-col img {\n        border-radius: 14px !important;\n        max-height: 250px !important;\n        width: 100% !important;\n        object-fit: cover !important;\n    }\n\n    .cta-content-col {\n        width: 100% !important;\n        padding-left: 0 !important;\n    }\n\n    .cta-desc {\n        font-size: 13px !important;\n    }\n\n    .cta-features {\n        grid-template-columns: 1fr !important;\n        gap: 20px !important;\n        margin-bottom: 30px !important;\n    }\n\n    .cf-item i {\n        font-size: 18px !important;\n        padding: 10px !important;\n    }\n\n    .cf-item h5 {\n        font-size: 13px !important;\n    }\n\n    .cf-item p {\n        font-size: 11px !important;\n    }\n\n    .cta-action-card {\n        flex-direction: column !important;\n        gap: 25px !important;\n        padding: 25px 15px !important;\n        border-radius: 14px !important;\n    }\n\n    .testimonials-mini {\n        padding-right: 0 !important;\n        border-right: none !important;\n        border-bottom: 1px solid rgba(0,0,0,0.08) !important;\n        padding-bottom: 20px !important;\n        width: 100% !important;\n    }\n\n    .quote-display {\n        font-size: 1rem !important;\n    }\n\n    .avatars-group {\n        flex-wrap: wrap !important;\n        justify-content: center !important;\n        gap: 8px !important;\n    }\n\n    .avatar-btn img {\n        width: 28px !important;\n        height: 28px !important;\n    }\n\n    .action-right {\n        text-align: center !important;\n        width: 100% !important;\n    }\n\n    .action-right .btn-solid {\n        font-size: 11px !important;\n        padding: 14px 20px !important;\n        width: 100% !important;\n        border-radius: 25px !important;\n    }\n\n    .reviews {\n        justify-content: center !important;\n        flex-wrap: wrap !important;\n        gap: 8px !important;\n    }\n\n    .review-text {\n        font-size: 11px !important;\n    }\n\n    /* --- FOOTER --- */\n    .footer-area {\n        padding: 40px 15px 15px !important;\n    }\n\n    .footer-grid {\n        grid-template-columns: 1fr !important;\n        gap: 30px !important;\n        text-align: center !important;\n    }\n\n    .footer-col h2 {\n        font-size: 1.3rem !important;\n    }\n\n    .footer-col h3 {\n        font-size: 13px !important;\n    }\n\n    .footer-col p {\n        font-size: 12px !important;\n    }\n\n    .social-icons {\n        justify-content: center !important;\n    }\n\n    .contact-item {\n        justify-content: center !important;\n        font-size: 12px !important;\n    }\n\n    .newsletter-form {\n        max-width: 280px !important;\n        margin: 0 auto !important;\n    }\n\n    .footer-bottom {\n        flex-direction: column !important;\n        gap: 12px !important;\n        text-align: center !important;\n        padding-top: 15px !important;\n    }\n\n    .footer-bottom p {\n        font-size: 11px !important;\n    }\n\n    .footer-bottom-links {\n        display: flex !important;\n        justify-content: center !important;\n        gap: 15px !important;\n    }\n\n    .footer-bottom-links a {\n        margin: 0 !important;\n        font-size: 11px !important;\n    }\n}\n"
+},
+{
+  "path": "script.js",
+  "content": "document.addEventListener(\"DOMContentLoaded\", () => {\n    // --- INITIAL SETUP ---\n    gsap.registerPlugin(ScrollTrigger);\n\n    // Page Load Fade\n    gsap.to(\"body\", { opacity: 1, duration: 0.8, ease: \"power2.out\" });\n\n    // Initialize Lenis (Smooth Scroll) - Only for Desktop to prevent mobile shaking\n    let lenis;\n    if (typeof Lenis !== 'undefined' && window.innerWidth > 1024) {\n        lenis = new Lenis({\n            duration: 1.2,\n            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),\n            smoothWheel: true,\n        });\n\n        function raf(time) {\n            lenis.raf(time);\n            requestAnimationFrame(raf);\n        }\n        requestAnimationFrame(raf);\n    }\n\n    // Expose lenis or standard scroll globally for buttons\n    window.scrollToSection = (id) => {\n        const target = document.querySelector(id);\n        if (!target) return;\n        \n        if (lenis && window.innerWidth > 1024) {\n            lenis.scrollTo(target);\n        } else {\n            target.scrollIntoView({ behavior: \"smooth\" });\n        }\n        \n        // Close mobile menu if open\n        const mobileOverlay = document.querySelector('.mobile-menu-overlay');\n        if (mobileOverlay) mobileOverlay.classList.remove('active');\n    };\n\n    // --- GLOBAL ANIMATIONS ---\n    const easePremium = \"cubic-bezier(0.22, 1, 0.36, 1)\";\n\n    // --- NEW PREMIUM NAVBAR SCROLL & MOBILE LOGIC ---\n    const navbar = document.querySelector('.navbar-wrapper');\n    const mobileToggle = document.querySelector('.mobile-toggle');\n    const mobileOverlay = document.querySelector('.mobile-menu-overlay');\n    const closeMobileMenu = document.querySelector('.close-mobile-menu');\n    const mobileLinks = document.querySelectorAll('.mobile-menu-links a');\n\n    // Navbar scroll effect\n    window.addEventListener('scroll', () => {\n        if (window.scrollY > 50) {\n            navbar.classList.add('scrolled');\n        } else {\n            navbar.classList.remove('scrolled');\n        }\n    });\n\n    // Mobile menu toggle\n    if (mobileToggle) {\n        mobileToggle.addEventListener('click', () => {\n            mobileOverlay.classList.add('active');\n        });\n    }\n\n    if (closeMobileMenu) {\n        closeMobileMenu.addEventListener('click', () => {\n            mobileOverlay.classList.remove('active');\n        });\n    }\n\n    mobileLinks.forEach(link => {\n        link.addEventListener('click', () => {\n            mobileOverlay.classList.remove('active');\n        });\n    });\n\n    // --- SECTION 1: HERO ANIMATIONS ---\n    gsap.from(\".hero-text-wrap\", {\n        y: 60,\n        opacity: 0,\n        duration: 1.4,\n        ease: easePremium,\n        delay: 0.4\n    });\n\n    // --- SECTION 2: PROJECT CAROUSEL (3D EFFECT) ---\n    const track = document.querySelector('.carousel-track');\n    const cards = document.querySelectorAll('.project-card');\n    const nextBtn = document.querySelector('.nav-arrow:last-child');\n    const prevBtn = document.querySelector('.nav-arrow:first-child');\n    \n    let currentIndex = 4; // Start with center card active\n\n    function updateCarousel() {\n        if (!track) return;\n\n        // Desktop vs Mobile check\n        const isMobile = window.innerWidth <= 768;\n        \n        if (isMobile) {\n            // Mobile handled by CSS scroll-snap\n            return;\n        }\n\n        cards.forEach((card, index) => {\n            card.classList.remove('active', 'side');\n            if (index === currentIndex) {\n                card.classList.add('active');\n            } else {\n                card.classList.add('side');\n            }\n        });\n\n        // Center the active card\n        const shift = (currentIndex - 4) * (280 + 40);\n        track.style.transform = `translateX(${-shift}px)`;\n        \n        // Update info\n        const activeCard = cards[currentIndex];\n        const infoTitle = document.querySelector('.active-project-info h3');\n        const infoType = document.querySelector('.active-project-info p');\n        if (infoTitle && activeCard) {\n            infoTitle.textContent = activeCard.querySelector('h3').textContent;\n            infoType.textContent = activeCard.querySelector('p').textContent;\n        }\n    }\n\n    if (nextBtn) {\n        nextBtn.addEventListener('click', () => {\n            if (currentIndex < cards.length - 1) {\n                currentIndex++;\n                updateCarousel();\n            }\n        });\n    }\n\n    if (prevBtn) {\n        prevBtn.addEventListener('click', () => {\n            if (currentIndex > 0) {\n                currentIndex--;\n                updateCarousel();\n            }\n        });\n    }\n\n    // Initial call\n    updateCarousel();\n\n    // --- SECTION 3: BOOKING FORM — Much smoother reveal ---\n    const bookingSec = document.querySelector('.booking-section');\n    if (bookingSec) {\n        const formEls = bookingSec.querySelectorAll('.booking-pre-title, .title, .booking-desc, .booking-form-card, .feature-item');\n        \n        gsap.set(formEls, { opacity: 0, y: 30 });\n\n        ScrollTrigger.create({\n            trigger: bookingSec,\n            start: \"top 80%\",\n            onEnter: () => {\n                gsap.to(formEls, {\n                    opacity: 1,\n                    y: 0,\n                    duration: 1,\n                    stagger: 0.1,\n                    ease: \"power2.out\",\n                    overwrite: true\n                });\n            },\n            onLeaveBack: () => {\n                gsap.to(formEls, {\n                    opacity: 0,\n                    y: 30,\n                    duration: 0.8,\n                    stagger: 0.05,\n                    ease: \"power2.in\",\n                    overwrite: true\n                });\n            }\n        });\n    }\n\n    // MULTI-STEP LOGIC\n    const formSteps = document.querySelectorAll('.form-step');\n    const nextBtns = document.querySelectorAll('.next-step');\n    const prevBtns = document.querySelectorAll('.prev-step');\n    const dots = document.querySelectorAll('.dot');\n    const stepText = document.getElementById('step-text');\n\n    function showStep(step) {\n        formSteps.forEach(s => s.classList.remove('active'));\n        const stepEl = document.querySelector(`.form-step[data-step=\"${step}\"]`);\n        if (stepEl) stepEl.classList.add('active');\n        \n        dots.forEach(d => {\n            d.classList.remove('active');\n            if (parseInt(d.dataset.step) <= step) d.classList.add('active');\n        });\n        \n        if (stepText) stepText.textContent = `Step ${step} of 3`;\n    }\n\n    nextBtns.forEach(btn => {\n        btn.addEventListener('click', () => {\n            const currentStep = parseInt(btn.closest('.form-step').dataset.step);\n            if (currentStep < 3) showStep(currentStep + 1);\n        });\n    });\n\n    prevBtns.forEach(btn => {\n        btn.addEventListener('click', () => {\n            const currentStep = parseInt(btn.closest('.form-step').dataset.step);\n            if (currentStep > 1) showStep(currentStep - 1);\n        });\n    });\n\n    // Date Pill Selection\n    const datePillsContainer = document.getElementById('dynamic-date-pills');\n    if (datePillsContainer) {\n        const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];\n        const today = new Date();\n        \n        for (let i = 0; i < 5; i++) {\n            const date = new Date();\n            date.setDate(today.getDate() + i);\n            \n            const pill = document.createElement('div');\n            pill.className = 'pill' + (i === 0 ? ' active' : '');\n            pill.innerHTML = `<span>${days[date.getDay()]}</span><strong>${date.getDate()}</strong>`;\n            \n            pill.addEventListener('click', () => {\n                document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));\n                pill.classList.add('active');\n            });\n            \n            datePillsContainer.appendChild(pill);\n        }\n    }\n\n    const timePills = document.querySelectorAll('.pill-time');\n    timePills.forEach(pill => {\n        pill.addEventListener('click', () => {\n            timePills.forEach(p => p.classList.remove('active'));\n            pill.classList.add('active');\n        });\n    });\n\n    // --- REVEAL SECTION LOGIC ---\n    const revealWrapper = document.querySelector('.reveal-wrapper');\n    const beforeLayer = document.querySelector('.layer-before');\n    const handle = document.querySelector('.reveal-handle');\n\n    if (revealWrapper && beforeLayer && handle) {\n        let isDragging = false;\n\n        function move(x) {\n            const rect = revealWrapper.getBoundingClientRect();\n            let position = ((x - rect.left) / rect.width) * 100;\n            \n            if (position < 0) position = 0;\n            if (position > 100) position = 100;\n\n            beforeLayer.style.clipPath = `inset(0 ${100 - position}% 0 0)`;\n            handle.style.left = `${position}%`;\n        }\n\n        revealWrapper.addEventListener('mousedown', () => isDragging = true);\n        window.addEventListener('mouseup', () => isDragging = false);\n        window.addEventListener('mousemove', (e) => {\n            if (!isDragging) return;\n            move(e.pageX);\n        });\n\n        // Touch support\n        revealWrapper.addEventListener('touchstart', () => isDragging = true);\n        window.addEventListener('touchend', () => isDragging = false);\n        window.addEventListener('touchmove', (e) => {\n            if (!isDragging) return;\n            move(e.touches[0].pageX);\n        });\n\n        // Initial position\n        move(revealWrapper.getBoundingClientRect().left + revealWrapper.offsetWidth / 2);\n    }\n\n    // --- WHY CHOOSE US ANIMATIONS ---\n    gsap.from(\".why-card\", {\n        scrollTrigger: {\n            trigger: \".why-choose-section\",\n            start: \"top 70%\"\n        },\n        y: 50,\n        opacity: 0,\n        duration: 0.8,\n        stagger: 0.2,\n        ease: \"power2.out\"\n    });\n\n    // --- TESTIMONIAL CAROUSEL ---\n    const avatarBtns = document.querySelectorAll('.avatar-btn');\n    const quoteEl = document.getElementById('testimonial-quote');\n    const roleEl = document.getElementById('testimonial-role');\n\n    avatarBtns.forEach(btn => {\n        btn.addEventListener('click', () => {\n            avatarBtns.forEach(b => b.classList.remove('active'));\n            btn.classList.add('active');\n            \n            // Animate text change\n            gsap.to([quoteEl, roleEl], {\n                opacity: 0,\n                y: 10,\n                duration: 0.3,\n                onComplete: () => {\n                    quoteEl.textContent = `\"${btn.dataset.quote}\"`;\n                    roleEl.textContent = btn.dataset.role;\n                    gsap.to([quoteEl, roleEl], {\n                        opacity: 1,\n                        y: 0,\n                        duration: 0.4,\n                        ease: \"power2.out\"\n                    });\n                }\n            });\n        });\n    });\n\n});\n"
+}],message:
