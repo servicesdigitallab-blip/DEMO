@@ -499,20 +499,22 @@ button {
 
 .hero-btns-group {
     position: absolute !important;
-    bottom: 85px !important; /* Positioned exactly over image buttons */
-    left: 8.5% !important;
+    bottom: 80px !important; 
+    left: 8% !important;
     display: flex !important;
-    gap: 22px !important;
-    z-index: 100 !important;
-    opacity: 0 !important; /* Invisible but clickable */
+    gap: 20px !important;
+    z-index: 999 !important; /* Ensure it's on top of everything */
+    opacity: 0 !important; /* Invisible on laptop to match image */
+    pointer-events: auto !important;
 }
 
 .hero-btns-group button {
-    width: 175px !important; /* Matches image button width */
-    height: 55px !important; /* Matches image button height */
+    width: 180px !important; 
+    height: 60px !important; 
     background: transparent !important;
     border: none !important;
     cursor: pointer !important;
+    display: block !important;
 }
 
 .btn-solid-hero {
@@ -1670,15 +1672,33 @@ button {
     .hero-btns-group {
         display: flex !important;
         flex-direction: column !important;
-        gap: 12px !important;
-        margin-top: 150px !important;
+        gap: 15px !important;
+        position: relative !important;
+        margin-top: 40px !important;
+        bottom: auto !important;
+        left: 0 !important;
+        opacity: 1 !important; /* VISIBLE on mobile */
+        z-index: 100 !important;
+        pointer-events: auto !important;
     }
 
-    .btn-solid-hero, .btn-outline-hero {
-        width: 180px !important;
-        padding: 14px 20px !important;
-        font-size: 12px !important;
+    .hero-btns-group button {
+        width: 220px !important;
+        height: auto !important;
+        padding: 16px 20px !important;
+        opacity: 1 !important;
+        background: #000 !important;
+        color: #fff !important;
+        border: 1px solid #000 !important;
+        border-radius: 4px !important;
+        font-size: 13px !important;
         text-align: center !important;
+        visibility: visible !important;
+    }
+
+    .btn-outline-hero {
+        background: #fff !important;
+        color: #000 !important;
     }
 
     /* --- SECTION 2: PROJECTS HORIZONTAL SCROLL --- */
