@@ -499,12 +499,20 @@ button {
 
 .hero-btns-group {
     position: absolute !important;
-    bottom: 85px !important; /* Move to bottom to overlap image buttons */
+    bottom: 85px !important; /* Positioned exactly over image buttons */
     left: 8.5% !important;
     display: flex !important;
     gap: 22px !important;
     z-index: 100 !important;
-    opacity: 1 !important;
+    opacity: 0 !important; /* Invisible but clickable */
+}
+
+.hero-btns-group button {
+    width: 175px !important; /* Matches image button width */
+    height: 55px !important; /* Matches image button height */
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
 }
 
 .btn-solid-hero {
