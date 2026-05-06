@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Page Load Fade
     gsap.to("body", { opacity: 1, duration: 0.8, ease: "power2.out" });
 
-    // Initialize Lenis (Smooth Scroll)
+    // Initialize Lenis (Smooth Scroll) - Only for Desktop to prevent mobile shaking
     let lenis;
-    if (typeof Lenis !== 'undefined') {
+    if (typeof Lenis !== 'undefined' && window.innerWidth > 1024) {
         lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -60,27 +60,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Hero Section Animations
-    ScrollTrigger.create({
-        trigger: ".hero-section",
-        start: "top top",
-        onEnter: () => {
-            gsap.fromTo(".hero-title", { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 1.5, ease: "power4.out" });
-            gsap.fromTo(".hero-buttons", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: "power4.out", delay: 0.3 });
-        },
-        onEnterBack: () => {
-            gsap.fromTo(".hero-title", { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 1.5, ease: "power4.out" });
-            gsap.fromTo(".hero-buttons", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: "power4.out", delay: 0.3 });
-        },
-        onLeave: () => {
-            gsap.to(".hero-title", { x: -50, opacity: 0, duration: 0.5 });
-            gsap.to(".hero-buttons", { y: 40, opacity: 0, duration: 0.5 });
-        },
-        onLeaveBack: () => {
-            gsap.to(".hero-title", { x: -50, opacity: 0, duration: 0.5 });
-            gsap.to(".hero-buttons", { y: 40, opacity: 0, duration: 0.5 });
-        }
-    });
+    // Hero Section Animations - Only if elements exist
+    if (document.querySelector('.hero-label')) {
+        gsap.from(".hero-label", {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+            delay: 0.5
+        });
+    }
 
     // Hero Scroll Scale
     gsap.to(".hero-section", {
@@ -94,19 +83,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Mouse Parallax for Hero
-    if (window.innerWidth > 768) {
+    // Mouse Parallax for Hero - Desktop Only
+    if (window.innerWidth > 1024) {
         document.addEventListener("mousemove", (e) => {
             const { clientX, clientY } = e;
             const xPos = (clientX / window.innerWidth - 0.5);
             const yPos = (clientY / window.innerHeight - 0.5);
 
-            gsap.to(".hero-img", {
+            gsap.to(".hero-bg-full", {
                 x: xPos * 30,
                 y: yPos * 30,
-                rotateY: xPos * 2,
-                rotateX: -yPos * 2,
-                duration: 1.2,
+                duration: 1,
                 ease: "power2.out"
             });
         });
@@ -150,495 +137,253 @@ document.addEventListener("DOMContentLoaded", () => {
     // ============================================================
 
     // --- SECTION 2: PROJECT CARDS — stagger 0.1s each card, repeatable ---
-    const projectCards = document.querySelectorAll('.project-card');
-    if (projectCards.length > 0) {
-        gsap.set(projectCards, { y: 60, opacity: 0, scale: 0.94 });
-        ScrollTrigger.create({
-            trigger: '.projects-section',
-            start: 'top 75%',
-            onEnter: () => gsap.to(projectCards, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out' }),
-            onEnterBack: () => gsap.to(projectCards, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out' }),
-            onLeave: () => gsap.to(projectCards, { y: -60, opacity: 0, scale: 0.94, duration: 0.4, stagger: 0.05, ease: 'power2.in' }),
-            onLeaveBack: () => gsap.to(projectCards, { y: 60, opacity: 0, scale: 0.94, duration: 0.4, stagger: 0.05, ease: 'power2.in' })
-        });
-    }
-
-    // --- SECTION 2 HEADER: "Designing Spaces, Creating Experiences" word-by-word reveal ---
-    const sec2Header = document.querySelector('.projects-section .section-header');
-    if (sec2Header) {
-        const headingEl = sec2Header.querySelector('.title, h2');
-        if (headingEl) {
-            const words = headingEl.innerText.split(' ');
-            headingEl.innerHTML = words.map(w => `<span class="word-wrap"><span class="word">${w}</span></span>`).join(' ');
-            const wordEls = sec2Header.querySelectorAll('.word');
-            gsap.set(wordEls, { y: '110%', opacity: 0 });
-            
-            ScrollTrigger.create({
-                trigger: sec2Header,
-                start: 'top 85%',
-                onEnter: () => gsap.to(wordEls, { y: '0%', opacity: 1, duration: 1, stagger: 0.1, ease: 'power4.out', overwrite: 'auto' }),
-                onEnterBack: () => gsap.to(wordEls, { y: '0%', opacity: 1, duration: 1, stagger: 0.1, ease: 'power4.out', overwrite: 'auto' }),
-                onLeave: () => gsap.to(wordEls, { y: '-110%', opacity: 0, duration: 0.6, stagger: 0.05, ease: 'power2.in', overwrite: 'auto' }),
-                onLeaveBack: () => gsap.to(wordEls, { y: '110%', opacity: 0, duration: 0.6, stagger: 0.05, ease: 'power2.in', overwrite: 'auto' })
-            });
-        }
-        const subEl = sec2Header.querySelector('.section-desc, p');
-        if (subEl) {
-            gsap.set(subEl, { y: 30, opacity: 0 });
-            ScrollTrigger.create({
-                trigger: sec2Header,
-                start: 'top 83%',
-                onEnter: () => gsap.to(subEl, { y: 0, opacity: 1, duration: 1.2, delay: 0.4, ease: 'power3.out', overwrite: 'auto' }),
-                onEnterBack: () => gsap.to(subEl, { y: 0, opacity: 1, duration: 1.2, delay: 0.4, ease: 'power3.out', overwrite: 'auto' }),
-                onLeave: () => gsap.to(subEl, { y: -30, opacity: 0, duration: 0.5, overwrite: 'auto' }),
-                onLeaveBack: () => gsap.to(subEl, { y: 30, opacity: 0, duration: 0.5, overwrite: 'auto' })
-            });
-        }
-    }
-
-    // --- SECTION 3: BOOKING FORM — each element slides in with stagger ---
-    const formEls = document.querySelectorAll('.booking-section .booking-content-col > *, .form-grid > *, .input-group, .input-label, .date-picker-wrap, .pills-grid, .features-row .feature-item');
-    if (formEls.length > 0) {
-        gsap.set(formEls, { y: 40, opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.booking-section',
-            start: 'top 75%',
-            onEnter: () => gsap.to(formEls, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }),
-            onEnterBack: () => gsap.to(formEls, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }),
-            onLeave: () => gsap.to(formEls, { y: -40, opacity: 0, duration: 0.3, stagger: 0.03, ease: 'power2.in' }),
-            onLeaveBack: () => gsap.to(formEls, { y: 40, opacity: 0, duration: 0.3, stagger: 0.03, ease: 'power2.in' })
-        });
-    }
-
-    // --- SECTION 4: WHY CARDS — one by one reveal ---
-    const whyCardEls = document.querySelectorAll('.why-card');
-    if (whyCardEls.length > 0) {
-        gsap.set(whyCardEls, { y: 60, opacity: 0, scale: 0.92 });
-        ScrollTrigger.create({
-            trigger: '.why-choose-section',
-            start: 'top 75%',
-            onEnter: () => gsap.to(whyCardEls, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out' }),
-            onEnterBack: () => gsap.to(whyCardEls, { y: 0, opacity: 1, scale: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out' }),
-            onLeave: () => gsap.to(whyCardEls, { y: -60, opacity: 0, scale: 0.92, duration: 0.35, stagger: 0.05, ease: 'power2.in' }),
-            onLeaveBack: () => gsap.to(whyCardEls, { y: 60, opacity: 0, scale: 0.92, duration: 0.35, stagger: 0.05, ease: 'power2.in' })
-        });
-    }
-
-    // --- REVEAL SECTION header & wrapper ---
-    const revealSecEls = document.querySelectorAll('.reveal-section .section-header > *, .reveal-wrapper, .reveal-footer-stats .reveal-stat');
-    if (revealSecEls.length > 0) {
-        gsap.set(revealSecEls, { y: 50, opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.reveal-section',
-            start: 'top 78%',
-            onEnter: () => gsap.to(revealSecEls, { y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power3.out' }),
-            onEnterBack: () => gsap.to(revealSecEls, { y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power3.out' }),
-            onLeave: () => gsap.to(revealSecEls, { y: -50, opacity: 0, duration: 0.3, stagger: 0.04, ease: 'power2.in' }),
-            onLeaveBack: () => gsap.to(revealSecEls, { y: 50, opacity: 0, duration: 0.3, stagger: 0.04, ease: 'power2.in' })
-        });
-    }
-
-    // --- CTA & FOOTER generic reveal ---
-    ['cta-section', 'footer'].forEach(cls => {
-        const el = document.querySelector(`.${cls}`);
-        if (!el) return;
-        const items = el.querySelectorAll('.cta-content-col > *, .footer-col, .footer-bottom > *');
-        if (items.length > 0) {
-            gsap.set(items, { y: 40, opacity: 0 });
-            ScrollTrigger.create({
-                trigger: el,
-                start: 'top 80%',
-                onEnter: () => gsap.to(items, { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }),
-                onEnterBack: () => gsap.to(items, { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }),
-                onLeave: () => gsap.to(items, { y: -40, opacity: 0, duration: 0.3, stagger: 0.04 }),
-                onLeaveBack: () => gsap.to(items, { y: 40, opacity: 0, duration: 0.3, stagger: 0.04 })
-            });
+    gsap.from(".project-card", {
+        y: 60,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: ".projects-section",
+            start: "top 80%",
+            toggleActions: "play none none none"
         }
     });
 
-
-
-    // --- CAROUSEL SYSTEM ---
-    const track = document.querySelector('.carousel-track');
-    const cards = document.querySelectorAll('.project-card');
-    
-    if (track && window.innerWidth > 768) {
-        cards.forEach((card, index) => {
-            card.addEventListener('mouseenter', () => {
-                updateCarousel(index);
-            });
-        });
-
-        function updateCarousel(activeIndex) {
-            const container = document.querySelector('.carousel-container');
-            const track = document.querySelector('.carousel-track');
-            const activeCard = cards[activeIndex];
-
-            cards.forEach((card, i) => {
-                if (i === activeIndex) {
-                    card.classList.add('active');
-                    card.classList.remove('side');
-                    gsap.to(card, {
-                        scale: 1.1,
-                        y: -10,
-                        opacity: 1,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
-                } else {
-                    card.classList.remove('active');
-                    card.classList.add('side');
-                    gsap.to(card, {
-                        scale: 0.9,
-                        y: 0,
-                        opacity: 0.5,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
-                }
-            });
-
-            const containerRect = container.getBoundingClientRect();
-            const cardRect = activeCard.getBoundingClientRect();
-            const currentX = gsap.getProperty(track, "x") || 0;
-            const containerCenter = containerRect.left + containerRect.width / 2;
-            const cardCenter = cardRect.left + cardRect.width / 2;
-            const offset = containerCenter - cardCenter;
-            
-            gsap.to(track, {
-                x: currentX + offset,
-                duration: 0.8,
-                ease: "power4.out"
-            });
-        }
-        
-        updateCarousel(Math.floor(cards.length / 2));
-    }
-
-    // Stats Counter
-    const stats = document.querySelectorAll('.stat-num');
-    stats.forEach(stat => {
-        const text = stat.innerText;
-        const target = parseInt(text.replace(/\D/g, ''));
-        if(!isNaN(target)) {
-            ScrollTrigger.create({
-                trigger: stat,
-                start: "top 90%",
-                once: true,
-                onEnter: () => {
-                    gsap.fromTo(stat, { innerText: 0 }, {
-                        innerText: target,
-                        duration: 2.5,
-                        snap: { innerText: 1 },
-                        ease: "power2.out",
-                        onUpdate: function() {
-                            stat.innerHTML = Math.round(this.targets()[0].innerText) + text.replace(/[0-9]/g, '');
-                        }
-                    });
-                }
-            });
+    // --- SECTION 3: BOOKING FORM — slide up & subtle scale ---
+    gsap.from(".booking-form-card", {
+        y: 100,
+        scale: 0.95,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out",
+        scrollTrigger: {
+            trigger: ".booking-section",
+            start: "top 75%"
         }
     });
 
-    // --- GLOW EFFECT TRACKING ---
-    const glowCard = document.querySelector('.booking-form-card');
-    if (glowCard) {
-        glowCard.addEventListener('pointermove', (e) => {
-            const rect = glowCard.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            glowCard.style.setProperty('--x', `${x}px`);
-            glowCard.style.setProperty('--y', `${y}px`);
-        });
-    }
-
-    // --- AI DATE PICKER LOGIC ---
-    const dateInput = document.getElementById('ai-date-input');
-    const pillsContainer = document.getElementById('dynamic-date-pills');
-    
-    if (dateInput && pillsContainer) {
-        // Set default date to today
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-        
-        const triggerChange = () => {
-            const event = new Event('change');
-            dateInput.dispatchEvent(event);
-        };
-        
-        triggerChange();
-        
-        dateInput.addEventListener('change', (e) => {
-            const date = new Date(e.target.value);
-            if (!isNaN(date)) {
-                // Clear and update pills
-                pillsContainer.innerHTML = '';
-                
-                // Show selected date and surrounding dates
-                for (let i = -2; i <= 2; i++) {
-                    const d = new Date(date);
-                    d.setDate(d.getDate() + i);
-                    
-                    const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
-                    const dayNum = d.getDate().toString().padStart(2, '0');
-                    const isActive = i === 0 ? 'active' : '';
-                    
-                    const pill = document.createElement('div');
-                    pill.className = `pill ${isActive}`;
-                    pill.innerHTML = `<span>${dayName}</span><strong>${dayNum}</strong>`;
-                    
-                    pill.addEventListener('click', () => {
-                        document.querySelectorAll('#dynamic-date-pills .pill').forEach(p => p.classList.remove('active'));
-                        pill.classList.add('active');
-                    });
-                    
-                    pillsContainer.appendChild(pill);
-                }
-            }
-        });
-    }
-
-    // Form Pills Interaction for static elements
-    const staticDatePills = document.querySelectorAll('.date-pills:not(#dynamic-date-pills) .pill');
-    staticDatePills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            staticDatePills.forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-        });
+    // --- SECTION 4: WHY CHOOSE US — cards stagger reveal ---
+    gsap.from(".why-card", {
+        y: 80,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: ".why-cards-grid",
+            start: "top 85%"
+        }
     });
 
-    const timePills = document.querySelectorAll('.time-pills .pill-time');
-    timePills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            timePills.forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-        });
+    // --- SECTION 5: FINAL CTA — image and content reveal ---
+    gsap.from(".cta-image-col", {
+        x: -60,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: ".cta-wrap",
+            start: "top 80%"
+        }
     });
 
-    // --- TRANSFORMATION REVEAL ---
+    gsap.from(".cta-content-col > *", {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+            trigger: ".cta-wrap",
+            start: "top 80%"
+        }
+    });
+
+    // --- FOOTER STAGGER ---
+    gsap.from(".footer-col", {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: ".footer-area",
+            start: "top 90%"
+        }
+    });
+
+    // --- REVEAL SECTION DRAGGABLE LOGIC ---
     const revealWrapper = document.querySelector('.reveal-wrapper');
-    const layerClear = document.querySelector('.layer-clear');
+    const handle = document.querySelector('.reveal-handle');
     const layerBefore = document.querySelector('.layer-before');
-    const revealHandle = document.querySelector('.reveal-handle');
+    let isDragging = false;
 
-    if (revealWrapper && layerClear && layerBefore && revealHandle) {
-        let isDragging = false;
-        let currentX = 0;
-        let isTicking = false;
-
-        const updateReveal = () => {
-            const rect = revealWrapper.getBoundingClientRect();
-            // Safeguard against 0 width
-            if (rect.width === 0) {
-                isTicking = false;
-                return;
-            }
-            let pos = ((currentX - rect.left) / rect.width) * 100;
-            pos = Math.max(0, Math.min(100, pos));
-
-            // Move handle
-            revealHandle.style.left = `${pos}%`;
-
-            // Reveal Layer 1 (Clear After) on the left
-            layerClear.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
-
-            // Clip Layer 2 (Before) from the left
-            layerBefore.style.clipPath = `inset(0 0 0 ${pos}%)`;
-            
-            isTicking = false;
-        };
-
-        const onMove = (x, y) => {
-            if (isDragging) {
-                currentX = x;
-                if (!isTicking) {
-                    window.requestAnimationFrame(updateReveal);
-                    isTicking = true;
-                }
-            }
-        };
-
-        revealWrapper.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            // Prevent default image drag or text selection
-            e.preventDefault();
-            onMove(e.clientX, e.clientY);
-        });
+    function updateReveal(x) {
+        const rect = revealWrapper.getBoundingClientRect();
+        let position = ((x - rect.left) / rect.width) * 100;
+        position = Math.max(0, Math.min(100, position));
         
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-        
+        handle.style.left = `${position}%`;
+        layerBefore.style.clipPath = `inset(0 0 0 ${position}%)`;
+    }
+
+    if (revealWrapper) {
+        revealWrapper.addEventListener('mousedown', () => isDragging = true);
+        window.addEventListener('mouseup', () => isDragging = false);
         window.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                e.preventDefault();
-                onMove(e.clientX, e.clientY);
-            }
+            if (!isDragging) return;
+            updateReveal(e.clientX);
         });
 
         // Touch support
         revealWrapper.addEventListener('touchstart', (e) => {
             isDragging = true;
-            // Prevent scrolling while dragging the slider
-            if(e.cancelable) e.preventDefault();
-            onMove(e.touches[0].clientX, e.touches[0].clientY);
-        }, { passive: false });
-        
-        window.addEventListener('touchend', () => {
-            isDragging = false;
+            updateReveal(e.touches[0].clientX);
         });
-        
+        window.addEventListener('touchend', () => isDragging = false);
         window.addEventListener('touchmove', (e) => {
-            if (isDragging) {
-                if(e.cancelable) e.preventDefault();
-                onMove(e.touches[0].clientX, e.touches[0].clientY);
-            }
-        }, { passive: false });
-
-        // Initialize slider position robustly
-        const initSlider = () => {
-            const rect = revealWrapper.getBoundingClientRect();
-            currentX = rect.left + rect.width / 2;
-            updateReveal();
-        };
-
-        // Run init immediately, and also on load to ensure images are calculated
-        initSlider();
-        window.addEventListener('load', initSlider);
-        window.addEventListener('resize', initSlider);
-        setTimeout(initSlider, 500);
+            if (!isDragging) return;
+            updateReveal(e.touches[0].clientX);
+        });
     }
 
-    // --- SECTION 5 TESTIMONIALS ---
-    const avatarBtns = document.querySelectorAll('.avatar-btn');
-    const quoteDisplay = document.getElementById('testimonial-quote');
-    const roleDisplay = document.getElementById('testimonial-role');
-    
-    if (avatarBtns.length > 0 && quoteDisplay && roleDisplay) {
-        avatarBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (btn.classList.contains('active')) return;
-                
-                // Add animating class for fade/blur
-                quoteDisplay.classList.add('animating');
-                roleDisplay.classList.add('animating');
-                
-                setTimeout(() => {
-                    // Update content
-                    avatarBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    
-                    quoteDisplay.innerText = `"${btn.dataset.quote}"`;
-                    roleDisplay.innerText = btn.dataset.role;
-                    
-                    // Remove animating class
-                    setTimeout(() => {
-                        quoteDisplay.classList.remove('animating');
-                        roleDisplay.classList.remove('animating');
-                    }, 50);
-                }, 250);
+    // --- BOOKING FORM MULTI-STEP LOGIC ---
+    const form = document.getElementById('multi-step-form');
+    const steps = document.querySelectorAll('.form-step');
+    const dots = document.querySelectorAll('.dot');
+    const stepText = document.getElementById('step-text');
+    let currentStep = 1;
+
+    function goToStep(step) {
+        steps.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        
+        document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+        document.querySelector(`.dot[data-step="${step}"]`).classList.add('active');
+        
+        stepText.innerText = `Step ${step} of 3`;
+        currentStep = step;
+        
+        // Scroll to form top if needed
+        document.querySelector('.booking-form-card').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+    }
+
+    document.querySelectorAll('.next-step').forEach(btn => {
+        btn.addEventListener('click', () => goToStep(currentStep + 1));
+    });
+
+    document.querySelectorAll('.prev-step').forEach(btn => {
+        btn.addEventListener('click', () => goToStep(currentStep - 1));
+    });
+
+    // Pill selection logic
+    document.querySelectorAll('.pill, .pill-time').forEach(pill => {
+        pill.addEventListener('click', function() {
+            const siblings = this.parentElement.querySelectorAll('.pill, .pill-time');
+            siblings.forEach(s => s.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Form Submission Success Popup
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Create popup element
+            const popup = document.createElement('div');
+            popup.className = 'thanks-popup-overlay show';
+            popup.innerHTML = `
+                <div class="thanks-card">
+                    <i class="fas fa-check-circle"></i>
+                    <h2>Booking Successful!</h2>
+                    <p>Thank you for choosing DEMO. We have received your request and our design team will contact you shortly to confirm your appointment.</p>
+                    <button class="btn-close-popup">Great, Thanks!</button>
+                </div>
+            `;
+            document.body.appendChild(popup);
+            
+            // Close popup logic
+            popup.querySelector('.btn-close-popup').addEventListener('click', () => {
+                popup.classList.remove('show');
+                setTimeout(() => popup.remove(), 600);
+                form.reset();
+                goToStep(1);
             });
         });
     }
 
-    // --- MULTI-STEP FORM LOGIC ---
-    const multiStepForm = document.getElementById('multi-step-form');
-    const formSteps = document.querySelectorAll('.form-step');
-    const stepDots = document.querySelectorAll('.steps .dot');
-    const stepText = document.getElementById('step-text');
-    let currentStepIndex = 1;
-
-    const updateStepUI = (step) => {
-        formSteps.forEach(s => s.classList.remove('active'));
-        document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+    // Generate dynamic date pills
+    const datePillsContainer = document.getElementById('dynamic-date-pills');
+    if (datePillsContainer) {
+        const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
         
-        stepDots.forEach(dot => {
-            if (parseInt(dot.dataset.step) <= step) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
-        });
-        
-        stepText.innerText = `Step ${step} of 3`;
-        currentStepIndex = step;
-    };
+        for (let i = 0; i < 5; i++) {
+            const date = new Date();
+            date.setDate(date.getDate() + i);
+            
+            const pill = document.createElement('div');
+            pill.className = `pill ${i === 1 ? 'active' : ''}`;
+            pill.innerHTML = `
+                <span>${days[date.getDay()]}</span>
+                <strong>${date.getDate()}</strong>
+            `;
+            datePillsContainer.appendChild(pill);
+            
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.date-pills .pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+            });
+        }
+    }
 
-    document.querySelectorAll('.next-step').forEach(btn => {
+    // Premium Testimonial Switcher
+    const testimonialData = [
+        { quote: "This changed everything for me.", author: "Sarah Chen", role: "DESIGNER AT FIGMA" },
+        { quote: "Simply brilliant. Nothing else compares.", author: "Marcus Johnson", role: "ENGINEER AT VERCEL" },
+        { quote: "The attention to detail is unmatched.", author: "Elena Rodriguez", role: "FOUNDER AT CRAFT" }
+    ];
+
+    const avatarBtns = document.querySelectorAll('.avatar-btn');
+    const quoteDisplay = document.getElementById('testimonial-quote');
+    const roleDisplay = document.getElementById('testimonial-role');
+
+    avatarBtns.forEach((btn, index) => {
         btn.addEventListener('click', () => {
-            if (currentStepIndex < 3) {
-                updateStepUI(currentStepIndex + 1);
-            }
+            avatarBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Animate text change
+            gsap.to([quoteDisplay, roleDisplay], {
+                opacity: 0,
+                y: 10,
+                duration: 0.3,
+                onComplete: () => {
+                    quoteDisplay.innerText = `"${testimonialData[index].quote}"`;
+                    roleDisplay.innerText = testimonialData[index].role;
+                    gsap.to([quoteDisplay, roleDisplay], {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.5,
+                        ease: "back.out(1.7)"
+                    });
+                }
+            });
         });
     });
 
-    document.querySelectorAll('.prev-step').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (currentStepIndex > 1) {
-                updateStepUI(currentStepIndex - 1);
-            }
-        });
-    });
-
-    // Success Popup Helper
-    const showSuccessPopup = () => {
-        const overlay = document.createElement('div');
-        overlay.className = 'thanks-popup-overlay show';
-        overlay.innerHTML = `
-            <div class="thanks-card">
-                <i class="fas fa-check-circle"></i>
-                <h2>Thanks!</h2>
-                <p>apko hamri traf sa confrim email jald recive ho gi</p>
-                <button class="btn-close-popup">Close</button>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-        
-        overlay.querySelector('.btn-close-popup').addEventListener('click', () => {
-            overlay.classList.remove('show');
-            setTimeout(() => overlay.remove(), 300);
-            // Reset form
-            multiStepForm.reset();
-            updateStepUI(1);
-        });
-    };
-
-    if (multiStepForm) {
-        multiStepForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            showSuccessPopup();
+    // Spotlight effect for the booking card
+    const card = document.querySelector('.booking-form-card');
+    if (card) {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--x', `${x}px`);
+            card.style.setProperty('--y', `${y}px`);
         });
     }
 
-    // --- ANCHOR LINK SMOOTH SCROLL ---
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetEl = document.querySelector(targetId);
-            if (targetEl) {
-                if (lenis) {
-                    lenis.scrollTo(targetEl);
-                } else {
-                    targetEl.scrollIntoView({ behavior: 'smooth' });
-                }
-                
-                // Update active state in nav
-                document.querySelectorAll('.navbar-menu a').forEach(a => a.classList.remove('active'));
-                this.classList.add('active');
-            }
-        });
-    });
-
-    // Navbar background change
-    window.addEventListener('scroll', () => {
-        const navbar = document.querySelector('.navbar-wrapper');
-        if (navbar && window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else if (navbar) {
-            navbar.classList.remove('scrolled');
-        }
-    });
 });
