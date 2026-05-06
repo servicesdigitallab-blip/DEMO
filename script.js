@@ -1,17 +1,35 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // LENIS SMOOTH SCROLL
-    const lenis = new Lenis();
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
+document.addEventListener("DOMContentLoaded", () => {
+    // --- INITIAL SETUP ---
+    gsap.registerPlugin(ScrollTrigger);
 
-    // Initial Fade In
-    gsap.to('body', { opacity: 1, duration: 1, ease: 'power2.out' });
+    // Page Load Fade
+    gsap.to("body", { opacity: 1, duration: 0.8, ease: "power2.out" });
 
-    // NAVBAR SCROLL EFFECT
+    // Initialize Lenis (Smooth Scroll) - Only for Desktop to prevent mobile shaking
+    let lenis;
+    if (typeof Lenis !== 'undefined' && window.innerWidth > 1024) {
+        lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+    }
+
+    // --- GLOBAL ANIMATIONS ---
+    const easePremium = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+    // --- NEW PREMIUM NAVBAR SCROLL & MOBILE LOGIC ---
     const navbar = document.querySelector('.navbar-wrapper');
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const mobileOverlay = document.querySelector('.mobile-menu-overlay');
+    const closeMobile = document.querySelector('.close-mobile-menu');
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -19,12 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.classList.remove('scrolled');
         }
     });
-
-    // MOBILE MENU
-    const mobileToggle = document.querySelector('.mobile-toggle');
-    const mobileOverlay = document.querySelector('.mobile-menu-overlay');
-    const closeMobile = document.querySelector('.close-mobile-menu');
-    const mobileLinks = document.querySelectorAll('.mobile-menu-links a');
 
     if (mobileToggle) {
         mobileToggle.addEventListener('click', () => {
@@ -40,18 +52,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    mobileLinks.forEach(link => {
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-menu-links a').forEach(link => {
         link.addEventListener('click', () => {
             mobileOverlay.classList.remove('active');
             document.body.style.overflow = 'auto';
         });
     });
 
-    // HERO PARALLAX (Only if elements exist)
-    if (window.innerWidth > 768) {
-        const hero = document.querySelector('.immersive-hero');
-        if (hero) {
-        hero.addEventListener('mousemove', (e) => {
+    if (document.querySelector('.hero-title')) {
+        gsap.from(".hero-title", {
+            x: -50,
+            opacity: 0,
+            duration: 1.5,
+            ease: "power4.out",
+            delay: 0.7
+        });
+    }
+
+    if (document.querySelector('.hero-btns-group')) {
+        gsap.from(".hero-btns-group", {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+            delay: 1.2
+        });
+    }
+
+    // Hero Scroll Scale
+    gsap.to(".hero-section", {
+        scale: 0.98,
+        borderRadius: "20px",
+        scrollTrigger: {
+            trigger: ".hero-section",
+            start: "top top",
+            end: "bottom top",
+            scrub: true
+        }
+    });
+
+    // Mouse Parallax for Hero - Desktop Only
+    if (window.innerWidth > 1024) {
+        document.addEventListener("mousemove", (e) => {
             const { clientX, clientY } = e;
             const xPos = (clientX / window.innerWidth - 0.5);
             const yPos = (clientY / window.innerHeight - 0.5);
@@ -63,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 ease: "power2.out"
             });
         });
-    }
     }
 
     // Section 4: 3D Image Angle Change on Hover
@@ -299,159 +341,278 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- MULTI-STEP FORM ---
-    const formSteps = document.querySelectorAll('.form-step');
-    const nextBtns = document.querySelectorAll('.next-step');
-    const prevBtns = document.querySelectorAll('.prev-step');
-    const dots = document.querySelectorAll('.dot');
-    const stepText = document.getElementById('step-text');
-    let currentStep = 1;
-
-    function updateFormSteps() {
-        formSteps.forEach(step => {
-            step.classList.remove('active');
-            if (parseInt(step.dataset.step) === currentStep) {
-                step.classList.add('active');
-            }
-        });
-        dots.forEach(dot => {
-            dot.classList.remove('active');
-            if (parseInt(dot.dataset.step) <= currentStep) {
-                dot.classList.add('active');
-            }
-        });
-        stepText.innerText = `Step ${currentStep} of 3`;
-    }
-
-    nextBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (currentStep < 3) {
-                currentStep++;
-                updateFormSteps();
-            }
-        });
-    });
-
-    prevBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (currentStep > 1) {
-                currentStep--;
-                updateFormSteps();
-            }
-        });
-    });
-
-    // Date Pills Generator
-    const dynamicDatePills = document.getElementById('dynamic-date-pills');
-    if (dynamicDatePills) {
-        const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-        const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-        const today = new Date();
+    // --- AI DATE PICKER LOGIC ---
+    const dateInput = document.getElementById('ai-date-input');
+    const pillsContainer = document.getElementById('dynamic-date-pills');
+    
+    if (dateInput && pillsContainer) {
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
         
-        for (let i = 0; i < 5; i++) {
-            const date = new Date();
-            date.setDate(today.getDate() + i);
-            const pill = document.createElement('div');
-            pill.className = `pill ${i === 2 ? 'active' : ''}`;
-            pill.innerHTML = `<span>${days[date.getDay()]}</span><strong>${date.getDate()}</strong><span>${months[date.getMonth()]}</span>`;
-            dynamicDatePills.appendChild(pill);
-            
-            pill.addEventListener('click', () => {
-                document.querySelectorAll('.date-pills .pill').forEach(p => p.classList.remove('active'));
-                pill.classList.add('active');
-            });
-        }
+        const triggerChange = () => {
+            const event = new Event('change');
+            dateInput.dispatchEvent(event);
+        };
+        
+        triggerChange();
+        
+        dateInput.addEventListener('change', (e) => {
+            const date = new Date(e.target.value);
+            if (!isNaN(date)) {
+                // Clear and update pills
+                pillsContainer.innerHTML = '';
+                
+                // Show selected date and surrounding dates
+                for (let i = -2; i <= 2; i++) {
+                    const d = new Date(date);
+                    d.setDate(d.getDate() + i);
+                    
+                    const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
+                    const dayNum = d.getDate().toString().padStart(2, '0');
+                    const isActive = i === 0 ? 'active' : '';
+                    
+                    const pill = document.createElement('div');
+                    pill.className = `pill ${isActive}`;
+                    pill.innerHTML = `<span>${dayName}</span><strong>${dayNum}</strong>`;
+                    
+                    pill.addEventListener('click', () => {
+                        document.querySelectorAll('#dynamic-date-pills .pill').forEach(p => p.classList.remove('active'));
+                        pill.classList.add('active');
+                    });
+                    
+                    pillsContainer.appendChild(pill);
+                }
+            }
+        });
     }
 
-    // Time Pills Interaction
-    document.querySelectorAll('.pill-time').forEach(pill => {
+    // Form Pills Interaction for static elements
+    const staticDatePills = document.querySelectorAll('.date-pills:not(#dynamic-date-pills) .pill');
+    staticDatePills.forEach(pill => {
         pill.addEventListener('click', () => {
-            document.querySelectorAll('.pill-time').forEach(p => p.classList.remove('active'));
+            staticDatePills.forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
         });
     });
 
-    // Form Submission
-    const bookingForm = document.getElementById('multi-step-form');
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Show Success Popup
-            const popup = document.createElement('div');
-            popup.className = 'thanks-popup-overlay show';
-            popup.innerHTML = `
-                <div class="thanks-card">
-                    <i class="fas fa-check-circle"></i>
-                    <h2>Thank You!</h2>
-                    <p>Your booking request has been received. Our design team will contact you shortly to confirm your appointment.</p>
-                    <button class="btn-close-popup">Back to Home</button>
-                </div>
-            `;
-            document.body.appendChild(popup);
+    const timePills = document.querySelectorAll('.time-pills .pill-time');
+    timePills.forEach(pill => {
+        pill.addEventListener('click', () => {
+            timePills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+        });
+    });
+
+    // --- TRANSFORMATION REVEAL ---
+    const revealWrapper = document.querySelector('.reveal-wrapper');
+    const layerClear = document.querySelector('.layer-clear');
+    const layerBefore = document.querySelector('.layer-before');
+    const revealHandle = document.querySelector('.reveal-handle');
+
+    if (revealWrapper && layerClear && layerBefore && revealHandle) {
+        let isDragging = false;
+        let currentX = 0;
+        let isTicking = false;
+
+        const updateReveal = () => {
+            const rect = revealWrapper.getBoundingClientRect();
+            // Safeguard against 0 width
+            if (rect.width === 0) {
+                isTicking = false;
+                return;
+            }
+            let pos = ((currentX - rect.left) / rect.width) * 100;
+            pos = Math.max(0, Math.min(100, pos));
+
+            // Move handle
+            revealHandle.style.left = `${pos}%`;
+
+            // Reveal Layer 1 (Clear After) on the left
+            layerClear.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+
+            // Clip Layer 2 (Before) from the left
+            layerBefore.style.clipPath = `inset(0 0 0 ${pos}%)`;
             
-            popup.querySelector('.btn-close-popup').addEventListener('click', () => {
-                popup.classList.remove('show');
-                setTimeout(() => popup.remove(), 600);
+            isTicking = false;
+        };
+
+        const onMove = (x, y) => {
+            if (isDragging) {
+                currentX = x;
+                if (!isTicking) {
+                    window.requestAnimationFrame(updateReveal);
+                    isTicking = true;
+                }
+            }
+        };
+
+        revealWrapper.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            // Prevent default image drag or text selection
+            e.preventDefault();
+            onMove(e.clientX, e.clientY);
+        });
+        
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+                onMove(e.clientX, e.clientY);
+            }
+        });
+
+        // Touch support
+        revealWrapper.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            // Prevent scrolling while dragging the slider
+            if(e.cancelable) e.preventDefault();
+            onMove(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: false });
+        
+        window.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+        
+        window.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                if(e.cancelable) e.preventDefault();
+                onMove(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: false });
+
+        // Initialize slider position robustly
+        const initSlider = () => {
+            const rect = revealWrapper.getBoundingClientRect();
+            currentX = rect.left + rect.width / 2;
+            updateReveal();
+        };
+
+        // Run init immediately, and also on load to ensure images are calculated
+        initSlider();
+        window.addEventListener('load', initSlider);
+        window.addEventListener('resize', initSlider);
+        setTimeout(initSlider, 500);
+    }
+
+    // --- SECTION 5 TESTIMONIALS ---
+    const avatarBtns = document.querySelectorAll('.avatar-btn');
+    const quoteDisplay = document.getElementById('testimonial-quote');
+    const roleDisplay = document.getElementById('testimonial-role');
+    
+    if (avatarBtns.length > 0 && quoteDisplay && roleDisplay) {
+        avatarBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+                
+                // Add animating class for fade/blur
+                quoteDisplay.classList.add('animating');
+                roleDisplay.classList.add('animating');
+                
+                setTimeout(() => {
+                    // Update content
+                    avatarBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    quoteDisplay.innerText = `"${btn.dataset.quote}"`;
+                    roleDisplay.innerText = btn.dataset.role;
+                    
+                    // Remove animating class
+                    setTimeout(() => {
+                        quoteDisplay.classList.remove('animating');
+                        roleDisplay.classList.remove('animating');
+                    }, 50);
+                }, 250);
             });
         });
     }
 
-    // TESTIMONIALS SYSTEM
-    const avatarBtns = document.querySelectorAll('.avatar-btn');
-    const quoteDisplay = document.getElementById('testimonial-quote');
-    const roleDisplay = document.getElementById('testimonial-role');
+    // --- MULTI-STEP FORM LOGIC ---
+    const multiStepForm = document.getElementById('multi-step-form');
+    const formSteps = document.querySelectorAll('.form-step');
+    const stepDots = document.querySelectorAll('.steps .dot');
+    const stepText = document.getElementById('step-text');
+    let currentStepIndex = 1;
 
-    avatarBtns.forEach(btn => {
-        btn.addEventListener('mouseenter', () => {
-            if (btn.classList.contains('active')) return;
-            
-            // Animation out
-            quoteDisplay.classList.add('animating');
-            roleDisplay.classList.add('animating');
-            
-            setTimeout(() => {
-                avatarBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                quoteDisplay.innerText = `"${btn.dataset.quote}"`;
-                roleDisplay.innerText = btn.dataset.role;
-                
-                // Animation in
-                quoteDisplay.classList.remove('animating');
-                roleDisplay.classList.remove('animating');
-            }, 300);
+    const updateStepUI = (step) => {
+        formSteps.forEach(s => s.classList.remove('active'));
+        document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+        
+        stepDots.forEach(dot => {
+            if (parseInt(dot.dataset.step) <= step) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+        
+        stepText.innerText = `Step ${step} of 3`;
+        currentStepIndex = step;
+    };
+
+    document.querySelectorAll('.next-step').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (currentStepIndex < 3) {
+                updateStepUI(currentStepIndex + 1);
+            }
         });
     });
 
-    // BEFORE/AFTER DRAG
-    const revealWrapper = document.querySelector('.reveal-wrapper');
-    const beforeLayer = document.querySelector('.layer-before');
-    const handle = document.querySelector('.reveal-handle');
-    let isDragging = false;
+    document.querySelectorAll('.prev-step').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (currentStepIndex > 1) {
+                updateStepUI(currentStepIndex - 1);
+            }
+        });
+    });
 
-    if (revealWrapper) {
-        function updateReveal(x) {
-            const rect = revealWrapper.getBoundingClientRect();
-            let position = ((x - rect.left) / rect.width) * 100;
-            position = Math.max(0, Math.min(100, position));
+    if (multiStepForm) {
+        multiStepForm.addEventListener('submit', (e) => {
+            e.preventDefault();
             
-            beforeLayer.style.clipPath = `inset(0 ${100 - position}% 0 0)`;
-            handle.style.left = `${position}%`;
-        }
-
-        revealWrapper.addEventListener('mousedown', () => isDragging = true);
-        window.addEventListener('mouseup', () => isDragging = false);
-        window.addEventListener('mousemove', (e) => {
-            if (isDragging) updateReveal(e.clientX);
+            // Hide form and header
+            const formHeader = document.querySelector('.booking-form-card .form-header');
+            if (formHeader) formHeader.style.display = 'none';
+            multiStepForm.style.display = 'none';
+            
+            // Show success message inside the card
+            const successMsg = document.getElementById('form-success');
+            if (successMsg) successMsg.style.display = 'block';
         });
-        
-        revealWrapper.addEventListener('touchstart', () => isDragging = true);
-        window.addEventListener('touchend', () => isDragging = false);
-        window.addEventListener('touchmove', (e) => {
-            if (isDragging) updateReveal(e.touches[0].clientX);
-        });
-
-        // Set initial position
-        updateReveal(revealWrapper.getBoundingClientRect().left + revealWrapper.offsetWidth / 2);
     }
+
+    // --- ANCHOR LINK SMOOTH SCROLL ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetEl = document.querySelector(targetId);
+            if (targetEl) {
+                if (lenis) {
+                    lenis.scrollTo(targetEl);
+                } else {
+                    targetEl.scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                // Update active state in nav
+                document.querySelectorAll('.navbar-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            }
+        });
+    });
+
+    // Navbar background change
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar-wrapper');
+        if (navbar && window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else if (navbar) {
+            navbar.classList.remove('scrolled');
+        }
+    });
 });

@@ -42,7 +42,7 @@
             </div>
         </div>
     </nav>
-
+    
     <!-- MOBILE MENU OVERLAY -->
     <div class="mobile-menu-overlay">
         <button class="close-mobile-menu">&times;</button>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="hero-content left-box">
                     <div class="hero-text-wrap">
-                        <!-- Heading text is in the background image -->
+                        <!-- Text is already in the background image as per screenshot -->
                         <div class="hero-btns-group">
                             <button class="btn-solid-hero" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">VIEW OUR WORK</button>
                             <button class="btn-outline-hero" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">GET IN TOUCH</button>
@@ -245,6 +245,13 @@
                             </div>
                         </div>
                         </form>
+
+                        <!-- Success Message (Initially Hidden) -->
+                        <div id="form-success" style="display: none; text-align: center; padding: 40px 0; animation: fadeIn 0.5s ease;">
+                            <i class="fas fa-check-circle" style="font-size: 60px; color: #4CAF50; margin-bottom: 20px;"></i>
+                            <h2 style="font-family: var(--font-serif); margin-bottom: 10px; font-size: 32px;">Thanks!</h2>
+                            <p style="color: var(--text-light); font-size: 16px;">apko hamri traf sa confrim email jald recive ho gi</p>
+                        </div>
                     </div>
                     
                     <div class="features-row">
