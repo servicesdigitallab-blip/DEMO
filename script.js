@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Page Load Fade
     gsap.to("body", { opacity: 1, duration: 0.8, ease: "power2.out" });
 
-    // Initialize Lenis (Smooth Scroll) - Only for Desktop to prevent mobile shaking
+    // Initialize Lenis (Smooth Scroll) - Only for Desktop
     let lenis;
     if (typeof Lenis !== 'undefined' && window.innerWidth > 1024) {
         lenis = new Lenis({
@@ -21,31 +21,31 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAnimationFrame(raf);
     }
 
-    // Expose lenis or standard scroll globally for buttons
+    // Robust Scroll Function
     window.scrollToSection = (id) => {
         const target = document.querySelector(id);
         if (!target) return;
-        if (lenis) {
+        
+        if (lenis && window.innerWidth > 1024) {
             lenis.scrollTo(target);
         } else {
             target.scrollIntoView({ behavior: "smooth" });
         }
+        
         // Close mobile menu if open
         const mobileOverlay = document.querySelector('.mobile-menu-overlay');
-        if (mobileOverlay) mobileOverlay.classList.remove('active');
+        if (mobileOverlay) {
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
     };
 
-    // --- GLOBAL ANIMATIONS ---
-    const easePremium = "cubic-bezier(0.22, 1, 0.36, 1)";
-
-    // --- NEW PREMIUM NAVBAR SCROLL & MOBILE LOGIC ---
+    // --- NAVBAR LOGIC ---
     const navbar = document.querySelector('.navbar-wrapper');
     const mobileToggle = document.querySelector('.mobile-toggle');
     const mobileOverlay = document.querySelector('.mobile-menu-overlay');
-    const closeMobileMenu = document.querySelector('.close-mobile-menu');
-    const mobileLinks = document.querySelectorAll('.mobile-menu-links a');
+    const closeMobile = document.querySelector('.close-mobile-menu');
 
-    // Navbar scroll effect
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -54,224 +54,157 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Mobile menu toggle
     if (mobileToggle) {
         mobileToggle.addEventListener('click', () => {
             mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
         });
     }
 
-    if (closeMobileMenu) {
-        closeMobileMenu.addEventListener('click', () => {
+    if (closeMobile) {
+        closeMobile.addEventListener('click', () => {
             mobileOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
         });
     }
 
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileOverlay.classList.remove('active');
-        });
-    });
-
-    // --- SECTION 1: HERO ANIMATIONS ---
+    // --- HERO ANIMATIONS ---
     gsap.from(".hero-text-wrap", {
         y: 60,
         opacity: 0,
         duration: 1.4,
-        ease: easePremium,
+        ease: "power4.out",
         delay: 0.4
     });
 
-    // --- SECTION 2: PROJECT CAROUSEL (3D EFFECT) ---
+    // --- SECTION 2: 3D CAROUSEL (LAPTOP ONLY) ---
     const track = document.querySelector('.carousel-track');
     const cards = document.querySelectorAll('.project-card');
     const nextBtn = document.querySelector('.nav-arrow:last-child');
     const prevBtn = document.querySelector('.nav-arrow:first-child');
     
-    let currentIndex = 4; // Start with center card active
+    if (track && window.innerWidth > 768) {
+        let currentIndex = 4; // Center card (Luxurious Living)
 
-    function updateCarousel() {
-        if (!track) return;
+        function updateCarousel() {
+            cards.forEach((card, index) => {
+                card.classList.remove('active', 'side');
+                if (index === currentIndex) {
+                    card.classList.add('active');
+                    gsap.to(card, { scale: 1, opacity: 1, duration: 0.6, ease: "power3.out" });
+                } else {
+                    card.classList.add('side');
+                    gsap.to(card, { scale: 0.85, opacity: 0.4, duration: 0.6, ease: "power3.out" });
+                }
+            });
 
-        // Desktop vs Mobile check
-        const isMobile = window.innerWidth <= 768;
-        
-        if (isMobile) {
-            // Mobile handled by CSS scroll-snap
-            return;
+            // Calculate exact shift to center the active card
+            const shift = (currentIndex - 4) * (280 + 40);
+            gsap.to(track, {
+                x: -shift,
+                duration: 0.8,
+                ease: "power4.out"
+            });
+
+            // Update info text
+            const activeCard = cards[currentIndex];
+            const infoTitle = document.querySelector('.active-project-info h3');
+            const infoType = document.querySelector('.active-project-info p');
+            if (infoTitle && activeCard) {
+                infoTitle.textContent = activeCard.querySelector('h3').textContent;
+                infoType.textContent = activeCard.querySelector('p').textContent;
+            }
         }
 
-        cards.forEach((card, index) => {
-            card.classList.remove('active', 'side');
-            if (index === currentIndex) {
-                card.classList.add('active');
-            } else {
-                card.classList.add('side');
-            }
-        });
-
-        // Center the active card
-        const cardWidth = 280 + 40; // width + gap
-        const activeCardWidth = 800 + 40;
-        
-        // Calculate offset to center the 800px card
-        // This is a bit complex due to varying widths
-        let offset = 0;
-        for(let i=0; i<currentIndex; i++) {
-            offset += (i === currentIndex ? 800 : 280) + 40;
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < cards.length - 1) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
         }
-        
-        // We want the active card center to be at the viewport center
-        // The track has padding-left: 50%, so 0 offset means first card center is at viewport center
-        // But our track padding is 50%, so we just need to shift relative to that
-        const shift = (currentIndex - 4) * (280 + 40);
-        track.style.transform = `translateX(${-shift}px)`;
-        
-        // Update info
-        const activeCard = cards[currentIndex];
-        const infoTitle = document.querySelector('.active-project-info h3');
-        const infoType = document.querySelector('.active-project-info p');
-        if (infoTitle && activeCard) {
-            infoTitle.textContent = activeCard.querySelector('h3').textContent;
-            infoType.textContent = activeCard.querySelector('p').textContent;
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
         }
+
+        // Initial call
+        updateCarousel();
     }
 
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            if (currentIndex < cards.length - 1) {
-                currentIndex++;
-                updateCarousel();
-            }
-        });
-    }
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateCarousel();
-            }
-        });
-    }
-
-    // Initial call
-    updateCarousel();
-
-    // --- SECTION 3: BOOKING FORM — Much smoother reveal ---
+    // --- SECTION 3: BOOKING FORM ---
     const bookingSec = document.querySelector('.booking-section');
     if (bookingSec) {
         const formEls = bookingSec.querySelectorAll('.booking-pre-title, .title, .booking-desc, .booking-form-card, .feature-item');
-        
-        gsap.set(formEls, { opacity: 0, y: 30 });
-
-        ScrollTrigger.create({
-            trigger: bookingSec,
-            start: "top 80%",
-            onEnter: () => {
-                gsap.to(formEls, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    stagger: 0.1,
-                    ease: "power2.out",
-                    overwrite: true
-                });
-            },
-            onLeaveBack: () => {
-                gsap.to(formEls, {
-                    opacity: 0,
-                    y: 30,
-                    duration: 0.8,
-                    stagger: 0.05,
-                    ease: "power2.in",
-                    overwrite: true
-                });
+        gsap.from(formEls, {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: bookingSec,
+                start: "top 80%"
             }
         });
     }
 
-    // MULTI-STEP LOGIC
+    // MULTI-STEP FORM LOGIC
+    const multiStepForm = document.getElementById('multi-step-form');
     const formSteps = document.querySelectorAll('.form-step');
-    const nextBtns = document.querySelectorAll('.next-step');
-    const prevBtns = document.querySelectorAll('.prev-step');
-    const dots = document.querySelectorAll('.dot');
+    const stepDots = document.querySelectorAll('.dot');
     const stepText = document.getElementById('step-text');
+    let currentStep = 1;
 
     function showStep(step) {
         formSteps.forEach(s => s.classList.remove('active'));
-        document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+        const stepEl = document.querySelector(`.form-step[data-step="${step}"]`);
+        if (stepEl) stepEl.classList.add('active');
         
-        dots.forEach(d => {
+        stepDots.forEach(d => {
             d.classList.remove('active');
             if (parseInt(d.dataset.step) <= step) d.classList.add('active');
         });
         
         if (stepText) stepText.textContent = `Step ${step} of 3`;
+        currentStep = step;
     }
 
-    nextBtns.forEach(btn => {
+    document.querySelectorAll('.next-step').forEach(btn => {
         btn.addEventListener('click', () => {
-            const currentStep = parseInt(btn.closest('.form-step').dataset.step);
             if (currentStep < 3) showStep(currentStep + 1);
         });
     });
 
-    prevBtns.forEach(btn => {
+    document.querySelectorAll('.prev-step').forEach(btn => {
         btn.addEventListener('click', () => {
-            const currentStep = parseInt(btn.closest('.form-step').dataset.step);
             if (currentStep > 1) showStep(currentStep - 1);
         });
     });
 
-    // Date Pill Selection
-    const datePillsContainer = document.getElementById('dynamic-date-pills');
-    if (datePillsContainer) {
-        const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-        const today = new Date();
-        
-        for (let i = 0; i < 5; i++) {
-            const date = new Date();
-            date.setDate(today.getDate() + i);
-            
-            const pill = document.createElement('div');
-            pill.className = 'pill' + (i === 0 ? ' active' : '');
-            pill.innerHTML = `<span>${days[date.getDay()]}</span><strong>${date.getDate()}</strong>`;
-            
-            pill.addEventListener('click', () => {
-                document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-                pill.classList.add('active');
-            });
-            
-            datePillsContainer.appendChild(pill);
-        }
-    }
-
-    const timePills = document.querySelectorAll('.pill-time');
-    timePills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            timePills.forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-        });
-    });
-
-    // --- REVEAL SECTION LOGIC ---
+    // --- REVEAL SECTION ---
     const revealWrapper = document.querySelector('.reveal-wrapper');
-    const beforeLayer = document.querySelector('.layer-before');
+    const layerClear = document.querySelector('.layer-clear');
+    const layerBefore = document.querySelector('.layer-before');
     const handle = document.querySelector('.reveal-handle');
 
-    if (revealWrapper && beforeLayer && handle) {
+    if (revealWrapper && layerClear && handle) {
         let isDragging = false;
 
         function move(x) {
             const rect = revealWrapper.getBoundingClientRect();
-            let position = ((x - rect.left) / rect.width) * 100;
-            
-            if (position < 0) position = 0;
-            if (position > 100) position = 100;
+            let pos = ((x - rect.left) / rect.width) * 100;
+            pos = Math.max(0, Math.min(100, pos));
 
-            beforeLayer.style.clipPath = `inset(0 ${100 - position}% 0 0)`;
-            handle.style.left = `${position}%`;
+            if (layerClear) layerClear.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+            if (layerBefore) layerBefore.style.clipPath = `inset(0 0 0 ${pos}%)`;
+            handle.style.left = `${pos}%`;
         }
 
         revealWrapper.addEventListener('mousedown', () => isDragging = true);
@@ -281,7 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
             move(e.pageX);
         });
 
-        // Touch support
         revealWrapper.addEventListener('touchstart', () => isDragging = true);
         window.addEventListener('touchend', () => isDragging = false);
         window.addEventListener('touchmove', (e) => {
@@ -289,11 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
             move(e.touches[0].pageX);
         });
 
-        // Initial position
+        // Initial Position
         move(revealWrapper.getBoundingClientRect().left + revealWrapper.offsetWidth / 2);
     }
 
-    // --- WHY CHOOSE US ANIMATIONS ---
+    // --- WHY CHOOSE US ---
     gsap.from(".why-card", {
         scrollTrigger: {
             trigger: ".why-choose-section",
@@ -306,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ease: "power2.out"
     });
 
-    // --- TESTIMONIAL CAROUSEL ---
+    // --- TESTIMONIALS ---
     const avatarBtns = document.querySelectorAll('.avatar-btn');
     const quoteEl = document.getElementById('testimonial-quote');
     const roleEl = document.getElementById('testimonial-role');
@@ -316,7 +248,6 @@ document.addEventListener("DOMContentLoaded", () => {
             avatarBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
-            // Animate text change
             gsap.to([quoteEl, roleEl], {
                 opacity: 0,
                 y: 10,
