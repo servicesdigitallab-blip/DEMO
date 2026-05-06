@@ -267,7 +267,8 @@ button {
     z-index: 3000;
     display: flex;
     flex-direction: column;
-    justify(center, center);
+    justify-content: center;
+    align-items: center;
     gap: 40px;
     transition: right 0.5s cubic-bezier(0.77,0.2,0.05,1);
     visibility: hidden;
@@ -482,9 +483,9 @@ button {
 .hero-content.left-box {
     position: relative;
     z-index: 10;
-    width: 45%;
+    width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 60%, transparent 100%);
+    background: transparent;
     display: flex;
     align-items: center;
     padding: 0 5% 0 8%;
@@ -504,7 +505,10 @@ button {
     line-height: 0.9;
     margin-bottom: 40px;
     letter-spacing: -3px;
-    color: var(--text-dark);
+    color: #000;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 255, 255, 0.4);
+    position: relative;
+    z-index: 2;
 }
 
 .hero-title .accent-text {
