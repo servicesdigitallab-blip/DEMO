@@ -487,21 +487,23 @@ button {
     height: 100%;
     background: transparent;
     display: flex;
-    align-items: center;
+    flex-direction: column; /* Vertical stack */
+    justify-content: center; /* Center vertically */
     padding: 0 5% 0 8%;
 }
 
+.hero-text-wrap {
+    margin-top: 15%; /* Push down to align with image text */
+}
+
 .hero-btns-group {
-    position: absolute !important;
-    bottom: 80px !important; /* Force to bottom regardless of other styles */
-    left: 8% !important;
+    position: relative !important;
+    margin-top: 40px !important; /* Move it up to sit under the text */
+    left: 0 !important;
     display: flex !important;
-    flex-direction: row !important;
     gap: 20px !important;
     z-index: 100 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    transform: none !important;
+    opacity: 1 !important;
 }
 
 .btn-solid-hero {
@@ -562,13 +564,11 @@ button {
 .project-card {
     flex-shrink: 0;
     transition: all 0.5s var(--ease);
-    opacity: 1 !important; /* Force visibility */
-    visibility: visible !important;
 }
 
 .project-card.side {
     width: 280px;
-    opacity: 0.8 !important; /* Make side cards more visible */
+    opacity: 0.5 !important;
     transform: scale(0.9);
     text-align: left;
 }
