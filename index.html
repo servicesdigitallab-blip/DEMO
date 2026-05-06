@@ -33,7 +33,7 @@
             </div>
             
             <div class="navbar-actions">
-                <button class="btn-book-outline" onclick="scrollToSection('#booking')">BOOK A CONSULTATION</button>
+                <button class="btn-book-outline" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">BOOK A CONSULTATION</button>
                 <button class="mobile-toggle">
                     <span class="line"></span>
                     <span class="line"></span>
@@ -54,7 +54,7 @@
             <a href="#process">PROCESS</a>
             <a href="#booking">CONTACT</a>
         </div>
-        <button class="btn-book-solid mobile-book" onclick="scrollToSection('#booking')">BOOK A CONSULTATION</button>
+        <button class="btn-book-solid mobile-book" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'}); document.querySelector('.mobile-menu-overlay').classList.remove('active');">BOOK A CONSULTATION</button>
     </div>
 
     <div id="smooth-wrapper">
@@ -67,9 +67,10 @@
                 </div>
                 <div class="hero-content left-box">
                     <div class="hero-text-wrap">
+                        <!-- Heading text is in the background image -->
                         <div class="hero-btns-group">
-                            <button class="btn-solid-hero" onclick="scrollToSection('#projects')">VIEW OUR WORK</button>
-                            <button class="btn-outline-hero" onclick="scrollToSection('#booking')">GET IN TOUCH</button>
+                            <button class="btn-solid-hero" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">VIEW OUR WORK</button>
+                            <button class="btn-outline-hero" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">GET IN TOUCH</button>
                         </div>
                     </div>
                 </div>
@@ -144,7 +145,7 @@
                         <button class="nav-arrow"><i class="fas fa-arrow-left"></i></button>
                         <div class="drag-indicator">
                             <i class="far fa-hand-pointer"></i>
-                            <span>Explore Projects</span>
+                            <span>Drag to explore</span>
                         </div>
                         <button class="nav-arrow"><i class="fas fa-arrow-right"></i></button>
                     </div>
@@ -460,7 +461,7 @@
                             </div>
                             
                             <div class="action-right">
-                                <button class="btn-solid" onclick="scrollToSection('#booking')">Book Your Free Consultation <i class="fas fa-arrow-right"></i></button>
+                                <button class="btn-solid" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">Book Your Free Consultation <i class="fas fa-arrow-right"></i></button>
                                 <div class="reviews">
                                     <span class="review-text">50+ Happy Clients</span>
                                     <div class="stars">
