@@ -492,10 +492,12 @@ button {
 }
 
 .hero-btns-group {
+    position: absolute;
+    bottom: 12%; /* Adjusted to match bottom buttons in image */
+    left: 8%;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 150px; /* Push below image buttons */
+    gap: 20px;
+    z-index: 20;
 }
 
 .btn-solid-hero {
@@ -505,14 +507,14 @@ button {
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 1px;
-    border: none;
+    border: 1px solid #000;
     width: fit-content;
     border-radius: 4px;
     transition: all 0.3s ease;
 }
 
 .btn-outline-hero {
-    background: transparent;
+    background: #fff; /* White background as per screenshot */
     color: #000;
     padding: 16px 40px;
     font-size: 14px;
