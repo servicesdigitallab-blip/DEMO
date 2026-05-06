@@ -491,15 +491,6 @@ button {
     padding: 0 5% 0 8%;
 }
 
-.hero-label {
-    font-size: 11px;
-    letter-spacing: 5px;
-    color: var(--accent);
-    display: block;
-    margin-bottom: 25px;
-    font-weight: 600;
-}
-
 .hero-title {
     font-size: 8rem;
     line-height: 0.9;
@@ -550,11 +541,6 @@ button {
 
 .btn-solid-hero:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 .btn-outline-hero:hover { background: #000; color: #fff; }
-
-.hero-buttons {
-    display: flex;
-    gap: 20px;
-}
 
 @keyframes heroZoom {
     0% { transform: scale(1); }
@@ -1050,7 +1036,6 @@ button {
 
 .layer-clear {
     z-index: 2;
-    clip-path: inset(0 100% 0 0);
 }
 
 .after-img-clear {
@@ -1141,7 +1126,7 @@ button {
     display: flex;
     gap: 80px;
     margin-top: 40px;
-    justify-content: center;
+    justify(center, center);
 }
 
 .reveal-stat {
@@ -1719,10 +1704,6 @@ button {
         scrollbar-width: none !important;
     }
 
-    .carousel-container::-webkit-scrollbar {
-        display: none !important;
-    }
-
     .carousel-track {
         display: flex !important;
         gap: 15px !important;
@@ -1760,10 +1741,6 @@ button {
 
     .project-card p {
         font-size: 10px !important;
-    }
-
-    .carousel-controls {
-        display: none !important;
     }
 
     /* --- SECTION 3: BOOKING FORM --- */
