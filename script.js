@@ -1,151 +1,97 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // --- INITIAL SETUP ---
+(function() {
+    // --- LENIS SMOOTH SCROLL ---
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+    })
+
+    function raf(time) {
+        lenis.raf(time)
+        requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+
+    // --- PRELOADER & INITIAL FADE ---
+    window.addEventListener('load', () => {
+        gsap.to('body', { opacity: 1, duration: 1, ease: 'power2.out' });
+        
+        // Initial hero text reveal
+        gsap.from('.hero-text-wrap > *', {
+            y: 50,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.2,
+            ease: 'power4.out',
+            delay: 0.5
+        });
+    });
+
+    // --- CURSOR FOLLOWER (Premium Feel) ---
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    document.body.appendChild(cursor);
+
+    const cursorInner = document.createElement('div');
+    cursorInner.className = 'custom-cursor-inner';
+    document.body.appendChild(cursorInner);
+
+    document.addEventListener('mousemove', (e) => {
+        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.6, ease: 'power3.out' });
+        gsap.to(cursorInner, { x: e.clientX, y: e.clientY, duration: 0.1, ease: 'power1.out' });
+    });
+
+    // Hover effect for links
+    document.querySelectorAll('a, button, .project-card, .pill').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('hover');
+            cursorInner.classList.add('hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('hover');
+            cursorInner.classList.remove('hover');
+        });
+    });
+
+    // --- GSAP SCROLL ANIMATIONS ---
     gsap.registerPlugin(ScrollTrigger);
 
-    // Page Load Fade
-    gsap.to("body", { opacity: 1, duration: 0.8, ease: "power2.out" });
-
-    // Initialize Lenis (Smooth Scroll) - Only for Desktop to prevent mobile shaking
-    let lenis;
-    if (typeof Lenis !== 'undefined' && window.innerWidth > 1024) {
-        lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            smoothWheel: true,
-        });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-    }
-
-    // --- GLOBAL ANIMATIONS ---
-    const easePremium = "cubic-bezier(0.22, 1, 0.36, 1)";
-
-    // --- NEW PREMIUM NAVBAR SCROLL & MOBILE LOGIC ---
-    const navbar = document.querySelector('.navbar-wrapper');
-    const mobileToggle = document.querySelector('.mobile-toggle');
-    const mobileOverlay = document.querySelector('.mobile-menu-overlay');
-    const closeMobile = document.querySelector('.close-mobile-menu');
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
-            mobileOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-    }
-
-    if (closeMobile) {
-        closeMobile.addEventListener('click', () => {
-            mobileOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-    }
-
-    // Close mobile menu on link click
-    document.querySelectorAll('.mobile-menu-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-    });
-
-    if (document.querySelector('.hero-title')) {
-        gsap.from(".hero-title", {
-            x: -50,
-            opacity: 0,
-            duration: 1.5,
-            ease: "power4.out",
-            delay: 0.7
-        });
-    }
-
-    if (document.querySelector('.hero-btns-group')) {
-        gsap.from(".hero-btns-group", {
-            y: 30,
+    // Fade-in elements on scroll
+    const fadeEls = document.querySelectorAll('.fade-in-up');
+    fadeEls.forEach(el => {
+        gsap.from(el, {
+            y: 50,
             opacity: 0,
             duration: 1,
-            ease: "power3.out",
-            delay: 1.2
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: el,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse'
+            }
         });
-    }
+    });
 
-    // Hero Scroll Scale
-    gsap.to(".hero-section", {
-        scale: 0.98,
-        borderRadius: "20px",
+    // Section 1: Hero Parallax
+    gsap.to('.hero-bg-full', {
+        yPercent: 15, // Reduced from 20 for smoother feel
+        ease: 'none',
         scrollTrigger: {
-            trigger: ".hero-section",
-            start: "top top",
-            end: "bottom top",
+            trigger: '.hero-section',
+            start: 'top top',
+            end: 'bottom top',
             scrub: true
         }
     });
 
-    // Mouse Parallax for Hero - Desktop Only
-    if (window.innerWidth > 1024) {
-        document.addEventListener("mousemove", (e) => {
-            const { clientX, clientY } = e;
-            const xPos = (clientX / window.innerWidth - 0.5);
-            const yPos = (clientY / window.innerHeight - 0.5);
-
-            gsap.to(".hero-bg-full", {
-                x: xPos * 30,
-                y: yPos * 30,
-                duration: 1,
-                ease: "power2.out"
-            });
-        });
-    }
-
-    // Section 4: 3D Image Angle Change on Hover
-    const whyCards = document.querySelectorAll('.why-card');
-    whyCards.forEach(card => {
-        const img = card.querySelector('img');
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 10;
-            const rotateY = -(x - centerX) / 10;
-
-            gsap.to(img, {
-                rotateX: rotateX,
-                rotateY: rotateY,
-                scale: 1.1,
-                duration: 0.5,
-                ease: "power2.out"
-            });
-        });
-
-        card.addEventListener('mouseleave', () => {
-            gsap.to(img, {
-                rotateX: 0,
-                rotateY: 0,
-                scale: 1,
-                duration: 0.8,
-                ease: "elastic.out(1, 0.5)"
-            });
-        });
-    });
-
-    // ============================================================
-    // PREMIUM SCROLL ANIMATIONS (21st.dev inspired)
-    // ============================================================
-
-    // --- SECTION 2: PROJECT CARDS — Simple reveal to avoid conflict with carousel ---
+    // Section 2: Projects Stagger
     const projectSec = document.querySelector('.projects-section');
     if (projectSec) {
         // Animation for the section header specifically
@@ -553,10 +499,48 @@ document.addEventListener("DOMContentLoaded", () => {
         currentStepIndex = step;
     };
 
+    const validateStep = (step) => {
+        const currentStepEl = document.querySelector(`.form-step[data-step="${step}"]`);
+        const inputs = currentStepEl.querySelectorAll('input[required], select[required], textarea[required], input[type="text"], input[type="email"], input[type="tel"], select');
+        let isValid = true;
+
+        inputs.forEach(input => {
+            // Remove existing error
+            const existingError = input.parentElement.querySelector('.error-msg');
+            if (existingError) existingError.remove();
+            input.style.borderColor = '';
+
+            if (input.value.trim() === '') {
+                isValid = false;
+                input.style.borderColor = '#ff4d4d';
+                const error = document.createElement('span');
+                error.className = 'error-msg';
+                error.innerText = 'Please fill this';
+                error.style.color = '#ff4d4d';
+                error.style.fontSize = '10px';
+                error.style.marginTop = '4px';
+                error.style.display = 'block';
+                input.parentElement.appendChild(error);
+            }
+        });
+
+        // Special check for Step 1 Pills (Time)
+        if (step === 1) {
+            const activeTime = document.querySelector('.time-pills .pill-time.active');
+            if (!activeTime) {
+                isValid = false;
+            }
+        }
+
+        return isValid;
+    };
+
     document.querySelectorAll('.next-step').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (currentStepIndex < 3) {
-                updateStepUI(currentStepIndex + 1);
+            if (validateStep(currentStepIndex)) {
+                if (currentStepIndex < 3) {
+                    updateStepUI(currentStepIndex + 1);
+                }
             }
         });
     });
@@ -605,7 +589,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (multiStepForm) {
         multiStepForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            showSuccessInCard();
+            if (validateStep(3)) {
+                showSuccessInCard();
+            }
         });
     }
 
@@ -640,4 +626,4 @@ document.addEventListener("DOMContentLoaded", () => {
             navbar.classList.remove('scrolled');
         }
     });
-});
+})();
