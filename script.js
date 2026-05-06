@@ -60,14 +60,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Hero Section Animations - Only if elements exist
-    if (document.querySelector('.hero-label')) {
-        gsap.from(".hero-label", {
+    if (document.querySelector('.hero-title')) {
+        gsap.from(".hero-title", {
+            x: -50,
+            opacity: 0,
+            duration: 1.5,
+            ease: "power4.out",
+            delay: 0.7
+        });
+    }
+
+    if (document.querySelector('.hero-btns-group')) {
+        gsap.from(".hero-btns-group", {
             y: 30,
             opacity: 0,
             duration: 1,
             ease: "power3.out",
-            delay: 0.5
+            delay: 1.2
         });
     }
 

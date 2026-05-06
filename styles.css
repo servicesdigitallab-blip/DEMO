@@ -267,8 +267,7 @@ button {
     z-index: 3000;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify(center, center);
     gap: 40px;
     transition: right 0.5s cubic-bezier(0.77,0.2,0.05,1);
     visibility: hidden;
@@ -501,19 +500,52 @@ button {
 }
 
 .hero-title {
-    font-size: 7rem;
-    line-height: 0.95;
-    margin-bottom: 30px;
-    letter-spacing: -2px;
+    font-size: 8rem;
+    line-height: 0.9;
+    margin-bottom: 40px;
+    letter-spacing: -3px;
+    color: var(--text-dark);
 }
 
-.hero-desc {
-    font-size: 16px;
-    color: var(--text-light);
-    margin-bottom: 40px;
-    max-width: 450px;
-    line-height: 1.7;
+.hero-title .accent-text {
+    font-style: italic;
+    color: var(--accent);
 }
+
+.hero-btns-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.btn-solid-hero {
+    background: #000;
+    color: #fff;
+    padding: 16px 40px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: none;
+    width: fit-content;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-hero {
+    background: transparent;
+    color: #000;
+    padding: 16px 40px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: 1px solid #000;
+    width: fit-content;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-solid-hero:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.btn-outline-hero:hover { background: #000; color: #fff; }
 
 .hero-buttons {
     display: flex;
@@ -1188,6 +1220,10 @@ button {
     font-size: 20px;
 }
 
+.card-icon:hover {
+    transform: translateX(-50%) rotate(10deg);
+}
+
 .card-content {
     padding: 40px 20px 30px;
 }
@@ -1448,7 +1484,7 @@ button {
     margin-bottom: 60px;
 }
 
-.footer-col h2 {
+.footer-col brand-col h2 {
     font-size: 1.5rem;
     letter-spacing: 2px;
     margin-bottom: 20px;
@@ -1611,46 +1647,56 @@ button {
 
     /* --- HERO SECTION MOBILE --- */
     .hero-section.immersive-hero {
-        height: auto !important;
-        min-height: 70vh !important;
-        padding-top: 80px !important;
-        padding-bottom: 40px !important;
-        justify-content: center !important;
-        align-items: center !important;
+        height: 100vh !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        display: flex !important;
+        align-items: flex-start !important; /* Start from top */
+        justify-content: flex-start !important;
+    }
+
+    .hero-bg-full {
+        object-position: top center !important; /* Crop from bottom as requested */
     }
 
     .hero-content.left-box {
-        width: 90% !important;
+        width: 100% !important;
         height: auto !important;
-        padding: 35px 25px !important;
-        background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
-        border-radius: 24px !important;
-        text-align: center !important;
-        margin: 0 auto !important;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.12) !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-
-    .hero-text-wrap {
-        text-align: center !important;
-    }
-
-    .hero-label {
-        font-size: 9px !important;
-        letter-spacing: 3px !important;
-        margin-bottom: 15px !important;
+        padding: 120px 30px 40px !important; /* Push down below navbar */
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border-radius: 0 !important;
+        text-align: left !important;
+        margin: 0 !important;
+        box-shadow: none !important;
         display: block !important;
     }
 
+    .hero-text-wrap {
+        text-align: left !important;
+    }
+
     .hero-title {
-        font-size: 2.5rem !important;
-        line-height: 1.1 !important;
-        margin-bottom: 0 !important;
-        letter-spacing: -1px !important;
+        font-size: 4.5rem !important; /* Large like the screenshot */
+        line-height: 0.9 !important;
+        margin-bottom: 30px !important;
+        letter-spacing: -2px !important;
+        color: var(--text-dark) !important;
+        text-shadow: none !important; /* No shadow needed on clean bg */
+    }
+
+    .hero-btns-group {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .btn-solid-hero, .btn-outline-hero {
+        width: 180px !important;
+        padding: 14px 20px !important;
+        font-size: 12px !important;
+        text-align: center !important;
     }
 
     /* --- SECTION 2: PROJECTS HORIZONTAL SCROLL --- */
