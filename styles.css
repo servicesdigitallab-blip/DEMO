@@ -804,11 +804,6 @@ button {
     gap: 40px;
 }
 
-.form-grid {
-    display: flex;
-    gap: 40px;
-}
-
 .form-left, .form-right {
     flex: 1;
 }
