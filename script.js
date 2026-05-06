@@ -1,151 +1,74 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // --- INITIAL SETUP ---
-    gsap.registerPlugin(ScrollTrigger);
+import { gsap } from 'https://cdn.skypack.dev/gsap';
+import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
 
-    // Page Load Fade
-    gsap.to("body", { opacity: 1, duration: 0.8, ease: "power2.out" });
+gsap.registerPlugin(ScrollTrigger);
 
-    // Initialize Lenis (Smooth Scroll) - Only for Desktop to prevent mobile shaking
-    let lenis;
-    if (typeof Lenis !== 'undefined' && window.innerWidth > 1024) {
-        lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            smoothWheel: true,
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    // Reveal body
+    gsap.to('body', { opacity: 1, duration: 1, ease: 'power2.out' });
 
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-    }
-
-    // --- GLOBAL ANIMATIONS ---
-    const easePremium = "cubic-bezier(0.22, 1, 0.36, 1)";
-
-    // --- NEW PREMIUM NAVBAR SCROLL & MOBILE LOGIC ---
-    const navbar = document.querySelector('.navbar-wrapper');
+    // --- NAVIGATION LOGIC ---
+    const navWrapper = document.querySelector('.navbar-wrapper');
     const mobileToggle = document.querySelector('.mobile-toggle');
     const mobileOverlay = document.querySelector('.mobile-menu-overlay');
     const closeMobile = document.querySelector('.close-mobile-menu');
 
+    // Scroll handling for sticky nav
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
+            navWrapper.classList.add('scrolled');
         } else {
-            navbar.classList.remove('scrolled');
+            navWrapper.classList.remove('scrolled');
         }
     });
 
-    if (mobileToggle) {
+    // Mobile menu toggle
+    if (mobileToggle && mobileOverlay) {
         mobileToggle.addEventListener('click', () => {
             mobileOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            gsap.from('.mobile-menu-links a', {
+                y: 30,
+                opacity: 0,
+                stagger: 0.1,
+                duration: 0.5,
+                ease: 'power3.out'
+            });
         });
-    }
 
-    if (closeMobile) {
         closeMobile.addEventListener('click', () => {
             mobileOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        });
+
+        // Close on link click
+        document.querySelectorAll('.mobile-menu-links a').forEach(link => {
+            link.addEventListener('click', () => mobileOverlay.classList.remove('active'));
         });
     }
 
-    // Close mobile menu on link click
-    document.querySelectorAll('.mobile-menu-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-    });
+    // --- GSAP ANIMATIONS ---
 
-    if (document.querySelector('.hero-title')) {
-        gsap.from(".hero-title", {
-            x: -50,
-            opacity: 0,
-            duration: 1.5,
-            ease: "power4.out",
-            delay: 0.7
-        });
-    }
-
-    if (document.querySelector('.hero-btns-group')) {
-        gsap.from(".hero-btns-group", {
-            y: 30,
-            opacity: 0,
-            duration: 1,
-            ease: "power3.out",
-            delay: 1.2
-        });
-    }
-
-    // Hero Scroll Scale
-    gsap.to(".hero-section", {
-        scale: 0.98,
-        borderRadius: "20px",
+    // --- SECTION 1: HERO — Background movement & text stagger ---
+    gsap.to('.hero-bg-full', {
+        scale: 1.1,
         scrollTrigger: {
-            trigger: ".hero-section",
-            start: "top top",
-            end: "bottom top",
+            trigger: '.hero-section',
+            start: 'top top',
+            end: 'bottom top',
             scrub: true
         }
     });
 
-    // Mouse Parallax for Hero - Desktop Only
-    if (window.innerWidth > 1024) {
-        document.addEventListener("mousemove", (e) => {
-            const { clientX, clientY } = e;
-            const xPos = (clientX / window.innerWidth - 0.5);
-            const yPos = (clientY / window.innerHeight - 0.5);
-
-            gsap.to(".hero-bg-full", {
-                x: xPos * 30,
-                y: yPos * 30,
-                duration: 1,
-                ease: "power2.out"
-            });
-        });
-    }
-
-    // Section 4: 3D Image Angle Change on Hover
-    const whyCards = document.querySelectorAll('.why-card');
-    whyCards.forEach(card => {
-        const img = card.querySelector('img');
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 10;
-            const rotateY = -(x - centerX) / 10;
-
-            gsap.to(img, {
-                rotateX: rotateX,
-                rotateY: rotateY,
-                scale: 1.1,
-                duration: 0.5,
-                ease: "power2.out"
-            });
-        });
-
-        card.addEventListener('mouseleave', () => {
-            gsap.to(img, {
-                rotateX: 0,
-                rotateY: 0,
-                scale: 1,
-                duration: 0.8,
-                ease: "elastic.out(1, 0.5)"
-            });
-        });
+    const heroTl = gsap.timeline();
+    heroTl.from('.hero-content h1, .hero-content p, .hero-btns-group', {
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: 'power4.out',
+        delay: 0.5
     });
 
-    // ============================================================
-    // PREMIUM SCROLL ANIMATIONS (21st.dev inspired)
-    // ============================================================
-
-    // --- SECTION 2: PROJECT CARDS — Simple reveal to avoid conflict with carousel ---
+    // --- SECTION 2: PROJECTS — Better transitions and scroll reveal ---
     const projectSec = document.querySelector('.projects-section');
     if (projectSec) {
         // Animation for the section header specifically
@@ -247,155 +170,87 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- CAROUSEL SYSTEM ---
     const track = document.querySelector('.carousel-track');
     const cards = document.querySelectorAll('.project-card');
+    const prevBtn = document.querySelector('.nav-arrow:first-child');
+    const nextBtn = document.querySelector('.nav-arrow:last-child');
     
-    if (track && window.innerWidth > 768) {
-        cards.forEach((card, index) => {
-            card.addEventListener('mouseenter', () => {
-                updateCarousel(index);
-            });
-        });
-
-        function updateCarousel(activeIndex) {
-            const container = document.querySelector('.carousel-container');
-            const track = document.querySelector('.carousel-track');
-            const activeCard = cards[activeIndex];
-
-            cards.forEach((card, i) => {
-                if (i === activeIndex) {
-                    card.classList.add('active');
-                    card.classList.remove('side');
-                    gsap.to(card, {
-                        scale: 1.1,
-                        y: -10,
-                        opacity: 1,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
-                } else {
-                    card.classList.remove('active');
-                    card.classList.add('side');
-                    gsap.to(card, {
-                        scale: 0.9,
-                        y: 0,
-                        opacity: 0.5,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
-                }
-            });
-
-            const containerRect = container.getBoundingClientRect();
-            const cardRect = activeCard.getBoundingClientRect();
-            const currentX = gsap.getProperty(track, "x") || 0;
-            const containerCenter = containerRect.left + containerRect.width / 2;
-            const cardCenter = cardRect.left + cardRect.width / 2;
-            const offset = containerCenter - cardCenter;
+    if (track && cards.length > 0) {
+        let activeIndex = 1; // Start with the second card active
+        
+        const updateCarousel = () => {
+            const cardWidth = 320; // Matches .project-card.side
+            const activeWidth = 800; // Matches .project-card.active
+            const gap = 40;
             
-            gsap.to(track, {
-                x: currentX + offset,
-                duration: 0.8,
-                ease: "power4.out"
-            });
-        }
-        
-        // Set initial state
-        setTimeout(() => {
-            updateCarousel(Math.floor(cards.length / 2));
-        }, 100);
-    }
-
-    // Stats Counter
-    const stats = document.querySelectorAll('.stat-num');
-    stats.forEach(stat => {
-        const text = stat.innerText;
-        const target = parseInt(text.replace(/\D/g, ''));
-        if(!isNaN(target)) {
-            ScrollTrigger.create({
-                trigger: stat,
-                start: "top 90%",
-                once: true,
-                onEnter: () => {
-                    gsap.fromTo(stat, { innerText: 0 }, {
-                        innerText: target,
-                        duration: 2.5,
-                        snap: { innerText: 1 },
-                        ease: "power2.out",
-                        onUpdate: function() {
-                            stat.innerHTML = Math.round(this.targets()[0].innerText) + text.replace(/[0-9]/g, '');
-                        }
-                    });
+            // Calculate translation to center the active card
+            // Each card to the left of active is cardWidth + gap
+            const translation = -(activeIndex * (cardWidth + gap));
+            track.style.transform = `translateX(${translation}px)`;
+            
+            cards.forEach((card, index) => {
+                card.classList.remove('active', 'side');
+                if (index === activeIndex) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.add('side');
                 }
             });
-        }
-    });
-
-    // --- GLOW EFFECT TRACKING ---
-    const glowCard = document.querySelector('.booking-form-card');
-    if (glowCard) {
-        glowCard.addEventListener('pointermove', (e) => {
-            const rect = glowCard.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            glowCard.style.setProperty('--x', `${x}px`);
-            glowCard.style.setProperty('--y', `${y}px`);
-        });
-    }
-
-    // --- AI DATE PICKER LOGIC ---
-    const dateInput = document.getElementById('ai-date-input');
-    const pillsContainer = document.getElementById('dynamic-date-pills');
-    
-    if (dateInput && pillsContainer) {
-        // Set default date to today
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-        
-        const triggerChange = () => {
-            const event = new Event('change');
-            dateInput.dispatchEvent(event);
         };
-        
-        triggerChange();
-        
-        dateInput.addEventListener('change', (e) => {
-            const date = new Date(e.target.value);
-            if (!isNaN(date)) {
-                // Clear and update pills
-                pillsContainer.innerHTML = '';
-                
-                // Show selected date and surrounding dates
-                for (let i = -2; i <= 2; i++) {
-                    const d = new Date(date);
-                    d.setDate(d.getDate() + i);
-                    
-                    const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
-                    const dayNum = d.getDate().toString().padStart(2, '0');
-                    const isActive = i === 0 ? 'active' : '';
-                    
-                    const pill = document.createElement('div');
-                    pill.className = `pill ${isActive}`;
-                    pill.innerHTML = `<span>${dayName}</span><strong>${dayNum}</strong>`;
-                    
-                    pill.addEventListener('click', () => {
-                        document.querySelectorAll('#dynamic-date-pills .pill').forEach(p => p.classList.remove('active'));
-                        pill.classList.add('active');
-                    });
-                    
-                    pillsContainer.appendChild(pill);
-                }
-            }
+
+        // Click on side cards to move
+        cards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                activeIndex = index;
+                updateCarousel();
+            });
         });
+
+        // Navigation arrows
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                activeIndex = Math.max(0, activeIndex - 1);
+                updateCarousel();
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                activeIndex = Math.min(cards.length - 1, activeIndex + 1);
+                updateCarousel();
+            });
+        }
+
+        // Initialize
+        updateCarousel();
     }
 
-    // Form Pills Interaction for static elements
-    const staticDatePills = document.querySelectorAll('.date-pills:not(#dynamic-date-pills) .pill');
-    staticDatePills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            staticDatePills.forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-        });
-    });
+    // --- BOOKING FORM DATE GENERATOR ---
+    const datePillsContainer = document.getElementById('dynamic-date-pills');
+    if (datePillsContainer) {
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+        const today = new Date();
+        for (let i = 0; i < 5; i++) {
+            const d = new Date();
+            d.setDate(today.getDate() + i);
+            
+            const pill = document.createElement('div');
+            pill.className = `pill ${i === 2 ? 'active' : ''}`;
+            pill.innerHTML = `
+                <span>${days[d.getDay()]}</span>
+                <strong>${d.getDate()}</strong>
+            `;
+            
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('.date-pills .pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+            });
+            
+            datePillsContainer.appendChild(pill);
+        }
+    }
 
+    // Time pill active state
     const timePills = document.querySelectorAll('.time-pills .pill-time');
     timePills.forEach(pill => {
         pill.addEventListener('click', () => {
@@ -573,46 +428,50 @@ document.addEventListener("DOMContentLoaded", () => {
         multiStepForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Hide form and header
-            const formHeader = document.querySelector('.booking-form-card .form-header');
-            if (formHeader) formHeader.style.display = 'none';
+            // Hide form steps and header
             multiStepForm.style.display = 'none';
+            document.querySelector('.form-header').style.display = 'none';
             
-            // Show success message inside the card
-            const successMsg = document.getElementById('form-success');
-            if (successMsg) successMsg.style.display = 'block';
+            // Show success container inside the card
+            const successContainer = document.getElementById('booking-success');
+            if (successContainer) {
+                successContainer.style.display = 'flex';
+                
+                // Add a small GSAP reveal
+                gsap.from(successContainer.querySelectorAll('.success-content > *'), {
+                    y: 30,
+                    opacity: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: 'power3.out'
+                });
+            }
         });
     }
 
-    // --- ANCHOR LINK SMOOTH SCROLL ---
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetEl = document.querySelector(targetId);
-            if (targetEl) {
-                if (lenis) {
-                    lenis.scrollTo(targetEl);
-                } else {
-                    targetEl.scrollIntoView({ behavior: 'smooth' });
-                }
-                
-                // Update active state in nav
-                document.querySelectorAll('.navbar-menu a').forEach(a => a.classList.remove('active'));
-                this.classList.add('active');
+    // Smooth reveal for all sections on entry
+    gsap.utils.toArray('section').forEach(section => {
+        gsap.from(section, {
+            opacity: 0,
+            y: 30,
+            duration: 1,
+            scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse'
             }
         });
     });
 
-    // Navbar background change
-    window.addEventListener('scroll', () => {
-        const navbar = document.querySelector('.navbar-wrapper');
-        if (navbar && window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else if (navbar) {
-            navbar.classList.remove('scrolled');
-        }
-    });
+    // Custom mouse follow for booking card
+    const bookingCard = document.querySelector('.booking-form-card');
+    if (bookingCard) {
+        bookingCard.addEventListener('mousemove', (e) => {
+            const rect = bookingCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            bookingCard.style.setProperty('--x', `${x}px`);
+            bookingCard.style.setProperty('--y', `${y}px`);
+        });
+    }
 });
