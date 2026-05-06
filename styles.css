@@ -494,10 +494,10 @@ button {
 
 .hero-btns-group {
     position: absolute !important;
-    top: 90.3% !important; /* Extremely precise alignment */
-    left: 9.6% !important; /* Extremely precise alignment */
+    top: 73.2% !important; /* Move UP to match image buttons */
+    left: 8.2% !important; /* Move LEFT to match image buttons */
     display: flex !important;
-    gap: 22px !important; /* Perfectly match image button spacing */
+    gap: 20px !important;
     z-index: 100 !important;
     opacity: 1 !important;
 }
@@ -522,28 +522,30 @@ button {
     background: #000 !important;
     color: #fff !important;
     padding: 18px 0 !important;
-    min-width: 195px !important; /* Increased width to fully cover image buttons */
-    font-size: 14px !important;
+    min-width: 205px !important; /* Width to fully cover image buttons */
+    font-size: 13px !important;
     font-weight: 600 !important;
     letter-spacing: 1px !important;
     border: 1px solid #000 !important;
     border-radius: 4px !important;
     transition: all 0.3s ease !important;
     text-align: center !important;
+    text-transform: uppercase !important;
 }
 
 .btn-outline-hero {
-    background: #fff !important; /* Solid white to hide image button behind */
+    background: #F9F8F6 !important; /* Beige to blend with image background */
     color: #000 !important;
     padding: 18px 0 !important;
-    min-width: 195px !important; /* Increased width to fully cover image buttons */
-    font-size: 14px !important;
+    min-width: 205px !important; /* Width to fully cover image buttons */
+    font-size: 13px !important;
     font-weight: 600 !important;
     letter-spacing: 1px !important;
     border: 1px solid #000 !important;
     border-radius: 4px !important;
     transition: all 0.3s ease !important;
     text-align: center !important;
+    text-transform: uppercase !important;
 }
 
 .btn-solid-hero:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
@@ -1569,26 +1571,36 @@ button {
 
 .success-message-inner {
     text-align: center;
-    padding: 40px 20px;
-    animation: fadeIn 0.5s ease forwards;
+    padding: 50px 30px;
+    animation: fadeIn 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards;
 }
 
 .success-message-inner i {
-    font-size: 50px;
-    color: #4CAF50;
-    margin-bottom: 20px;
+    font-size: 60px;
+    color: #2D2D2D; /* Premium dark color instead of green */
+    margin-bottom: 25px;
     display: block;
 }
 
 .success-message-inner h2 {
-    font-size: 28px;
+    font-size: 32px;
     margin-bottom: 15px;
     font-family: var(--font-serif);
+    font-weight: 500;
 }
 
 .success-message-inner p {
     color: var(--text-light);
-    margin-bottom: 25px;
+    margin-bottom: 35px;
+    font-size: 15px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.success-message-inner .btn-solid {
+    border-radius: 50px;
+    padding: 14px 40px;
 }
 
 /* RESPONSIVE */

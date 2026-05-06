@@ -585,7 +585,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="success-message-inner">
                             <i class="fas fa-check-circle"></i>
                             <h2>Thank You!</h2>
-                            <p>Apka message humein mil gaya hai. Hamari team jald hi apse rabta karegi.</p>
+                            <p>Thank you for reaching out! Our team will get back to you shortly via email to confirm your consultation.</p>
                             <button class="btn-solid" onclick="location.reload()">Back to Form</button>
                         </div>
                     `;
